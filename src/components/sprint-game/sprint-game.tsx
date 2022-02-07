@@ -5,6 +5,10 @@ import axios, { AxiosResponse } from 'axios';
 import shuffle from 'lodash/shuffle';
 import random from 'lodash/random';
 import Button from '../button/button';
+import trueSound from '../../assets/sound/true.mp3'
+import falseSound from '../../assets/sound/false.mp3'
+import endSound from '../../assets/sound/result.mp3'
+import useSound from 'use-sound';
 import './sprint-game.scss';
 
 interface RootState {
@@ -52,6 +56,9 @@ export default function Sprint() {
   const circle2: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const circle3: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const comboRow = [circle1, circle2, circle3];
+  const [audioTrue] = useSound(trueSound);
+  const [audioFalse] = useSound(falseSound);
+  const [audioEnd] = useSound(endSound);
 
   useEffect(() => {
     getWords();
@@ -74,14 +81,13 @@ export default function Sprint() {
       setAnswer(true);
       setWord(arr[currentWordnumber].word);
       setTranlation(arr[currentWordnumber].wordTranslate);
-      currentWordnumber === 19 ? setCurrentWordnumber(0) : setCurrentWordnumber(currentWordnumber + 1);
     } else {
       setAnswer(false);
       const randomPosition = random(0, 19);
       setWord(arr[currentWordnumber].word);
-      setTranlation(arr[randomPosition].wordTranslate);
-      currentWordnumber === 19 ? setCurrentWordnumber(0) : setCurrentWordnumber(currentWordnumber + 1);
+      setTranlation(arr[randomPosition].wordTranslate);      
     }
+    currentWordnumber === 19 ? setCurrentWordnumber(0) : setCurrentWordnumber(currentWordnumber + 1);
   }
 
   function generateWords(res: AxiosResponse): WordData[] {
@@ -129,11 +135,13 @@ export default function Sprint() {
   function checkUserAnswer(userAnswer: boolean) {
     switch (userAnswer === answer) {
       case true:
+        audioTrue()
         setTrueAnswersNumber(trueAnswersNumber + 1);
         comboChecker();
         scoreCounter();
         break;
       case false:
+        audioFalse()
         removeCombo(comboRow);
         setScoreMultiplier(1);
         setComboCounter(0);
@@ -154,8 +162,6 @@ export default function Sprint() {
   }
 
   function keysHandler(e: KeyboardEvent) {
-    e.preventDefault();
-    console.log('press');
     if (e.code === 'ArrowRight') {
       trueButtonHandler();
     } else if (e.code === 'ArrowLeft') {
