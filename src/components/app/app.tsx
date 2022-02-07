@@ -1,20 +1,15 @@
 import * as React from 'react';
-import {
-  HashRouter as BrowserRouter,
-  Routes,
-  Route,
-} from 'react-router-dom'
-
+import { HashRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
+import Textbook from '../textbook/Textbook';
 
 const App = () => {
-
-  return <BrowserRouter>
-    <Routes>
-      <Route path='/' element={<span></span>} />
-      <Route path='/content' element={<span></span>} />
-      <Route path='/tree' element={<span></span>} />
-    </Routes>
-  </BrowserRouter>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/textbook/*" element={<Textbook />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default App;
