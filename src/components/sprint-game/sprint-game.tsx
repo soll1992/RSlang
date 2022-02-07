@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMoney, getMoney, addName, getName } from '../../redux/actions/actions';
 import axios, { AxiosResponse } from 'axios';
+import GameResult from '../game-result/game-result';
 import shuffle from 'lodash/shuffle';
 import random from 'lodash/random';
 import Button from '../button/button';
-import trueSound from '../../assets/sound/true.mp3'
-import falseSound from '../../assets/sound/false.mp3'
-import endSound from '../../assets/sound/result.mp3'
+import trueSound from '../../assets/sound/true.mp3';
+import falseSound from '../../assets/sound/false.mp3';
+import endSound from '../../assets/sound/result.mp3';
 import useSound from 'use-sound';
 import './sprint-game.scss';
 
@@ -43,7 +44,7 @@ export default function Sprint() {
   const difficulty = useSelector((state: RootState) => state.gameDifficulty.gameDifficulty);
   const baseUrl = 'http://localhost:3868';
   const [wordsData, setWordsData] = useState<Array<WordData>>([]);
-  const [word, setWord] = useState('');
+  const [word, setWord] = useState<WordData>();
   const [translation, setTranlation] = useState('');
   const [answer, setAnswer] = useState(false);
   const [currentWordnumber, setCurrentWordnumber] = useState(0);
@@ -52,9 +53,16 @@ export default function Sprint() {
   const [score, setScore] = useState(0);
   const [scoreMultiplier, setScoreMultiplier] = useState(1);
   const [timer, setTimer] = useState(60);
+  const [showResult, setShowResult] = useState(false);
+  const [trueWords, setTrueWords] = useState<Array<WordData>>([]);
+  const [falseWords, setFalseWords] = useState<Array<WordData>>([]);
+  const [clock, setClock] = useState<NodeJS.Timeout | undefined>();
+  const [isSoundOn, setIsSoundOn] = useState(true);
   const circle1: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const circle2: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const circle3: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
+  const muteButton: React.MutableRefObject<HTMLButtonElement | null> = useRef(null);
+  const componentRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const comboRow = [circle1, circle2, circle3];
   const [audioTrue] = useSound(trueSound);
   const [audioFalse] = useSound(falseSound);
@@ -66,28 +74,37 @@ export default function Sprint() {
 
   useEffect(() => {
     const time = setTimeout(setTimer, 1000, timer - 1);
-    timer <= 0 && clearTimeout(time);
+    setClock(time)
+    if(timer <= 0 ) {
+      clearTimeout(time)
+      gameEnder(time)
+    }
   }, [timer]);
 
-  useEffect(() => { //Тут
-    document.addEventListener('keydown', keysHandler);
-
-    return () => document.removeEventListener('keydown', keysHandler);
+  useEffect(() => {
+    if (!showResult) {
+      window.addEventListener('keyup', keysHandler);
+    }
+    return () => window.removeEventListener('keyup', keysHandler);
   });
 
   function generateQuestion(arr: WordData[]) {
     let isTrue = Boolean(random(0, 1));
+    if (currentWordnumber === 20) {
+      gameEnder(clock)
+      return
+    } 
     if (isTrue) {
       setAnswer(true);
-      setWord(arr[currentWordnumber].word);
+      setWord(arr[currentWordnumber]);
       setTranlation(arr[currentWordnumber].wordTranslate);
     } else {
       setAnswer(false);
       const randomPosition = random(0, 19);
-      setWord(arr[currentWordnumber].word);
-      setTranlation(arr[randomPosition].wordTranslate);      
+      setWord(arr[currentWordnumber]);
+      setTranlation(arr[randomPosition].wordTranslate);
     }
-    currentWordnumber === 19 ? setCurrentWordnumber(0) : setCurrentWordnumber(currentWordnumber + 1);
+    setCurrentWordnumber(currentWordnumber + 1);
   }
 
   function generateWords(res: AxiosResponse): WordData[] {
@@ -135,16 +152,22 @@ export default function Sprint() {
   function checkUserAnswer(userAnswer: boolean) {
     switch (userAnswer === answer) {
       case true:
-        audioTrue()
+        isSoundOn && audioTrue();
         setTrueAnswersNumber(trueAnswersNumber + 1);
         comboChecker();
         scoreCounter();
+        if(word !== undefined) {
+          setTrueWords([...trueWords, word])
+        }
         break;
       case false:
-        audioFalse()
+        isSoundOn && audioFalse();
         removeCombo(comboRow);
         setScoreMultiplier(1);
         setComboCounter(0);
+        if(word !== undefined) {
+        setFalseWords([...falseWords, word])
+        }
         break;
     }
   }
@@ -169,21 +192,59 @@ export default function Sprint() {
     }
   }
 
+  function gameEnder(x: NodeJS.Timeout | undefined) {
+    setShowResult(true);
+    isSoundOn && setTimeout(audioEnd, 300);
+    x !== undefined && clearTimeout(x)
+  }
+
+  function soundOff() {
+    setIsSoundOn(false)
+    muteButton.current !==null && muteButton.current.classList.add('mute')
+  }
+
+  function soundOn() {
+    setIsSoundOn(true)
+    muteButton.current !==null && muteButton.current.classList.remove('mute')
+  }
+
+  function toggleSound () {
+    isSoundOn ? soundOff() : soundOn()
+  }
+
+  function fullscreenHandler() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  }
+
   return (
     <div>
-      <div>{timer}</div>
-      <div>{`Правильных ответов: ${trueAnswersNumber} из 20`}</div>
-      <div>{`Счет: ${score}`}</div>
-      <div>{`Комбо множитель x${scoreMultiplier}`}</div>
-      <div className="combo-row">
-        <div ref={circle1} className="circle"></div>
-        <div ref={circle2} className="circle"></div>
-        <div ref={circle3} className="circle"></div>
+      <div className="settings-button-wrapper">
+      <Button class='fullscreen-button' onClick={fullscreenHandler} />
+      <Button refer={muteButton} class='mute-button' onClick={toggleSound} />
       </div>
-      <div>{word}</div>
-      <div>{translation}</div>
-      <Button onClick={trueButtonHandler} class="button" textContent="Верно" />
-      <Button onClick={falseButtonHandler} class="button" textContent="Неверно" />
+      {showResult ? (
+        <GameResult trueAnswersNumber={trueAnswersNumber} finalScore={score} trueWords={trueWords} falseWords={falseWords}/>
+      ) : (
+        <div>
+          <div>{timer}</div>
+          <div>{`Слово: ${currentWordnumber} из 20`}</div>
+          <div>{`Счет: ${score}`}</div>
+          <div>{`Комбо множитель x${scoreMultiplier}`}</div>
+          <div className="combo-row">
+            <div ref={circle1} className="circle"></div>
+            <div ref={circle2} className="circle"></div>
+            <div ref={circle3} className="circle"></div>
+          </div>
+          <div>{word?.word}</div>
+          <div>{translation}</div>
+          <Button onClick={trueButtonHandler} class="button" textContent="Верно" />
+          <Button onClick={falseButtonHandler} class="button" textContent="Неверно" />
+        </div>
+      )}
     </div>
   );
 }

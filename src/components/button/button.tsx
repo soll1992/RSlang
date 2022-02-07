@@ -3,12 +3,13 @@ import './button.scss'
 
 interface Props {
     class: string,
-    textContent: string | number,
+    textContent?: string | number,
+    refer?: React.MutableRefObject<HTMLButtonElement | null>,
     onClick?: React.MouseEventHandler,
 }
 
 export default function Button(props: Props) {
   return <>
-    <button className={props.class} onClick={props.onClick}>{props.textContent}</button>
+    <button ref={props.refer} className={props.class} onClick={props.onClick}>{props.textContent}</button>
   </>;
 }

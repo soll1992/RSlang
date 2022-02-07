@@ -13,3 +13,25 @@
 .green {
     background-color: green;
 }
+.mute {
+    background: url('../../assets/svg/mute.svg');
+}
+
+.settings-button-wrapper {
+    display: flex;
+}
+
+.mute-button {
+    width: 40px;
+    height: 40px;
+    margin-right: 30px;
+    margin-left: auto;
+    background: url('../../assets/svg/sound.svg');
+}
+
+.fullscreen-button {
+    width: 40px;
+    height: 40px;
+    margin-left: 30px;
+    background: url('../../assets/svg/screen.svg');
+}

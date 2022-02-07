@@ -20,7 +20,7 @@ export default function SprintDifficulty() {
       <p>Выберите уровень сложности:</p>
       <div className="links-wrapper">
         {[...Array(6)].map((_, i) => (
-          <NavLink class={`link dif-link${i + 1}`} textContent={String(i + 1)} onClick={() => selectGameParams(i)} link={'/sprint/sprint-game'} key={i} />
+          <NavLink class={`link dif-link${i + 1}`} textContent={String(i + 1)} onClick={() => selectGameParams(i)} link='/sprint/sprint-game' key={i} />
         ))}
       </div>
     </section>
