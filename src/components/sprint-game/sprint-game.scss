@@ -13,9 +13,6 @@
 .green {
     background-color: green;
 }
-.mute {
-    background: url('../../assets/svg/mute.svg');
-}
 
 .settings-button-wrapper {
     display: flex;
@@ -27,6 +24,10 @@
     margin-right: 30px;
     margin-left: auto;
     background: url('../../assets/svg/sound.svg');
+}
+
+.mute {
+    background: url('../../assets/svg/mute.svg');
 }
 
 .fullscreen-button {
