@@ -8,13 +8,18 @@ import Header from '../header/header';
 
 
 const App = () => {
-
   return <BrowserRouter>
     <Routes>
-      <Route path='/home' element={
+      <Route path={'/'} element={
         <Fragment>
           <Header />
-          <main>Учебник</main>
+          <main>Домашняя</main>
+
+        </Fragment>} />
+      <Route path={'/home'} element={
+        <Fragment>
+          <Header />
+          <main>Домашняя</main>
 
         </Fragment>} />
 

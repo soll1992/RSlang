@@ -47,7 +47,7 @@ body {
 	font-size: 16px;
 	color: #000;
 	text-align: center;
-	background: #fff;
+	background: rgba(0, 0, 0, 0.05);
 	height: 100%;
 
 	&._lock {
@@ -114,4 +114,20 @@ body {
 * {
 	scrollbar-width: thin; /* "auto" или "thin"  */
 	scrollbar-color: #9d8665 #192f2d44; /* плашка скролла и дорожка */
+}
+.background-overlay {
+	top: 0;
+	left: 0;
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.4);
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+	visibility: hidden;
+	z-index: 2;
+	transition: opacity 0.6s, visibility 0.6s;
+	&.active {
+		opacity: 1;
+		visibility: visible;
+	}
 }
