@@ -3,7 +3,13 @@ import { useParams } from 'react-router-dom';
 import Word from 'src/types/Word';
 import WordCard from '../../word-card/WordCard';
 import TextbookPageNav from './textbook-page-nav/TextbookPageNav';
-import axios from 'axios';
+import getUserAggregatedWords from '../../../utils/getUserAggregatedWords';
+import getWords from '../../../utils/getWords';
+import UserData from '../../../types/UserData';
+import './textbookPage.css';
+import removeUserDataFromStorage from '../../../utils/removeUserDataFromStorage';
+import { isWordsData } from '../../../utils/typeGuards';
+/* eslint no-underscore-dangle: 0 */
 
 type Props = {
   group: {
@@ -14,9 +20,18 @@ type Props = {
     activePage: number;
     setActivePage: React.Dispatch<React.SetStateAction<number>>;
   };
+  authorization: {
+    userData: UserData | null;
+    setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
+  };
+  wordsState: {
+    allWordsDiffOrLearned: boolean;
+    setAllWordsDiffOrLearned: React.Dispatch<React.SetStateAction<boolean>>;
+  };
 };
 
-export default function TextbookPage({ group, page }: Props) {
+export default function TextbookPage({ group, page, authorization, wordsState }: Props) {
+  // Router & URL --------------
   const pageUrlParams = useParams();
   const { groupId, pageId } = pageUrlParams;
 
@@ -25,7 +40,9 @@ export default function TextbookPage({ group, page }: Props) {
     if (pageId) page.setActivePage(+pageId);
   }, [pageUrlParams]);
 
+  // Words --------------
   const [words, setWords] = useState<Word[]>([]);
+  const [wordChanged, setWordChanged] = useState(false);
   const groupsValue: { [key: string]: number } = {
     A1: 0,
     A2: 1,
@@ -36,29 +53,59 @@ export default function TextbookPage({ group, page }: Props) {
   };
 
   useEffect(() => {
-    if (group.activeGroup && group.activeGroup !== 'difficult-words') {
-      axios
-        .get<Word[]>('https://react-rslang-group.herokuapp.com/words', {
-          params: {
-            group: groupsValue[group.activeGroup],
-            page: page.activePage - 1,
-          },
-        })
-        .then((response) => setWords(response.data))
-        .catch((err) => console.log(err));
+    (async () => {
+      if (group.activeGroup && group.activeGroup !== 'difficult-words' && !authorization.userData) {
+        const params = { group: groupsValue[group.activeGroup], page: page.activePage - 1 };
+        const wordsData = await getWords(params);
+        if (wordsData) setWords(wordsData);
+      }
+
+      if (group.activeGroup && group.activeGroup !== 'difficult-words' && authorization.userData) {
+        const params = { wordsPerPage: 20, group: groupsValue[group.activeGroup], page: page.activePage - 1 };
+        const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
+
+        if (wordsData instanceof Error) {
+          if (wordsData.message === '401') removeUserDataFromStorage();
+        } else if (isWordsData(wordsData)) setWords(wordsData);
+      }
+
+      if (group.activeGroup && group.activeGroup === 'difficult-words' && authorization.userData) {
+        const params = { wordsPerPage: 3600, filter: { 'userWord.difficulty': 'hard' } };
+        const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
+        if (wordsData instanceof Error) {
+          if (wordsData.message === '401') removeUserDataFromStorage();
+        } else if (isWordsData(wordsData)) setWords(wordsData);
+      }
+    })();
+    setWordChanged(false);
+  }, [[authorization.userData], [wordChanged]]);
+
+  useEffect(() => {
+    if (words.length > 0 && group.activeGroup !== 'difficult-words') {
+      wordsState.setAllWordsDiffOrLearned(
+        words.every((word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional.isLearned)
+      );
     }
+  }, [words]);
 
-    // if (group.activeGroup && group.activeGroup === 'difficult-words') {
-    // };
-  }, []);
-
+  // Audio --------------
   const [audiotrack, setAudiotrack] = useState<HTMLAudioElement | null>(null);
 
   return (
     <div className="textbook-page">
-      {words.map((word: Word) => {
-        return <WordCard info={word} audio={{ audiotrack, setAudiotrack }} key={word.id} />;
-      })}
+      {group.activeGroup === 'difficult-words' && !authorization.userData
+        ? 'Для доступа к данному разделу необходимо авторизироваться'
+        : words.map((word: Word) => {
+            return (
+              <WordCard
+                info={word}
+                audio={{ audiotrack, setAudiotrack }}
+                key={word.id || word._id}
+                authorization={authorization}
+                wordState={{ wordChanged, setWordChanged }}
+              />
+            );
+          })}
 
       {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}
     </div>

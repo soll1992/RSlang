@@ -1,5 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Word from 'src/types/Word';
+import UserWord from 'src/types/UserWord';
+import UserData from 'src/types/UserData';
+import getUserWordById from '../../utils/getUserWordById';
+import createUserWord from '../../utils/createUserWord';
+import updateUserWord from '../../utils/updateUserWord';
+import { isUserWord } from '../../utils/typeGuards';
+import './wordCard.css';
+import removeUserDataFromStorage from '../../utils/removeUserDataFromStorage';
+/* eslint no-underscore-dangle: 0 */
 
 type Props = {
   info: Word;
@@ -7,9 +16,18 @@ type Props = {
     audiotrack: HTMLAudioElement | null;
     setAudiotrack: React.Dispatch<React.SetStateAction<HTMLAudioElement | null>>;
   };
+  authorization: {
+    userData: UserData | null;
+    setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
+  };
+  wordState: {
+    wordChanged: boolean;
+    setWordChanged: React.Dispatch<React.SetStateAction<boolean>>;
+  };
 };
 
-export default function WordCard({ info, audio }: Props) {
+export default function WordCard({ info, audio, authorization, wordState }: Props) {
+  //  Audio section -------------
   const audioWord = useRef(new Audio());
   const audioMeaning = useRef(new Audio());
   const audioExample = useRef(new Audio());
@@ -17,7 +35,8 @@ export default function WordCard({ info, audio }: Props) {
   const playAudio = () => {
     if (audio.audiotrack) {
       audio.audiotrack.pause();
-      audio.audiotrack.currentTime = 0;
+      const track = audio.audiotrack;
+      track.currentTime = 0;
       audio.setAudiotrack(null);
     }
     audio.setAudiotrack(audioWord.current);
@@ -30,6 +49,159 @@ export default function WordCard({ info, audio }: Props) {
     if (audio.audiotrack) audio.audiotrack.play();
   }, [audio]);
 
+  //  Words section -------------
+  const [isWordDifficult, setIsWordDifficult] = useState(info.userWord?.difficulty === 'hard');
+  const [isWordLearned, setIsWordLearned] = useState(Boolean(info.userWord?.optional.isLearned));
+
+  const addToDifficultWords = async () => {
+    if (authorization.userData) {
+      const answer = await getUserWordById(
+        info.id || info._id,
+        authorization.userData.id,
+        authorization.userData.token
+      );
+
+      if (answer instanceof Error && answer.message === '401') removeUserDataFromStorage();
+      if (answer instanceof Error && answer.message === '404') {
+        const newData: UserWord = {
+          difficulty: 'hard',
+          optional: {
+            isLearned: false,
+          },
+        };
+        const created = createUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          newData
+        );
+        if (created instanceof Error && created.message === '401') removeUserDataFromStorage();
+      }
+      if (isUserWord(answer)) {
+        const newData: UserWord = {
+          difficulty: 'hard',
+          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: false })) as { [key: string]: unknown },
+        };
+        const updated = updateUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          newData
+        );
+        if (updated instanceof Error && updated.message === '401') removeUserDataFromStorage();
+      }
+    }
+  };
+
+  const deleteFromDifficultWords = async () => {
+    if (authorization.userData) {
+      const answer = await getUserWordById(
+        info.id || info._id,
+        authorization.userData.id,
+        authorization.userData.token
+      );
+
+      if (answer instanceof Error && answer.message === '401') removeUserDataFromStorage();
+      if (isUserWord(answer)) {
+        const newData: UserWord = {
+          difficulty: 'easy',
+          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: false })) as { [key: string]: unknown },
+        };
+        const updated = updateUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          newData
+        );
+        if (updated instanceof Error && updated.message === '401') removeUserDataFromStorage();
+      }
+    }
+  };
+
+  const changeWordDifficulty = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      addToDifficultWords();
+      setIsWordLearned(false);
+    }
+    if (!event.target.checked) deleteFromDifficultWords();
+    setIsWordDifficult(!isWordDifficult);
+    wordState.setWordChanged(true);
+  };
+
+  const addToLearnedWords = async () => {
+    if (authorization.userData) {
+      const answer = await getUserWordById(
+        info.id || info._id,
+        authorization.userData.id,
+        authorization.userData.token
+      );
+
+      if (answer instanceof Error && answer.message === '401') removeUserDataFromStorage();
+      if (answer instanceof Error && answer.message === '404') {
+        const newData: UserWord = {
+          difficulty: 'easy',
+          optional: {
+            isLearned: true,
+          },
+        };
+        const created = createUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          newData
+        );
+        if (created instanceof Error && created.message === '401') removeUserDataFromStorage();
+      }
+      if (isUserWord(answer)) {
+        const newData: UserWord = {
+          difficulty: 'easy',
+          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: true })) as { [key: string]: unknown },
+        };
+        const updated = updateUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          newData
+        );
+        if (updated instanceof Error && updated.message === '401') removeUserDataFromStorage();
+      }
+    }
+  };
+
+  const deleteFromLearnedWords = async () => {
+    if (authorization.userData) {
+      const answer = await getUserWordById(
+        info.id || info._id,
+        authorization.userData.id,
+        authorization.userData.token
+      );
+
+      if (answer instanceof Error && answer.message === '401') removeUserDataFromStorage();
+      if (isUserWord(answer)) {
+        const newData: UserWord = {
+          difficulty: 'easy',
+          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: false })) as { [key: string]: unknown },
+        };
+        const updated = updateUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          newData
+        );
+        if (updated instanceof Error && updated.message === '401') removeUserDataFromStorage();
+      }
+    }
+  };
+
+  const changeLearnedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      addToLearnedWords();
+      setIsWordDifficult(false);
+    }
+    if (!event.target.checked) deleteFromLearnedWords();
+    setIsWordLearned(!isWordLearned);
+  };
+
   return (
     <div className="word-card">
       <img
@@ -38,9 +210,7 @@ export default function WordCard({ info, audio }: Props) {
         alt={`${info.word}_picture`}
       />
       <div className="word-card__content">
-        <button className="word-card__audio" onClick={playAudio}>
-          Play Audio
-        </button>
+        <button className="word-card__audio" onClick={playAudio}></button>
         <audio
           src={`https://rs-lang-server.herokuapp.com/${info.audio}`}
           ref={audioWord}
@@ -56,7 +226,7 @@ export default function WordCard({ info, audio }: Props) {
           ref={audioExample}
           onEnded={audioExampleEnded}
         ></audio>
-        <div className="word-card__word">
+        <div className={`word-card__word word-card__word_${info.group}`}>
           <p className="word-card__word-en">
             {info.word}
             <span className="word-card__word-transcription">{info.transcription}</span>
@@ -72,39 +242,54 @@ export default function WordCard({ info, audio }: Props) {
           <p className="word-card__word-example-ru">{info.textExampleTranslate}</p>
         </div>
 
-        {/* Проверка на авторизацию, да => отображаем доп.функционал */}
-        {
+        {authorization.userData ? (
           <div className="word-card__additionally">
             <div className="word-card__answers">
-              <span className="word-card__right-answers">Правильные ответы: 0</span>
-              <span className="word-card__wrong-answers">Неправильные ответы: 0</span>
+              <span className="word-card__right-answers">
+                Правильные ответы: {info.userWord?.optional.rightAnswers || 0}
+              </span>
+              <span className="word-card__wrong-answers">
+                Неправильные ответы: {info.userWord?.optional.wrongAnswers || 0}
+              </span>
             </div>
 
             <div className="word-card__marks">
-              <label className="word-card-mark" htmlFor={`difficult_word_${info.id}`}>
+              <label
+                className={`word-card-mark ${isWordDifficult ? 'word-card-mark_difficult' : ''}`}
+                htmlFor={`difficult_word_${info.id || info._id}`}
+              >
                 <input
                   className="word-card-mark__checkbox"
-                  id={`difficult_word_${info.id}`}
+                  id={`difficult_word_${info.id || info._id}`}
                   value="hard"
                   type="checkbox"
+                  onChange={changeWordDifficulty}
+                  checked={isWordDifficult}
                 />
                 <span className="word-card-mark__mark"></span>
                 <span className="word-card-mark__name">Сложное слово</span>
               </label>
 
-              <label className="word-card-mark" htmlFor={`learned_word_${info.id}`}>
+              <label
+                className={`word-card-mark ${isWordLearned ? 'word-card-mark_learned' : ''}`}
+                htmlFor={`learned_word_${info.id || info._id}`}
+              >
                 <input
                   className="word-card-mark__checkbox"
-                  id={`learned_word_${info.id}`}
+                  id={`learned_word_${info.id || info._id}`}
                   value="learned"
                   type="checkbox"
+                  onChange={changeLearnedWords}
+                  checked={isWordLearned}
                 />
                 <span className="word-card-mark__mark"></span>
                 <span className="word-card-mark__name">Изученное слово</span>
               </label>
             </div>
           </div>
-        }
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );

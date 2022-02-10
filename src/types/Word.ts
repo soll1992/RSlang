@@ -1,5 +1,8 @@
+import UserWord from './UserWord';
+
 type Word = {
   id: string;
+  _id: string;
   group: number;
   page: number;
   word: string;
@@ -13,6 +16,7 @@ type Word = {
   textExampleTranslate: string;
   textMeaningTranslate: string;
   wordTranslate: string;
+  userWord?: UserWord;
 };
 
 export default Word;
