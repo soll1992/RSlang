@@ -1,4 +1,5 @@
 import React from 'react';
+import './textbookPageNav.css';
 
 type Props = {
   group: {
@@ -48,28 +49,37 @@ export default function TextbookPageNav({ group, page }: Props) {
       <ul className="textbook-page-nav__list">
         <li className="textbook-page-nav__list-item" key={`textbook-page_prev`}>
           <a
-            className="button button_next"
+            className="button button_prev"
             href={`#/textbook/${group.activeGroup}/${page.activePage - 1}`}
             onClick={prevPage}
             role="button"
-          >
-            prev
-          </a>
+          ></a>
         </li>
         {navItems.map((navItemPage, index) => {
-          return (
-            <li className="textbook-page-nav__list-item" key={`textbook-page_${index}`}>
-              {typeof navItemPage === 'string' ? (
-                <span>{navItemPage}</span>
-              ) : (
-                <a
-                  className="textbook-page-nav__link"
-                  href={`#/textbook/${group.activeGroup}/${navItemPage}`}
-                  role="button"
-                >
-                  {navItemPage}
-                </a>
-              )}
+          return typeof navItemPage === 'string' ? (
+            <li
+              className={`textbook-page-nav__list-item ${
+                page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
+              }`}
+              key={`textbook-page_${index}`}
+            >
+              {' '}
+              <span className="textbook-page-nav__link">{navItemPage}</span>{' '}
+            </li>
+          ) : (
+            <li
+              className={`textbook-page-nav__list-item textbook-page-nav__list-item_page-number ${
+                page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
+              }`}
+              key={`textbook-page_${index}`}
+            >
+              <a
+                className="textbook-page-nav__link"
+                href={`#/textbook/${group.activeGroup}/${navItemPage}`}
+                role="button"
+              >
+                {navItemPage}
+              </a>
             </li>
           );
         })}
@@ -79,9 +89,7 @@ export default function TextbookPageNav({ group, page }: Props) {
             href={`#/textbook/${group.activeGroup}/${page.activePage + 1}`}
             onClick={nextPage}
             role="button"
-          >
-            next
-          </a>
+          ></a>
         </li>
       </ul>
     </nav>

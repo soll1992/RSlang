@@ -1,0 +1,50 @@
+.textbook a {
+	color: black;
+}
+
+.textbook__header {
+	background-color: white;
+    width: 100%;
+
+	position: fixed;
+    top: 0;
+    left: 0;
+
+	box-shadow: 0px 0px 16px 1px rgba(34, 60, 80, 0.2);
+	box-shadow: 0px 0px 30px 0px rgba(130, 155, 174, 0.501);
+    z-index: 20;
+}
+
+.textbook__main {
+	padding-top: 60px;
+}
+
+.textbook__main_A1 {
+	background: linear-gradient(45deg, rgba(177, 211, 235, 0.433) 25%, rgb(255, 255, 255) 0, rgb(255, 255, 255) 50%,rgba(177, 211, 235, 0.433) 0, rgba(177, 211, 235, 0.433) 75%, rgb(255, 255, 255) 0);
+	background-size: 25px 25px;
+}
+
+.textbook__main_A2 {
+	background: linear-gradient(45deg, rgba(196, 230, 141, 0.405) 25%, rgb(255, 255, 255) 0, rgb(255, 255, 255) 50%,rgba(196, 230, 141, 0.405) 0, rgba(196, 230, 141, 0.405) 75%, rgb(255, 255, 255) 0);
+	background-size: 25px 25px;
+}
+
+.textbook__main_B1 {
+	background: linear-gradient(45deg, rgba(247, 228, 85, 0.282) 25%, rgb(255, 255, 255) 0, rgb(255, 255, 255) 50%,rgba(247, 228, 85, 0.282) 0, rgba(247, 228, 83, 0.282) 75%, rgb(255, 255, 255) 0);
+	background-size: 25px 25px;
+}
+
+.textbook__main_B2 {
+	background: linear-gradient(45deg, rgba(253, 171, 117, 0.419) 25%, rgb(255, 255, 255) 0, rgb(255, 255, 255) 50%,rgba(253, 171, 117, 0.419) 0, rgba(253, 171, 117, 0.419) 75%, rgb(255, 255, 255) 0);
+	background-size: 25px 25px;
+}
+
+.textbook__main_C1{
+	background: linear-gradient(45deg, rgba(249, 123, 123, 0.405) 25%, rgb(255, 255, 255) 0, rgb(255, 255, 255) 50%,rgba(249, 123, 123, 0.405) 0, rgba(249, 123, 123, 0.405) 75%, rgb(255, 255, 255) 0);
+	background-size: 25px 25px;
+}
+
+.textbook__main_C2 {
+	background: linear-gradient(45deg, rgba(199, 150, 189, 0.419) 25%, rgb(255, 255, 255) 0, rgb(255, 255, 255) 50%,rgba(199, 150, 189, 0.419) 0, rgba(199, 150, 189, 0.419) 75%, rgb(255, 255, 255) 0);
+	background-size: 25px 25px;
+}
