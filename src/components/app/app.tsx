@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react';
+import SprintDifficulty from '../sprint-difficulty/sprint-difficulty';
+import Sprint from '../sprint-game/sprint-game';
+
 import {
   HashRouter as BrowserRouter,
   Routes,
   Route,
 } from 'react-router-dom'
 import Header from '../header/header';
-
 
 const App = () => {
   return <BrowserRouter>
@@ -44,7 +46,13 @@ const App = () => {
       <Route path='/sprint' element={
         <Fragment>
           <Header />
-          <span>Игра Спринт</span>
+          <SprintDifficulty/>
+        </Fragment>} />
+
+        <Route path='/sprint/sprint-game' element={
+        <Fragment>
+          <Header />
+          <Sprint/>
         </Fragment>} />
 
       <Route path='/statistics' element={

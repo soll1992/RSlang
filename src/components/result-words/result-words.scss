@@ -1,0 +1,11 @@
+.word-conteiner {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+.sound-button {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    background: url('../../assets/svg/sound.svg');
+}
