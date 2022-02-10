@@ -118,3 +118,7 @@
 	background-color: #bbe5a3e0;
 }
 
+.word-card-mark__checkbox {
+	display: none;
+}
+
