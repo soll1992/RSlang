@@ -20,10 +20,18 @@
     "presets": [
       "@babel/env",
       "@babel/react"
+    ],
+    "plugins": [
+      ["@babel/plugin-transform-runtime",
+        {
+          "regenerator": true
+        }
+      ]
     ]
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
+    "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
     "@types/axios": "^0.14.0",
@@ -70,13 +78,14 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
+    "@babel/runtime": "^7.17.0",
     "csstype": "^3.0.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "react-redux": "^7.2.6",
     "ts-loader": "^9.2.6"
   }
 }
