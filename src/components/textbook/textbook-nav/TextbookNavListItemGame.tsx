@@ -22,7 +22,7 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
     <li className={`textbook-nav__list-item ${disabled ? 'textbook-nav__list-item_disabled' : ''}`}>
       <a
         className={`textbook-nav__link ${disabled ? 'textbook-nav__link_disabled' : ''}`}
-        href={`#/${link}`}
+        href={`#/${link}/${link}-game`}
         onClick={goToGame}
       >
         <span className="textbook-nav__link-text">{text}</span>

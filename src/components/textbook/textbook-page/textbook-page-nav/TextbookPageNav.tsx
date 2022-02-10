@@ -49,7 +49,7 @@ export default function TextbookPageNav({ group, page }: Props) {
       <ul className="textbook-page-nav__list">
         <li className="textbook-page-nav__list-item" key={`textbook-page_prev`}>
           <a
-            className="button button_prev"
+            className="button-prev"
             href={`#/textbook/${group.activeGroup}/${page.activePage - 1}`}
             onClick={prevPage}
             role="button"
@@ -85,7 +85,7 @@ export default function TextbookPageNav({ group, page }: Props) {
         })}
         <li className="textbook-page-nav__list-item" key={`textbook-page_next`}>
           <a
-            className="button button_next"
+            className="button-next"
             href={`#/textbook/${group.activeGroup}/${page.activePage + 1}`}
             onClick={nextPage}
             role="button"

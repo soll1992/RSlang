@@ -6,17 +6,9 @@
 	background-color: white;
     width: 100%;
 
-	position: fixed;
-    top: 0;
-    left: 0;
-
 	box-shadow: 0px 0px 16px 1px rgba(34, 60, 80, 0.2);
 	box-shadow: 0px 0px 30px 0px rgba(130, 155, 174, 0.501);
     z-index: 20;
-}
-
-.textbook__main {
-	padding-top: 60px;
 }
 
 .textbook__main_A1 {
