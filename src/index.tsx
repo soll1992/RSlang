@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
+import { Provider } from 'react-redux';
 // import favicon from './assets/favicon.png';
 import './assets/scss/style.scss';
 
