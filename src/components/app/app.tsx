@@ -49,6 +49,12 @@ const App = () => {
           <SprintDifficulty/>
         </Fragment>} />
 
+        <Route path='/sprint/sprint-game' element={
+        <Fragment>
+          <Header />
+          <Sprint/>
+        </Fragment>} />
+
       <Route path='/statistics' element={
         <Fragment>
           <Header />

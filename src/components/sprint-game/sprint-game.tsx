@@ -42,7 +42,7 @@ export default function Sprint() {
   const dispatch = useDispatch();
   const page = useSelector((state: RootState) => state.gameWordPage.gameWordPage);
   const difficulty = useSelector((state: RootState) => state.gameDifficulty.gameDifficulty);
-  const baseUrl = 'http://localhost:3868';
+  const baseUrl = 'https://react-rslang-group.herokuapp.com';
   const [wordsData, setWordsData] = useState<Array<WordData>>([]);
   const [word, setWord] = useState<WordData>();
   const [translation, setTranlation] = useState('');
