@@ -3,16 +3,15 @@ import { NavLink } from '../link/link';
 import './sprint-difficulty.scss';
 import { useDispatch } from 'react-redux';
 import { changeDifficulty, changePage } from '../../redux/actions/actions';
-import random from 'lodash/random'
+import random from 'lodash/random';
 
 export default function SprintDifficulty() {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
-
-    function selectGameParams (i: number) {
-        dispatch(changePage(random(0,29)))
-        dispatch(changeDifficulty(i))
-    }
+  function selectGameParams(i: number) {
+    dispatch(changePage(random(0, 29)));
+    dispatch(changeDifficulty(i));
+  }
 
   return (
     <section>
@@ -20,7 +19,13 @@ export default function SprintDifficulty() {
       <p>Выберите уровень сложности:</p>
       <div className="links-wrapper">
         {[...Array(6)].map((_, i) => (
-          <NavLink class={`link dif-link${i + 1}`} textContent={String(i + 1)} onClick={() => selectGameParams(i)} link='/sprint/sprint-game' key={i} />
+          <NavLink
+            class={`link dif-link${i + 1}`}
+            textContent={String(i + 1)}
+            onClick={() => selectGameParams(i)}
+            link="/sprint/sprint-game"
+            key={i}
+          />
         ))}
       </div>
     </section>

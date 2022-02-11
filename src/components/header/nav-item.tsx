@@ -8,18 +8,26 @@ type Props = {
   headerTitle: {
     value: string;
     setValue: React.Dispatch<React.SetStateAction<string>>;
-  }
+  };
 };
 
 const NavItem: FC<Props> = (props) => {
   const titleChange = () => {
-    props.headerTitle.setValue(props.pagesRu[props.i])
-  }
+    props.headerTitle.setValue(props.pagesRu[props.i]);
+  };
   return (
-    <li className="nav__item" >
-      <a onClick={titleChange} className={window.location.hash && props.i === props.pagesRu.indexOf(props.headerTitle.value) ? 'nav__link active'
-        : !window.location.hash && props.pageName === 'home' ? 'nav__link active' : 'nav__link'}
-        href={`#/${props.pageName}`}>
+    <li className="nav__item">
+      <a
+        onClick={titleChange}
+        className={
+          window.location.hash && props.i === props.pagesRu.indexOf(props.headerTitle.value)
+            ? 'nav__link active'
+            : !window.location.hash && props.pageName === 'home'
+            ? 'nav__link active'
+            : 'nav__link'
+        }
+        href={`#/${props.pageName}`}
+      >
         {props.pagesRu[props.i].toUpperCase()}
       </a>
     </li>

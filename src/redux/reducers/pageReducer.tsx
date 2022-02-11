@@ -6,7 +6,7 @@ interface Action {
 }
 
 const initialState = {
-    gameWordPage: 0,
+  gameWordPage: 0,
 };
 
 export function pageReducer(state = initialState, action: Action) {

@@ -74,10 +74,10 @@ export default function Sprint() {
 
   useEffect(() => {
     const time = setTimeout(setTimer, 1000, timer - 1);
-    setClock(time)
-    if(timer <= 0 ) {
-      clearTimeout(time)
-      gameEnder(time)
+    setClock(time);
+    if (timer <= 0) {
+      clearTimeout(time);
+      gameEnder(time);
     }
   }, [timer]);
 
@@ -91,9 +91,9 @@ export default function Sprint() {
   function generateQuestion(arr: WordData[]) {
     let isTrue = Boolean(random(0, 1));
     if (currentWordnumber === 20) {
-      gameEnder(clock)
-      return
-    } 
+      gameEnder(clock);
+      return;
+    }
     if (isTrue) {
       setAnswer(true);
       setWord(arr[currentWordnumber]);
@@ -156,8 +156,8 @@ export default function Sprint() {
         setTrueAnswersNumber(trueAnswersNumber + 1);
         comboChecker();
         scoreCounter();
-        if(word !== undefined) {
-          setTrueWords([...trueWords, word])
+        if (word !== undefined) {
+          setTrueWords([...trueWords, word]);
         }
         break;
       case false:
@@ -165,8 +165,8 @@ export default function Sprint() {
         removeCombo(comboRow);
         setScoreMultiplier(1);
         setComboCounter(0);
-        if(word !== undefined) {
-        setFalseWords([...falseWords, word])
+        if (word !== undefined) {
+          setFalseWords([...falseWords, word]);
         }
         break;
     }
@@ -195,21 +195,21 @@ export default function Sprint() {
   function gameEnder(x: NodeJS.Timeout | undefined) {
     setShowResult(true);
     isSoundOn && setTimeout(audioEnd, 300);
-    x !== undefined && clearTimeout(x)
+    x !== undefined && clearTimeout(x);
   }
 
   function soundOff() {
-    setIsSoundOn(false)
-    muteButton.current !==null && muteButton.current.classList.add('mute')
+    setIsSoundOn(false);
+    muteButton.current !== null && muteButton.current.classList.add('mute');
   }
 
   function soundOn() {
-    setIsSoundOn(true)
-    muteButton.current !==null && muteButton.current.classList.remove('mute')
+    setIsSoundOn(true);
+    muteButton.current !== null && muteButton.current.classList.remove('mute');
   }
 
-  function toggleSound () {
-    isSoundOn ? soundOff() : soundOn()
+  function toggleSound() {
+    isSoundOn ? soundOff() : soundOn();
   }
 
   function fullscreenHandler() {
@@ -223,11 +223,16 @@ export default function Sprint() {
   return (
     <div>
       <div className="settings-button-wrapper">
-      <Button class='fullscreen-button' onClick={fullscreenHandler} />
-      <Button refer={muteButton} class='mute-button' onClick={toggleSound} />
+        <Button class="fullscreen-button" onClick={fullscreenHandler} />
+        <Button refer={muteButton} class="mute-button" onClick={toggleSound} />
       </div>
       {showResult ? (
-        <GameResult trueAnswersNumber={trueAnswersNumber} finalScore={score} trueWords={trueWords} falseWords={falseWords}/>
+        <GameResult
+          trueAnswersNumber={trueAnswersNumber}
+          finalScore={score}
+          trueWords={trueWords}
+          falseWords={falseWords}
+        />
       ) : (
         <div>
           <div>{timer}</div>

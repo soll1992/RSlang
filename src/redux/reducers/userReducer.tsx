@@ -1,7 +1,7 @@
-import { GET_USER, ADD_USER } from '../actions/consts'
+import { GET_USER, ADD_USER } from '../actions/consts';
 
 interface Initial {
-  user: Array<number>
+  user: Array<number>;
 }
 
 const initialState: Initial = {
