@@ -3,8 +3,8 @@ import { HashRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
 import SprintDifficulty from '../sprint-difficulty/sprint-difficulty';
 import Sprint from '../sprint-game/sprint-game';
 import Textbook from '../textbook/Textbook';
-
 import Header from '../header/header';
+import Statistics from '../statistics/Statistics';
 
 const App = () => {
   return (
@@ -84,7 +84,7 @@ const App = () => {
           element={
             <Fragment>
               <Header />
-              <span>Статистика</span>
+              <Statistics />
             </Fragment>
           }
         />
