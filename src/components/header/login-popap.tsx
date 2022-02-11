@@ -17,6 +17,7 @@ type Props = {
       }>
     >;
   };
+  hiddenOverlay: () => void
 };
 
 const LoginPopup: FC<Props> = (props: Props) => {
@@ -46,7 +47,7 @@ const LoginPopup: FC<Props> = (props: Props) => {
         </button>
       </div>
       <div className="login-popup-container">
-        <div className="login-popup-container-wrap">{!isSignUp ? <Login userData={props.userData} /> : <SignUp />}</div>
+        <div className="login-popup-container-wrap">{!isSignUp ? <Login hiddenOverlay={props.hiddenOverlay} userData={props.userData} /> : <SignUp />}</div>
       </div>
     </div>
   );

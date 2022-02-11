@@ -14,9 +14,10 @@ type Props = {
       }>
     >;
   };
+  hiddenOverlay: () => void
 };
 
-const Login: FC<Props> = (props: Props) => {
+const Login: FC<Props> = (props) => {
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
 
@@ -41,6 +42,7 @@ const Login: FC<Props> = (props: Props) => {
 
     email.value = '';
     password.value = '';
+    props.hiddenOverlay()
   };
 
   const createDataUsers = () => {
