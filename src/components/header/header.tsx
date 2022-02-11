@@ -26,12 +26,19 @@ const Header: FC<Props> = () => {
     return initialValue || false;
   });
 
-  const [headerTitle, setHeaderTitle] = useState('Домашняя')
+  const [headerTitle, setHeaderTitle] = useState<string>(() => {
+    const saved = localStorage.getItem('headerTitle');
+    const initialValue = window.location.hash && saved !== 'undefined' ? saved : undefined;
+    return initialValue || 'Домашняя';
+  });
+  useEffect(() => {
+    localStorage.setItem('headerTitle', headerTitle)
+  }, [headerTitle])
   const allPages = {
     pages: [
-      'home', 'textbook', 'dictionary', 'audiocall', 'sprint', 'statistics', 'team',],
+      'home', 'textbook', 'dictionary', 'audiocall', 'sprint', 'statistics', 'team'],
     pagesRu: [
-      'домашняя', 'учебник', 'словарь', 'аудиовызов', 'спринт', 'статистика', 'команда',]
+      'домашняя', 'учебник', 'словарь', 'аудиовызов', 'спринт', 'статистика', 'команда']
   }
   useEffect(() => {
     const burger = document.getElementById('burger')
@@ -87,7 +94,7 @@ const Header: FC<Props> = () => {
       <ul className="nav">
         {allPages.pages.map((pageName, index) => (
           <NavItem
-            setHeaderTitle={setHeaderTitle}
+            headerTitle={{ value: headerTitle, setValue: setHeaderTitle }}
             i={index}
             pagesRu={allPages.pagesRu}
             pageName={pageName}
