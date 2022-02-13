@@ -6,7 +6,7 @@ interface Action {
 }
 
 const initialState = {
-    selectedGame: 'sprint',
+    selectedGame: 'audiochallenge',
 };
 
 export function selectGameReducer(state = initialState, action: Action) {

@@ -1,7 +1,8 @@
 import React from 'react';
 import './textbookNavListItem.css';
 import { useDispatch } from 'react-redux';
-import { changeDifficulty, changePage } from '../../../redux/actions/actions';
+import {unMuteGame, changeDifficulty, changePage, selectSprint, selectAudiochallenge } from '../../../redux/actions/actions';
+
 
 type Props = {
   text: string;
@@ -27,8 +28,14 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
   const goToGame = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (disabled) e.preventDefault();
     if (!disabled) {
-      dispatch(changePage(activePage - 1)) // добавил тут 2 диспатча
+      dispatch(changePage(activePage - 1)) // добавил тут 4 диспатча
       dispatch(changeDifficulty(groupsValue[activeGroup]))
+      if (text === 'Аудиовызов') {
+        dispatch(selectAudiochallenge('audiochallenge'))
+      } else if (text === 'Спринт') {
+        dispatch(selectSprint('sprint'))
+      }
+      dispatch(unMuteGame())
     }
   };
 

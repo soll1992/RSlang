@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { } from '../../redux/actions/actions';
+import {} from '../../redux/actions/actions';
 import axios, { AxiosResponse } from 'axios';
 import GameResult from '../game-result/game-result';
 import shuffle from 'lodash/shuffle';
@@ -12,6 +12,7 @@ import endSound from '../../assets/sound/result.mp3';
 import useSound from 'use-sound';
 import './games.scss';
 import Sprint from '../sprint/sprint';
+import Audiochallenge from '../audiochallenge/audiochallenge';
 
 interface RootState {
   gameWordPage: {
@@ -22,7 +23,7 @@ interface RootState {
   };
   selectedGame: {
     selectedGame: string;
-  }
+  };
 }
 
 interface WordData {
@@ -43,7 +44,6 @@ interface WordData {
 }
 
 export default function Games() {
-  const dispatch = useDispatch();
   const page = useSelector((state: RootState) => state.gameWordPage.gameWordPage);
   const selectedGame = useSelector((state: RootState) => state.selectedGame.selectedGame);
   const difficulty = useSelector((state: RootState) => state.gameDifficulty.gameDifficulty);
@@ -67,7 +67,6 @@ export default function Games() {
   const circle2: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const circle3: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const muteButton: React.MutableRefObject<HTMLButtonElement | null> = useRef(null);
-  const componentRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const comboRow = [circle1, circle2, circle3];
   const [audioTrue] = useSound(trueSound);
   const [audioFalse] = useSound(falseSound);
@@ -75,18 +74,7 @@ export default function Games() {
 
   useEffect(() => {
     getWords();
-    console.log(page)
-    console.log(difficulty)
   }, []);
-
-  useEffect(() => {
-    const time = setTimeout(setTimer, 1000, timer - 1);
-    setClock(time);
-    if (timer <= 0) {
-      clearTimeout(time);
-      gameEnder(time);
-    }
-  }, [timer]);
 
   useEffect(() => {
     if (!showResult) {
@@ -103,14 +91,20 @@ export default function Games() {
     }
     if (isTrue) {
       setAnswer(true);
-      setWord(arr[currentWordnumber]);
       setTranlation(arr[currentWordnumber].wordTranslate);
     } else {
       setAnswer(false);
-      const randomPosition = random(0, 19);
-      setWord(arr[currentWordnumber]);
+      let randomPosition = random(0, 19);
+      if(randomPosition === currentWordnumber) {
+        randomPosition = random(0, 19);
+      }
       setTranlation(arr[randomPosition].wordTranslate);
     }
+    showNextQuestion(arr)
+  }
+
+  function showNextQuestion(arr: WordData[]) {
+    setWord(arr[currentWordnumber]);
     setCurrentWordnumber(currentWordnumber + 1);
   }
 
@@ -157,21 +151,26 @@ export default function Games() {
   }
 
   function checkUserAnswer(userAnswer: boolean) {
-    switch (userAnswer === answer) {
+    const isTrue = selectedGame === 'sprint' ? userAnswer === answer : userAnswer 
+    switch (isTrue) {
       case true:
         isSoundOn && audioTrue();
+        if(selectedGame === 'sprint') {
         setTrueAnswersNumber(trueAnswersNumber + 1);
         comboChecker();
         scoreCounter();
+        }
         if (word !== undefined) {
           setTrueWords([...trueWords, word]);
         }
         break;
       case false:
         isSoundOn && audioFalse();
-        removeCombo(comboRow);
-        setScoreMultiplier(1);
-        setComboCounter(0);
+        if(selectedGame === 'sprint') {
+          removeCombo(comboRow);
+          setScoreMultiplier(1);
+          setComboCounter(0);
+        }
         if (word !== undefined) {
           setFalseWords([...falseWords, word]);
         }
@@ -199,10 +198,12 @@ export default function Games() {
     }
   }
 
-  function gameEnder(x: NodeJS.Timeout | undefined) {
+  function gameEnder(x?: NodeJS.Timeout | undefined) {
     setShowResult(true);
     isSoundOn && setTimeout(audioEnd, 300);
-    x !== undefined && clearTimeout(x);
+    if (selectedGame === 'sprint') {
+      x !== undefined && clearTimeout(x);
+    }
   }
 
   function soundOff() {
@@ -240,8 +241,23 @@ export default function Games() {
           trueWords={trueWords}
           falseWords={falseWords}
         />
+      ) : selectedGame === 'audiochallenge' ? (
+        <Audiochallenge
+          words={wordsData}
+          isSoundOn={isSoundOn}
+          img={word?.image}
+          soundLink={word?.audio}
+          currentWord={word}
+          currentWordnumber={currentWordnumber}
+          word={word?.word}
+          translation={word?.wordTranslate}
+          trueButtonHandler={trueButtonHandler}
+          falseButtonHandler={falseButtonHandler}
+          checkUserAnswer={checkUserAnswer}
+          showNextQuestion={showNextQuestion}
+          gameEnder={gameEnder}
+        />
       ) : (
-        selectedGame === 'sprint' ?
         <Sprint
           timer={timer}
           currentWordnumber={currentWordnumber}
@@ -254,7 +270,10 @@ export default function Games() {
           translation={translation}
           trueButtonHandler={trueButtonHandler}
           falseButtonHandler={falseButtonHandler}
-        /> : <div>АУДИОВЫЗОВ</div>
+          setClock={setClock}
+          setTimer={setTimer}
+          gameEnder={gameEnder}
+        />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { selectSprint, selectAudiochallenge } from '../../redux/actions/actions';
+import { selectSprint, selectAudiochallenge, muteGame } from '../../redux/actions/actions';
 
 type Props = {
   i: number;
@@ -20,6 +20,7 @@ const NavItem: FC<Props> = (props: Props) => {
     } else if (props.pagesRu[props.i] === 'аудиовызов') {
       dispatch(selectAudiochallenge('audiochallenge'))
     }
+    dispatch(muteGame())
   }
 
   return (

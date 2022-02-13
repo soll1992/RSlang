@@ -35,7 +35,7 @@ export default function GameResult(props: Props) {
       <div>{`Правильных ответов: ${props.trueWords.length}`}</div>
       <div>{`Неверных ответов: ${props.falseWords.length}`}</div>
       <div>{`Процент верных ответов: ${(100 / 20) * props.trueWords.length}%`}</div>
-      <NavLink class='link' textContent='Новая игра' link='/sprint'/>
+      <NavLink class='link' textContent='Новая игра' link='/game-difficulty'/>
       <div className="result-wrapper">
         <h3>Я знаю:</h3>
         {props.trueWords.map((item, i) => (

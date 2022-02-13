@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from '../link/link';
 import './game-difficulty.scss';
 import { useDispatch } from 'react-redux';
-import { changeDifficulty, changePage } from '../../redux/actions/actions';
+import { changeDifficulty, changePage, unMuteGame } from '../../redux/actions/actions';
 import random from 'lodash/random'
 
 export default function SprintDifficulty() {
@@ -16,7 +16,6 @@ export default function SprintDifficulty() {
 
   return (
     <section>
-      <h2>Спринт</h2>
       <p>Выберите уровень сложности:</p>
       <div className="links-wrapper">
         {[...Array(6)].map((_, i) => (
