@@ -18,7 +18,7 @@
 //</Иконочные шрифты>==========================================================================================
 
 //<Шрифт по умолчанию>==========================================================================================
-$fontFamily: "Neucha";
+$fontFamily: "Roboto", sans-serif;
 //</Шрифт по умолчанию>==========================================================================================
 
 //</ШРИФТЫ>=======================================================================================================
@@ -29,8 +29,7 @@ $maxWidth: 1920;
 $maxWidthContainer: 1440;
 $md1a: $maxWidthContainer + 12;
 $md1: 1440;
-$md1a: 1350;
-$md1b: 925;
+$md2: 615;
 
 :root {
 }
@@ -45,9 +44,10 @@ html {
 body {
 	min-width: 320px;
 	font-size: 16px;
-	color: #000;
+	color: #fff;
 	text-align: center;
-	background: rgba(0, 0, 0, 0.05);
+	background: linear-gradient(-135deg, #4c77d5 25%, #ded8e9 100%);
+	color: #fff;
 	height: 100%;
 
 	&._lock {
@@ -109,10 +109,10 @@ body {
 *::-webkit-scrollbar-thumb {
 	background-color: #9d8665; /* цвет плашки */
 	border-radius: 10px; /* закругления плашки */
-	border: 3px solid #9d8665; /* padding вокруг плашки */
+	border: 5px solid #9d8665; /* padding вокруг плашки */
 }
 * {
-	scrollbar-width: thin; /* "auto" или "thin"  */
+	scrollbar-width: auto; /* "auto" или "thin"  */
 	scrollbar-color: #9d8665 #192f2d44; /* плашка скролла и дорожка */
 }
 .background-overlay {

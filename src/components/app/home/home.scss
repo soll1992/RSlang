@@ -1,0 +1,102 @@
+.home {
+	&-particles {
+		position: relative;
+		z-index: -1;
+	}
+	&-subtitle {
+		&-text {
+		}
+	}
+	&-title {
+		font-size: 40px;
+		font-weight: bold;
+		margin: 0px 0px 20px 0px;
+		&-wrap {
+			text-shadow: rgba(0, 0, 0, 0.4) 2px 0 16px;
+
+			text-align: left;
+			width: 100%;
+			max-width: 400px;
+		}
+	}
+	&-wrap {
+		display: flex;
+		justify-content: center;
+		flex: 1 1 auto;
+		height: 100%;
+		width: 100%;
+	}
+	&-aside {
+		position: relative;
+		// animation: up-down-man 4s infinite;
+		text-shadow: rgba(0, 0, 0, 0.4) 2px 0 16px;
+		&-earth {
+			position: absolute;
+			right: 0;
+			top: calc(50% - 30px);
+			height: 50px;
+			width: 50px;
+			&-container {
+				position: relative;
+				height: 100%;
+				width: 100%;
+				border-radius: 50%;
+				overflow: hidden;
+				border: 0.5px solid rgba(255, 255, 255, 0.2);
+				text-shadow: rgb(255, 255, 255) 2px 2px 16px;
+				// animation: up-down-man 4s infinite;
+				cursor: pointer;
+				&::after {
+					content: "";
+					position: absolute;
+					left: 0;
+					top: 0;
+					height: 50px;
+					width: 200px;
+					animation: move 7s infinite linear;
+					background: url("../../../assets/img/home/earth.jpg");
+					background-size: contain;
+				}
+			}
+		}
+	}
+	&-content {
+		&-wrap {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+		}
+	}
+	a {
+		color: rgb(61, 77, 167);
+	}
+}
+
+@keyframes up-down-man {
+	0% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+	25% {
+		-webkit-transform: translate(0px, 10px);
+		transform: translate(0px, 10px);
+	}
+	50% {
+		-webkit-transform: translate(0px, -10px);
+		transform: translate(0px, -10px);
+	}
+	100% {
+		-webkit-transform: translate(0, 0);
+		transform: translate(0, 0);
+	}
+}
+
+@keyframes move {
+	0% {
+		left: 0px;
+	}
+	100% {
+		left: -88px;
+	}
+}

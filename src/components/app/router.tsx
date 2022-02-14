@@ -3,13 +3,14 @@ import { HashRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
 import SprintDifficulty from '../sprint-difficulty/sprint-difficulty';
 import Sprint from '../sprint-game/sprint-game';
 import Textbook from '../textbook/Textbook';
+import Home from './home/home';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<span>Домашняя</span>} />
-        <Route path="/home" element={<span>Домашняя</span>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/textbook/*" element={<Textbook />} />
         <Route path="/dictionary" element={<span>Словарь</span>} />
         <Route path="/audiocall" element={<span>Игра Аудиовызов</span>} />
