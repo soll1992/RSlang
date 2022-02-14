@@ -89,7 +89,9 @@ const Header: FC<Props> = () => {
       </div>
       <ul id='nav' className="nav">
         <div className='nav-title-wrap'>
-          <img className='nav-title-img' src={bookImage} alt=""></img>
+          <div className='nav-aside-earth'>
+            <div className='nav-aside-earth-container'></div >
+          </div>
           <h2 className='nav-title'>RSLang</h2>
           <div onClick={handlerChange} className="burger-wrap active black">
             <div className="burger"></div>

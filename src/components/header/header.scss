@@ -74,6 +74,40 @@
       background-color: #000000a1;
     }
   }
+  &-aside {
+    position: relative;
+    // animation: up-down-man 4s infinite;
+    text-shadow: rgba(0, 0, 0, 0.4) 2px 0 16px;
+    &-earth {
+      left: 0;
+      top: 0;
+      height: 50px;
+      width: 50px;
+      &-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 0.5px solid rgba(255, 255, 255, 0.2);
+        text-shadow: rgba(0, 0, 0, 0.4) 2px 0 16px;
+
+        // animation: up-down-man 4s infinite;
+        cursor: pointer;
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 50px;
+          width: 200px;
+          animation: move 7s infinite linear;
+          background: url("../../assets/img/home/earth.jpg");
+          background-size: contain;
+        }
+      }
+    }
+  }
 }
 .burger {
   position: absolute;
@@ -316,7 +350,7 @@
       left: 0;
       width: 0%;
       height: 1px;
-      background-color: rgba(0, 0, 0, 0.664);
+      background-color: rgba(255, 255, 255);
       transition: width 0.3s;
     }
     &:hover {
@@ -380,5 +414,14 @@
   100% {
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
+  }
+}
+
+@keyframes move {
+  0% {
+    left: 0px;
+  }
+  100% {
+    left: -88px;
   }
 }

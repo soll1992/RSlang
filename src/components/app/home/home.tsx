@@ -2,7 +2,10 @@ import * as React from 'react';
 import { FC, useRef, useState, useEffect } from 'react';
 import './home.scss';
 import './wave.scss';
-import man from '../../../assets/img/home/14.png'
+import man from '../../../assets/img/home/16.png'
+import img1 from '../../../assets/img/home/5.png'
+import img2 from '../../../assets/img/home/18.png'
+import img3 from '../../../assets/img/home/11.png'
 
 
 type Props = {
@@ -17,11 +20,41 @@ const Home: FC<Props> = () => {
         <div className='home-content-wrap'>
           <div className='home-title-wrap'>
             <h1 className='home-title'>Учи английский язык с RSLang</h1>
-            <p className='home-subtitle-text'>Запоминание английских слов может быть увлекательным и сложным. Играйте в игры, слушайте произношение, совершенствуйте свои знания. Бесплатно. На любом устройстве. Включи браузер и играй!</p>
+            <p className='home-subtitle-text'>Запоминание английских слов может быть увлекательным и простым. Играйте в миниигры, слушайте произношение, совершенствуйте свои знания. Бесплатно. На любом устройстве.</p>
           </div>
           <div className='home-aside'>
             <img src={man} alt="" width={300}></img>
-            <div className='home-aside-earth'><div className='home-aside-earth-container'></div ></div>
+
+          </div>
+
+        </div>
+        <div className='app-functional'>
+          <h2 className='app-functional-title subtitle'>Функционал приложения</h2>
+          <div className='app-functional-container'>
+            <div className="app-functional-item">
+              <div className='app-functional-img-wrap'>
+                <img className="app-functional-img" src={img1} alt=""></img>
+              </div>
+              <h3 className='app-functional-item__title'>Учебник</h3>
+              <p className='app-functional-item__text'>6 разделов с разным уровнем сложности, в каждом разделе по 600 слов.</p>
+              <button>Открыть учебник</button>
+            </div>
+            <div className="app-functional-item">
+              <div className='app-functional-img-wrap'>
+                <img className="app-functional-img" src={img2} alt=""></img>
+              </div>
+              <h3 className='app-functional-item__title'>Миниигры</h3>
+              <p className='app-functional-item__text'>Для изучения и закрепления слов в приложении есть игры Спринт и Аудиовызов, которые помогут вам в игровой форме «прокачать» словарный запас.</p>
+              <button>Выбрать игру</button>
+            </div>
+            <div className="app-functional-item">
+              <div className='app-functional-img-wrap'>
+                <img className="app-functional-img" src={img3} alt=""></img>
+              </div>
+              <h3 className='app-functional-item__title'>Статистика</h3>
+              <p className='app-functional-item__text'>Весь прогресс обучения можно посмотреть в статистике, где представлены данные как за текущий день, так и за весь период обучения.</p>
+              <button>Открыть статистику</button>
+            </div>
           </div>
         </div>
         {/* <p>Ни для кого не является секретом тот факт, что самым популярным языком в мире является английский язык.</p>
