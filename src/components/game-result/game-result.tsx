@@ -5,9 +5,9 @@ import { NavLink } from '../link/link'
 
 interface Props {
   finalScore: number;
-  trueAnswersNumber: number;
   trueWords: Array<WordData>;
   falseWords: Array<WordData>;
+  selectedGame: string;
 }
 
 interface WordData {
@@ -31,7 +31,7 @@ export default function GameResult(props: Props) {
   return (
     <div className="game-result">
       <h2>Результаты:</h2>
-      <div>{`Вы набрали ${props.finalScore} очков`}</div>
+      {props.selectedGame === 'sprint' && <div>{`Вы набрали ${props.finalScore} очков`}</div>}
       <div>{`Правильных ответов: ${props.trueWords.length}`}</div>
       <div>{`Неверных ответов: ${props.falseWords.length}`}</div>
       <div>{`Процент верных ответов: ${(100 / 20) * props.trueWords.length}%`}</div>

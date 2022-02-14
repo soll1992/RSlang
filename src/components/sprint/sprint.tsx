@@ -11,22 +11,31 @@ interface Props {
   circle3: React.MutableRefObject<HTMLDivElement>;
   word: string;
   translation: string;
+  showResult: boolean;
   trueButtonHandler: React.MouseEventHandler;
   falseButtonHandler: React.MouseEventHandler;
   gameEnder: (x: NodeJS.Timeout | undefined) => void;
   setClock: React.Dispatch<React.SetStateAction<NodeJS.Timeout | undefined>>;
   setTimer: React.Dispatch<React.SetStateAction<number>>;
+  keysHandler: (e: KeyboardEvent) => void;
 }
 
 export default function Sprint(props: Props) {
-  const [startSprint, setStartGame] = useState(false);
-
+  const [startGame, setStartGame] = useState(false);
+  //запускает игру(нужно для запуска таймера)
   function start() {
     setStartGame(true);
   }
-
+  //прослушивание событий клавиатуры
   useEffect(() => {
-    if (startSprint) {
+    if (!props.showResult) {
+      window.addEventListener('keyup', props.keysHandler);
+    }
+    return () => window.removeEventListener('keyup', props.keysHandler);
+  });
+  //работа таймера
+  useEffect(() => {
+    if (startGame) {
       const time = setTimeout(props.setTimer, 1000, props.timer - 1);
       props.setClock(time);
       if (props.timer <= 0) {
@@ -34,11 +43,11 @@ export default function Sprint(props: Props) {
         props.gameEnder(time);
       }
     }
-  }, [props.timer, startSprint]);
+  }, [props.timer, startGame]);
 
   return (
     <div>
-      {!startSprint ? (
+      {!startGame ? (
         <div>
           <h2>Спринт</h2>
           <p>Однажды тут будет описание игры и правила</p>

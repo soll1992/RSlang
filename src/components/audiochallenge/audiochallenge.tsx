@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Button from '../button/button';
-import { useDispatch } from 'react-redux';
+import ButtonRef from '../button-ref/button-ref';
 import shuffle from 'lodash/shuffle';
-import { unMuteGame } from '../../redux/actions/actions';
-import './audiochallenge.scss'
+import './audiochallenge.scss';
 
 interface Props {
   img: string;
@@ -14,11 +13,12 @@ interface Props {
   translation: string;
   words: WordData[];
   isSoundOn: boolean;
+  showResult: boolean;
   trueButtonHandler: React.MouseEventHandler;
   falseButtonHandler: React.MouseEventHandler;
   checkUserAnswer: (userAnswer: boolean) => void;
   showNextQuestion: (arr: WordData[]) => void;
-  gameEnder: (x: NodeJS.Timeout | undefined) => void;
+  gameEnder: (x: NodeJS.Timeout | null) => void;
 }
 
 interface WordData {
@@ -39,67 +39,116 @@ interface WordData {
 }
 
 export default function Audiochallenge(props: Props) {
-  const [test, setTest] = useState<HTMLAudioElement>();
+  const [wordSound, setWordSound] = useState<HTMLAudioElement>();
   const [imgLink, setImgLink] = useState('');
   const [startGame, setStartGame] = useState(false);
-  const [clickTarget, setClickTarget] = useState<HTMLElement>();
   const [userAnswers, setUserAnswers] = useState<Array<string>>([]);
-  const wordRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
-  const wordImgRef: React.MutableRefObject<HTMLImageElement | null> = useRef(null)
+  const wordRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
+  const wordImgRef: React.MutableRefObject<HTMLImageElement | null> = useRef(null);
   const [buttonBlock, setButtonBlock] = useState(false);
   const [liveCount, setliveCount] = useState(5);
-
+  const buttonRefs = [];
+  // Вешаю и убираю эвентлисенер
+  useEffect(() => {
+    if (!props.showResult) {
+      window.addEventListener('keyup', keysHandler);
+    }
+    return () => window.removeEventListener('keyup', keysHandler);
+  });
+  // Заменяю ссылки на аудио и картинку + автопроизношение слов
   useEffect(() => {
     if (props.soundLink !== undefined && startGame) {
       const audio = new Audio(`https://react-rslang-group.herokuapp.com/${props.soundLink}`);
-      setTest(audio);
+      setWordSound(audio);
       setImgLink(`https://react-rslang-group.herokuapp.com/${props.img}`);
-      setTimeout(() => audio.play(), 1000);
+      setTimeout(() => audio.play(), 500);
     }
-  }, [props.soundLink, startGame]); //переписать это под конец
-
+  }, [props.soundLink, startGame]);
+  // Генерирует 4 варианта ответов пользователя
   function makeAnswers(obj: WordData) {
-    if(obj === undefined) {
-      props.gameEnder(undefined)
-      return
+    if (obj === undefined) {
+      props.gameEnder(null);
+      return;
     }
     const answersSet = new Set();
-    answersSet.add(obj.wordTranslate);
     const shuffledWords = shuffle(props.words);
+    answersSet.add(obj.wordTranslate);    
     for (let i = 0; answersSet.size < 4; i++) {
       answersSet.add(shuffledWords[i].wordTranslate);
     }
-    setStartGame(true);
+    setStartGame(true); //запускает игру(необходимо для корректной работы автовоспроизведения)
     setUserAnswers(shuffle([...answersSet] as Array<string>));
   }
-
+  //Генерирует 4 ответа для самой первой карточки.
   function playGame() {
     makeAnswers(props.currentWord);
   }
-
-  function checkTrueAnswer(e: MouseEvent) {
-    if(!buttonBlock) {
-    setButtonBlock(true) 
-    const trueAnswer = userAnswers.indexOf(props.translation);
-    const isTrue = +(e.target as HTMLElement).id === trueAnswer;
-    props.checkUserAnswer(isTrue)
-    isTrue ? (e.target as HTMLElement).classList.add('true-answer') : (e.target as HTMLElement).classList.add('false-answer')
-    if(!isTrue)setliveCount(liveCount - 1)
-    liveCount - 1 < 0 && props.gameEnder(undefined)
-    setClickTarget(e.target as HTMLElement)
-    wordRef.current.classList.add('wordinfo-active')
-    wordImgRef.current.classList.add('wordinfo-active')
+  // Проверяет верность ответа пользователя, когда кликает мышкой
+  function checkTrueAnswer(e: React.MouseEvent<Element, MouseEvent>) {
+    if (!buttonBlock) {
+      setButtonBlock(true); //блокирует другие кнопки, когда одна из кнопок была нажата
+      const trueAnswer = userAnswers.indexOf(props.translation); //вычисляет позицию кнопки с правильным ответом
+      const isTrue = +(e.target as HTMLButtonElement).id === trueAnswer; //проверяет верно ли ответил пользователь
+      props.checkUserAnswer(isTrue); //обрабатывает верный или неверный ответ
+      addStylesFromActiveButton(isTrue, e.target as HTMLButtonElement) //добавляет стили на нажатую кнопку
+      checkLiveCount(isTrue) //уменьшает количество попыток, если ответ был не верный, если попыток < 0 показывает результат
+      toggleWordInfo('add') //показывает информацию о слове(картинку + написание слова)
+    }
   }
+  // Смотри функцию выше. Функционал похож, но используются другие переменные.
+  function keysAnswerCheck(e: KeyboardEvent, key: number) {
+    if (!buttonBlock) {
+      setButtonBlock(true);
+      const index = key - 1;
+      const isTrue = index === userAnswers.indexOf(props.translation);
+      props.checkUserAnswer(isTrue);
+      addStylesFromActiveButton(isTrue, buttonRefs[index])
+      checkLiveCount(isTrue)
+      toggleWordInfo('add'); 
+    }
+  }
+
+  function addStylesFromActiveButton(boolean: boolean , button: HTMLButtonElement) {
+    boolean
+    ? button.classList.add('true-answer')
+    : button.classList.add('false-answer');
+  }
+
+  function checkLiveCount(boolean: boolean) {
+    if (!boolean) setliveCount(liveCount - 1);
+    liveCount - 1 < 0 && props.gameEnder(null);
   }
 
   function nextButtonHandler() {
-    props.showNextQuestion(props.words)
-    makeAnswers(props.words[props.currentWordnumber])
-    setButtonBlock(false)
-    wordRef.current.classList.remove('wordinfo-active')
-    wordImgRef.current.classList.remove('wordinfo-active')
-    clickTarget.classList.remove('true-answer')
-    clickTarget.classList.remove('false-answer')
+    props.showNextQuestion(props.words);
+    makeAnswers(props.words[props.currentWordnumber]);
+    setButtonBlock(false);
+    toggleWordInfo('remove');
+    buttonRefs.forEach((button) => removeButtonsStyles(button));
+  }
+
+  function toggleWordInfo(str: string) {
+    if (str === 'add') {
+      wordRef.current.classList.add('wordinfo-active');
+      wordImgRef.current.classList.add('wordinfo-active');
+    } else if (str === 'remove') {
+      wordRef.current.classList.remove('wordinfo-active');
+      wordImgRef.current.classList.remove('wordinfo-active');
+    }
+  }
+  // убирает стили со всех кнопок
+  function removeButtonsStyles(item: HTMLButtonElement) {
+    item.classList.remove('true-answer');
+    item.classList.remove('false-answer');
+  }
+  // обработчик событий клавиатуры
+  function keysHandler(e: KeyboardEvent) {
+    const key = Number(e.key);
+    if (key === 1 || key === 2 || key === 3 || key === 4) {
+      keysAnswerCheck(e, key);
+    } else if (e.code === 'ArrowRight') {
+      nextButtonHandler();
+    }
   }
 
   return (
@@ -114,11 +163,14 @@ export default function Audiochallenge(props: Props) {
         <div>
           <div>{`Слово: ${props.currentWordnumber} из 20`}</div>
           <div>{`Осталось попыток: ${liveCount}`}</div>
-          <Button onClick={(e) => test.play()} class="sound-button" />
-          <div ref={wordRef} className='word'>{props.word}</div>
-          <img ref={wordImgRef} className='word-img' src={imgLink} alt="word-img" />
+          <Button onClick={(e) => wordSound.play()} class="sound-button" />
+          <div ref={wordRef} className="word">
+            {props.word}
+          </div>
+          <img ref={wordImgRef} className="word-img" src={imgLink} alt="word-img" />
           {userAnswers.map((item, index) => (
-            <Button
+            <ButtonRef
+              refArr={buttonRefs}
               onClick={(e) => checkTrueAnswer(e)}
               class="button"
               id={String(index)}
@@ -126,7 +178,7 @@ export default function Audiochallenge(props: Props) {
               textContent={`${index + 1}. ${item}`}
             />
           ))}
-          <Button onClick={nextButtonHandler} class="button" textContent="Следующее слово" />
+          <Button onClick={nextButtonHandler} class="button" textContent="Следующее слово >>" />
         </div>
       )}
     </div>

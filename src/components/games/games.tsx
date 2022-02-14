@@ -53,7 +53,6 @@ export default function Games() {
   const [translation, setTranlation] = useState('');
   const [answer, setAnswer] = useState(false);
   const [currentWordnumber, setCurrentWordnumber] = useState(0);
-  const [trueAnswersNumber, setTrueAnswersNumber] = useState(0);
   const [comboCounter, setComboCounter] = useState(0);
   const [score, setScore] = useState(0);
   const [scoreMultiplier, setScoreMultiplier] = useState(1);
@@ -61,7 +60,7 @@ export default function Games() {
   const [showResult, setShowResult] = useState(false);
   const [trueWords, setTrueWords] = useState<Array<WordData>>([]);
   const [falseWords, setFalseWords] = useState<Array<WordData>>([]);
-  const [clock, setClock] = useState<NodeJS.Timeout | undefined>();
+  const [clock, setClock] = useState<NodeJS.Timeout | null>(null);
   const [isSoundOn, setIsSoundOn] = useState(true);
   const circle1: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const circle2: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
@@ -71,21 +70,15 @@ export default function Games() {
   const [audioTrue] = useSound(trueSound);
   const [audioFalse] = useSound(falseSound);
   const [audioEnd] = useSound(endSound);
-
+  //получаем список слов с сервера
   useEffect(() => {
     getWords();
   }, []);
-
-  useEffect(() => {
-    if (!showResult) {
-      window.addEventListener('keyup', keysHandler);
-    }
-    return () => window.removeEventListener('keyup', keysHandler);
-  });
-
+  //Генерирует пару слово-перевод
   function generateQuestion(arr: WordData[]) {
-    let isTrue = Boolean(random(0, 1));
+    let isTrue = Boolean(random(0, 1)); //определяет будет ли слово соответствовать переводу
     if (currentWordnumber === 20) {
+      //если 20 слово, то заканчиваем игру
       gameEnder(clock);
       return;
     }
@@ -95,26 +88,26 @@ export default function Games() {
     } else {
       setAnswer(false);
       let randomPosition = random(0, 19);
-      if(randomPosition === currentWordnumber) {
+      if (randomPosition === currentWordnumber) {
         randomPosition = random(0, 19);
       }
-      setTranlation(arr[randomPosition].wordTranslate);
+      setTranlation(arr[randomPosition].wordTranslate); //выбирает случайный перевод
     }
-    showNextQuestion(arr)
+    showNextQuestion(arr);
   }
-
+  //идет по массиву слов
   function showNextQuestion(arr: WordData[]) {
     setWord(arr[currentWordnumber]);
     setCurrentWordnumber(currentWordnumber + 1);
   }
-
+  //перемешивает полученный с сервера массив
   function generateWords(res: AxiosResponse): WordData[] {
     const dataArr = res.data;
     const shuffledData = shuffle(dataArr);
     generateQuestion(shuffledData);
     return shuffledData;
   }
-
+  //получаем слова с сервера
   function getWords() {
     axios
       .get<WordData[]>(`${baseUrl}/words?page=${page}&group=${difficulty}`)
@@ -122,13 +115,13 @@ export default function Games() {
       .then((result) => setWordsData(result))
       .catch((err) => console.log('error'));
   }
-
+  //сбрасываем стили(кружки) комбо при ошибочном ответе
   function removeCombo(combo: React.MutableRefObject<HTMLDivElement | null>[]) {
     combo.forEach((item) => {
       item.current !== null && item.current.classList.contains('green') && item.current.classList.remove('green');
     });
   }
-
+  //вычисляет счет с учетом комбо множителя и так же увеличивает комбо множитель
   function scoreCounter() {
     if (comboCounter === 3) {
       scoreMultiplier === 8 ? setScoreMultiplier(scoreMultiplier) : setScoreMultiplier(scoreMultiplier * 2);
@@ -137,59 +130,53 @@ export default function Games() {
       setScore(score + 10 * scoreMultiplier);
     }
   }
-
+  //вычисляет сколько кружков должно быть закрашено
   function comboChecker() {
     if (comboCounter === 3) {
       removeCombo(comboRow);
       setComboCounter(1);
-      comboRow[0].current !== null && (comboRow[0].current as HTMLDivElement).classList.add('green');
+      comboRow[0].current !== null && comboRow[0].current.classList.add('green');
     } else {
-      comboRow[comboCounter].current !== null &&
-        (comboRow[comboCounter].current as HTMLDivElement).classList.add('green');
+      comboRow[comboCounter].current !== null && comboRow[comboCounter].current.classList.add('green');
       setComboCounter(comboCounter + 1);
     }
   }
-
+  //обработчик верного и неверного ответа пользователя
   function checkUserAnswer(userAnswer: boolean) {
-    const isTrue = selectedGame === 'sprint' ? userAnswer === answer : userAnswer 
+    const isTrue = selectedGame === 'sprint' ? userAnswer === answer : userAnswer;
     switch (isTrue) {
       case true:
         isSoundOn && audioTrue();
-        if(selectedGame === 'sprint') {
-        setTrueAnswersNumber(trueAnswersNumber + 1);
-        comboChecker();
-        scoreCounter();
+        if (selectedGame === 'sprint') {
+          comboChecker();
+          scoreCounter();
         }
-        if (word !== undefined) {
-          setTrueWords([...trueWords, word]);
-        }
+        setTrueWords([...trueWords, word]);
         break;
       case false:
         isSoundOn && audioFalse();
-        if(selectedGame === 'sprint') {
+        if (selectedGame === 'sprint') {
           removeCombo(comboRow);
           setScoreMultiplier(1);
           setComboCounter(0);
         }
-        if (word !== undefined) {
-          setFalseWords([...falseWords, word]);
-        }
+        setFalseWords([...falseWords, word]);
         break;
     }
   }
-
+  //обработчик для кнопки верно
   function trueButtonHandler() {
     let userAnswer = true;
     checkUserAnswer(userAnswer);
     generateQuestion(wordsData);
   }
-
+  //обработчик для кнопки неверно
   function falseButtonHandler() {
     let userAnswer = false;
     checkUserAnswer(userAnswer);
     generateQuestion(wordsData);
   }
-
+  //обработчик для кнопок
   function keysHandler(e: KeyboardEvent) {
     if (e.code === 'ArrowRight') {
       trueButtonHandler();
@@ -197,29 +184,29 @@ export default function Games() {
       falseButtonHandler();
     }
   }
-
-  function gameEnder(x?: NodeJS.Timeout | undefined) {
+  //функция для окончания игры и показа результата
+  function gameEnder(x: NodeJS.Timeout | null) {
     setShowResult(true);
     isSoundOn && setTimeout(audioEnd, 300);
     if (selectedGame === 'sprint') {
       x !== undefined && clearTimeout(x);
     }
   }
-
+  //выключает звук
   function soundOff() {
     setIsSoundOn(false);
     muteButton.current !== null && muteButton.current.classList.add('mute');
   }
-
+  //включает звук
   function soundOn() {
     setIsSoundOn(true);
     muteButton.current !== null && muteButton.current.classList.remove('mute');
   }
-
+  //переключатель звука
   function toggleSound() {
     isSoundOn ? soundOff() : soundOn();
   }
-
+  //включает режим полного экрана
   function fullscreenHandler() {
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -235,12 +222,7 @@ export default function Games() {
         <Button refer={muteButton} class="mute-button" onClick={toggleSound} />
       </div>
       {showResult ? (
-        <GameResult
-          trueAnswersNumber={trueAnswersNumber}
-          finalScore={score}
-          trueWords={trueWords}
-          falseWords={falseWords}
-        />
+        <GameResult selectedGame={selectedGame} finalScore={score} trueWords={trueWords} falseWords={falseWords} />
       ) : selectedGame === 'audiochallenge' ? (
         <Audiochallenge
           words={wordsData}
@@ -251,6 +233,7 @@ export default function Games() {
           currentWordnumber={currentWordnumber}
           word={word?.word}
           translation={word?.wordTranslate}
+          showResult={showResult}
           trueButtonHandler={trueButtonHandler}
           falseButtonHandler={falseButtonHandler}
           checkUserAnswer={checkUserAnswer}
@@ -268,6 +251,8 @@ export default function Games() {
           circle3={circle3}
           word={word?.word}
           translation={translation}
+          showResult={showResult}
+          keysHandler={keysHandler}
           trueButtonHandler={trueButtonHandler}
           falseButtonHandler={falseButtonHandler}
           setClock={setClock}
