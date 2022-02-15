@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../button/button';
+import Word from 'src/types/Word';
 
 interface Props {
   timer: number;
@@ -10,6 +11,7 @@ interface Props {
   circle2: React.MutableRefObject<HTMLDivElement>;
   circle3: React.MutableRefObject<HTMLDivElement>;
   word: string;
+  words: Word[];
   translation: string;
   showResult: boolean;
   trueButtonHandler: React.MouseEventHandler;
@@ -56,7 +58,7 @@ export default function Sprint(props: Props) {
       ) : (
         <div>
           <div>{props.timer}</div>
-          <div>{`Слово: ${props.currentWordnumber} из 20`}</div>
+          <div>{`Слово: ${props.currentWordnumber} из ${props.words.length}`}</div>
           <div>{`Счет: ${props.score}`}</div>
           <div>{`Комбо множитель x${props.scoreMultiplier}`}</div>
           <div className="combo-row">
@@ -66,8 +68,8 @@ export default function Sprint(props: Props) {
           </div>
           <div>{props.word}</div>
           <div>{props.translation}</div>
-          <Button onClick={props.trueButtonHandler} class="button" textContent="Верно" />
-          <Button onClick={props.falseButtonHandler} class="button" textContent="Неверно" />
+          <Button onClick={props.trueButtonHandler} class="button" textContent="Верно >>" />
+          <Button onClick={props.falseButtonHandler} class="button" textContent="<< Неверно" />
         </div>
       )}
     </div>

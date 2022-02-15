@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {} from '../../redux/actions/actions';
+import { useSelector } from 'react-redux';
 import axios, { AxiosResponse } from 'axios';
 import GameResult from '../game-result/game-result';
 import shuffle from 'lodash/shuffle';
@@ -13,6 +12,11 @@ import useSound from 'use-sound';
 import './games.scss';
 import Sprint from '../sprint/sprint';
 import Audiochallenge from '../audiochallenge/audiochallenge';
+//Дашина часть
+import UserData from 'src/types/UserData';
+import getWords from '../../utils/getWords';
+import Word from 'src/types/Word';
+import getUserAggregatedWords from '../../utils/getUserAggregatedWords';
 
 interface RootState {
   gameWordPage: {
@@ -26,40 +30,34 @@ interface RootState {
   };
 }
 
-interface WordData {
-  id: 'string';
-  group: 0;
-  page: 0;
-  word: 'string';
-  image: 'string';
-  audio: 'string';
-  audioMeaning: 'string';
-  audioExample: 'string';
-  textMeaning: 'string';
-  textExample: 'string';
-  transcription: 'string';
-  wordTranslate: 'string';
-  textMeaningTranslate: 'string';
-  textExampleTranslate: 'string';
-}
 
 export default function Games() {
   const page = useSelector((state: RootState) => state.gameWordPage.gameWordPage);
   const selectedGame = useSelector((state: RootState) => state.selectedGame.selectedGame);
   const difficulty = useSelector((state: RootState) => state.gameDifficulty.gameDifficulty);
-  const baseUrl = 'https://react-rslang-group.herokuapp.com';
-  const [wordsData, setWordsData] = useState<Array<WordData>>([]);
-  const [word, setWord] = useState<WordData>();
+  const [wordsData, setWordsData] = useState<Array<Word>>([]);
+  const [word, setWord] = useState<Word>();
   const [translation, setTranlation] = useState('');
   const [answer, setAnswer] = useState(false);
+  //От Даши
+  const [userData, setUserData] = useState<UserData | null>(() => {
+    const saved = localStorage.getItem('userData');
+    if (saved !== null && saved !== undefined) {
+      const initialValue = JSON.parse(saved);
+      return initialValue;
+    } else {
+      return null;
+    }
+  });
+  //От Даши
   const [currentWordnumber, setCurrentWordnumber] = useState(0);
   const [comboCounter, setComboCounter] = useState(0);
   const [score, setScore] = useState(0);
   const [scoreMultiplier, setScoreMultiplier] = useState(1);
   const [timer, setTimer] = useState(60);
   const [showResult, setShowResult] = useState(false);
-  const [trueWords, setTrueWords] = useState<Array<WordData>>([]);
-  const [falseWords, setFalseWords] = useState<Array<WordData>>([]);
+  const [trueWords, setTrueWords] = useState<Array<Word>>([]);
+  const [falseWords, setFalseWords] = useState<Array<Word>>([]);
   const [clock, setClock] = useState<NodeJS.Timeout | null>(null);
   const [isSoundOn, setIsSoundOn] = useState(true);
   const circle1: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
@@ -70,14 +68,17 @@ export default function Games() {
   const [audioTrue] = useSound(trueSound);
   const [audioFalse] = useSound(falseSound);
   const [audioEnd] = useSound(endSound);
+
+  let prevPage = page;
   //получаем список слов с сервера
   useEffect(() => {
-    getWords();
+    console.log(userData);
+    getWordsData();
   }, []);
   //Генерирует пару слово-перевод
-  function generateQuestion(arr: WordData[]) {
+  function generateQuestion(arr: Word[]) {
     let isTrue = Boolean(random(0, 1)); //определяет будет ли слово соответствовать переводу
-    if (currentWordnumber === 20) {
+    if (currentWordnumber === arr.length) {
       //если 20 слово, то заканчиваем игру
       gameEnder(clock);
       return;
@@ -87,33 +88,67 @@ export default function Games() {
       setTranlation(arr[currentWordnumber].wordTranslate);
     } else {
       setAnswer(false);
-      let randomPosition = random(0, 19);
-      if (randomPosition === currentWordnumber) {
-        randomPosition = random(0, 19);
-      }
+      let randomPosition = randomIndex(currentWordnumber, arr);
       setTranlation(arr[randomPosition].wordTranslate); //выбирает случайный перевод
     }
     showNextQuestion(arr);
   }
+
+  function randomIndex(a: number, arr: Word[]) {
+    let index = random(0, arr.length - 1)
+    return index === a ? randomIndex(a, arr) : index
+  }
   //идет по массиву слов
-  function showNextQuestion(arr: WordData[]) {
+  function showNextQuestion(arr: Word[]) {
     setWord(arr[currentWordnumber]);
     setCurrentWordnumber(currentWordnumber + 1);
   }
   //перемешивает полученный с сервера массив
-  function generateWords(res: AxiosResponse): WordData[] {
-    const dataArr = res.data;
-    const shuffledData = shuffle(dataArr);
+  async function generateWords(data: Word[]): Promise<Word[]> {
+    let dataArr = []
+    //рекурсивный запрос для создания массива из 20 слов
+    async function addMore(arr: Word[]) {
+      let newArr: Word[];
+      console.log(prevPage)
+      let baseArr = (arr as Word[]).filter((item) => !item.userWord?.optional.isLearned);
+      if (baseArr.length < 20 && prevPage <= 0) {
+        dataArr = baseArr
+      } else if (baseArr.length < 20) {
+        prevPage -= 1
+        let prev = await getUserAggregatedWords(userData.id, userData.token, {
+          wordsPerPage: 20,
+          group: difficulty,
+          page: prevPage,
+        });
+        let plusArr = (prev as Word[]).filter((item) => !item.userWord?.optional.isLearned);
+        newArr = baseArr.concat(plusArr);
+        await addMore(newArr);
+      } else if (baseArr.length >= 20) {
+        dataArr = baseArr.slice(0, 20);
+      }
+    }
+
+    if(userData) {
+      await addMore(data as Word[]);
+    } else {
+      dataArr = data;
+    }
+    console.log(dataArr)
+    const shuffledData = shuffle(dataArr as Word[]);
     generateQuestion(shuffledData);
     return shuffledData;
   }
+
+
   //получаем слова с сервера
-  function getWords() {
-    axios
-      .get<WordData[]>(`${baseUrl}/words?page=${page}&group=${difficulty}`)
+  function getWordsData() {
+    (userData
+      ? getUserAggregatedWords(userData.id, userData.token, { wordsPerPage: 20, group: difficulty, page: page })
+      : getWords({ group: difficulty, page: page })
+    )
       .then((res) => generateWords(res))
       .then((result) => setWordsData(result))
-      .catch((err) => console.log('error'));
+      .catch((err) => console.log(`error: ${err}`));
   }
   //сбрасываем стили(кружки) комбо при ошибочном ответе
   function removeCombo(combo: React.MutableRefObject<HTMLDivElement | null>[]) {
@@ -222,7 +257,7 @@ export default function Games() {
         <Button refer={muteButton} class="mute-button" onClick={toggleSound} />
       </div>
       {showResult ? (
-        <GameResult selectedGame={selectedGame} finalScore={score} trueWords={trueWords} falseWords={falseWords} />
+        <GameResult words={wordsData} selectedGame={selectedGame} finalScore={score} trueWords={trueWords} falseWords={falseWords} />
       ) : selectedGame === 'audiochallenge' ? (
         <Audiochallenge
           words={wordsData}
@@ -249,6 +284,7 @@ export default function Games() {
           circle1={circle1}
           circle2={circle2}
           circle3={circle3}
+          words={wordsData}
           word={word?.word}
           translation={translation}
           showResult={showResult}

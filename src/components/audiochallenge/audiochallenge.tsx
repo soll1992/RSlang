@@ -3,39 +3,23 @@ import Button from '../button/button';
 import ButtonRef from '../button-ref/button-ref';
 import shuffle from 'lodash/shuffle';
 import './audiochallenge.scss';
+import Word from 'src/types/Word';
 
 interface Props {
   img: string;
   soundLink: string;
   currentWordnumber: number;
-  currentWord: WordData;
+  currentWord: Word;
   word: string;
   translation: string;
-  words: WordData[];
+  words: Word[];
   isSoundOn: boolean;
   showResult: boolean;
   trueButtonHandler: React.MouseEventHandler;
   falseButtonHandler: React.MouseEventHandler;
   checkUserAnswer: (userAnswer: boolean) => void;
-  showNextQuestion: (arr: WordData[]) => void;
+  showNextQuestion: (arr: Word[]) => void;
   gameEnder: (x: NodeJS.Timeout | null) => void;
-}
-
-interface WordData {
-  id: 'string';
-  group: 0;
-  page: 0;
-  word: 'string';
-  image: 'string';
-  audio: 'string';
-  audioMeaning: 'string';
-  audioExample: 'string';
-  textMeaning: 'string';
-  textExample: 'string';
-  transcription: 'string';
-  wordTranslate: 'string';
-  textMeaningTranslate: 'string';
-  textExampleTranslate: 'string';
 }
 
 export default function Audiochallenge(props: Props) {
@@ -65,14 +49,18 @@ export default function Audiochallenge(props: Props) {
     }
   }, [props.soundLink, startGame]);
   // Генерирует 4 варианта ответов пользователя
-  function makeAnswers(obj: WordData) {
+  function makeAnswers(obj: Word) {
+    if (props.words.length < 4) {
+      alert('Невозможно начать аудиовызов, если у вас меньше 4 неизученных слов')
+      return;
+    } 
     if (obj === undefined) {
       props.gameEnder(null);
       return;
     }
     const answersSet = new Set();
     const shuffledWords = shuffle(props.words);
-    answersSet.add(obj.wordTranslate);    
+    answersSet.add(obj.wordTranslate);
     for (let i = 0; answersSet.size < 4; i++) {
       answersSet.add(shuffledWords[i].wordTranslate);
     }
@@ -90,9 +78,9 @@ export default function Audiochallenge(props: Props) {
       const trueAnswer = userAnswers.indexOf(props.translation); //вычисляет позицию кнопки с правильным ответом
       const isTrue = +(e.target as HTMLButtonElement).id === trueAnswer; //проверяет верно ли ответил пользователь
       props.checkUserAnswer(isTrue); //обрабатывает верный или неверный ответ
-      addStylesFromActiveButton(isTrue, e.target as HTMLButtonElement) //добавляет стили на нажатую кнопку
-      checkLiveCount(isTrue) //уменьшает количество попыток, если ответ был не верный, если попыток < 0 показывает результат
-      toggleWordInfo('add') //показывает информацию о слове(картинку + написание слова)
+      addStylesFromActiveButton(isTrue, e.target as HTMLButtonElement); //добавляет стили на нажатую кнопку
+      checkLiveCount(isTrue); //уменьшает количество попыток, если ответ был не верный, если попыток < 0 показывает результат
+      toggleWordInfo('add'); //показывает информацию о слове(картинку + написание слова)
     }
   }
   // Смотри функцию выше. Функционал похож, но используются другие переменные.
@@ -102,16 +90,14 @@ export default function Audiochallenge(props: Props) {
       const index = key - 1;
       const isTrue = index === userAnswers.indexOf(props.translation);
       props.checkUserAnswer(isTrue);
-      addStylesFromActiveButton(isTrue, buttonRefs[index])
-      checkLiveCount(isTrue)
-      toggleWordInfo('add'); 
+      addStylesFromActiveButton(isTrue, buttonRefs[index]);
+      checkLiveCount(isTrue);
+      toggleWordInfo('add');
     }
   }
 
-  function addStylesFromActiveButton(boolean: boolean , button: HTMLButtonElement) {
-    boolean
-    ? button.classList.add('true-answer')
-    : button.classList.add('false-answer');
+  function addStylesFromActiveButton(boolean: boolean, button: HTMLButtonElement) {
+    boolean ? button.classList.add('true-answer') : button.classList.add('false-answer');
   }
 
   function checkLiveCount(boolean: boolean) {
@@ -161,7 +147,7 @@ export default function Audiochallenge(props: Props) {
         </div>
       ) : (
         <div>
-          <div>{`Слово: ${props.currentWordnumber} из 20`}</div>
+          <div>{`Слово: ${props.currentWordnumber} из ${props.words.length}`}</div>
           <div>{`Осталось попыток: ${liveCount}`}</div>
           <Button onClick={(e) => wordSound.play()} class="sound-button" />
           <div ref={wordRef} className="word">

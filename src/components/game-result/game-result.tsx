@@ -2,30 +2,16 @@ import React from 'react';
 import './game-result.scss';
 import ResultWords from '../result-words/result-words';
 import { NavLink } from '../link/link'
+import Word from 'src/types/Word';
 
 interface Props {
+  words: Word[];
   finalScore: number;
-  trueWords: Array<WordData>;
-  falseWords: Array<WordData>;
+  trueWords: Array<Word>;
+  falseWords: Array<Word>;
   selectedGame: string;
 }
 
-interface WordData {
-  id: 'string';
-  group: 0;
-  page: 0;
-  word: 'string';
-  image: 'string';
-  audio: 'string';
-  audioMeaning: 'string';
-  audioExample: 'string';
-  textMeaning: 'string';
-  textExample: 'string';
-  transcription: 'string';
-  wordTranslate: 'string';
-  textMeaningTranslate: 'string';
-  textExampleTranslate: 'string';
-}
 
 export default function GameResult(props: Props) {
   return (
@@ -34,7 +20,7 @@ export default function GameResult(props: Props) {
       {props.selectedGame === 'sprint' && <div>{`Вы набрали ${props.finalScore} очков`}</div>}
       <div>{`Правильных ответов: ${props.trueWords.length}`}</div>
       <div>{`Неверных ответов: ${props.falseWords.length}`}</div>
-      <div>{`Процент верных ответов: ${(100 / 20) * props.trueWords.length}%`}</div>
+      <div>{`Процент верных ответов: ${Math.round((100 / props.words.length) * props.trueWords.length)}%`}</div>
       <NavLink class='link' textContent='Новая игра' link='/game-difficulty'/>
       <div className="result-wrapper">
         <h3>Я знаю:</h3>
