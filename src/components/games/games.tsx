@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import axios, { AxiosResponse } from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeSeria } from '../../redux/actions/actions';
 import GameResult from '../game-result/game-result';
 import shuffle from 'lodash/shuffle';
 import random from 'lodash/random';
@@ -28,19 +28,28 @@ interface RootState {
   selectedGame: {
     selectedGame: string;
   };
+  from: {
+    from: string;
+  }
+  seria: {
+    seria: number;
+  }
 }
 
 
 export default function Games() {
+  const dispatch = useDispatch();
   const page = useSelector((state: RootState) => state.gameWordPage.gameWordPage);
   const selectedGame = useSelector((state: RootState) => state.selectedGame.selectedGame);
   const difficulty = useSelector((state: RootState) => state.gameDifficulty.gameDifficulty);
+  const from = useSelector((state: RootState) => state.from.from);
+  const seria = useSelector((state: RootState) => state.seria.seria);
   const [wordsData, setWordsData] = useState<Array<Word>>([]);
   const [word, setWord] = useState<Word>();
   const [translation, setTranlation] = useState('');
   const [answer, setAnswer] = useState(false);
-  //От Даши
-  const [userData, setUserData] = useState<UserData | null>(() => {
+  //От Даши>>
+    const [userData, setUserData] = useState<UserData | null>(() => {
     const saved = localStorage.getItem('userData');
     if (saved !== null && saved !== undefined) {
       const initialValue = JSON.parse(saved);
@@ -49,21 +58,24 @@ export default function Games() {
       return null;
     }
   });
-  //От Даши
+  //<<От Даши
   const [currentWordnumber, setCurrentWordnumber] = useState(0);
   const [comboCounter, setComboCounter] = useState(0);
   const [score, setScore] = useState(0);
   const [scoreMultiplier, setScoreMultiplier] = useState(1);
   const [timer, setTimer] = useState(60);
+  const [allWords, setAllWords] = useState<Word[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [trueWords, setTrueWords] = useState<Array<Word>>([]);
   const [falseWords, setFalseWords] = useState<Array<Word>>([]);
   const [clock, setClock] = useState<NodeJS.Timeout | null>(null);
   const [isSoundOn, setIsSoundOn] = useState(true);
+  const [seriaArr, setSeriaArr] = useState([]);
   const circle1: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const circle2: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const circle3: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
   const muteButton: React.MutableRefObject<HTMLButtonElement | null> = useRef(null);
+  const gameStartRef: React.MutableRefObject<HTMLButtonElement | null> = useRef(null);
   const comboRow = [circle1, circle2, circle3];
   const [audioTrue] = useSound(trueSound);
   const [audioFalse] = useSound(falseSound);
@@ -72,7 +84,6 @@ export default function Games() {
   let prevPage = page;
   //получаем список слов с сервера
   useEffect(() => {
-    console.log(userData);
     getWordsData();
   }, []);
   //Генерирует пару слово-перевод
@@ -106,10 +117,10 @@ export default function Games() {
   //перемешивает полученный с сервера массив
   async function generateWords(data: Word[]): Promise<Word[]> {
     let dataArr = []
+    setAllWords(data)
     //рекурсивный запрос для создания массива из 20 слов
     async function addMore(arr: Word[]) {
       let newArr: Word[];
-      console.log(prevPage)
       let baseArr = (arr as Word[]).filter((item) => !item.userWord?.optional.isLearned);
       if (baseArr.length < 20 && prevPage <= 0) {
         dataArr = baseArr
@@ -128,12 +139,13 @@ export default function Games() {
       }
     }
 
-    if(userData) {
+    if(userData && from ==='Textbook') {
+      gameStartRef.current.disabled = true
       await addMore(data as Word[]);
+      gameStartRef.current.disabled = false
     } else {
       dataArr = data;
     }
-    console.log(dataArr)
     const shuffledData = shuffle(dataArr as Word[]);
     generateQuestion(shuffledData);
     return shuffledData;
@@ -182,6 +194,7 @@ export default function Games() {
     switch (isTrue) {
       case true:
         isSoundOn && audioTrue();
+        dispatch(changeSeria(seria + 1))
         if (selectedGame === 'sprint') {
           comboChecker();
           scoreCounter();
@@ -190,6 +203,8 @@ export default function Games() {
         break;
       case false:
         isSoundOn && audioFalse();
+        setSeriaArr([...seriaArr, seria])
+        dispatch(changeSeria(0))
         if (selectedGame === 'sprint') {
           removeCombo(comboRow);
           setScoreMultiplier(1);
@@ -223,8 +238,9 @@ export default function Games() {
   function gameEnder(x: NodeJS.Timeout | null) {
     setShowResult(true);
     isSoundOn && setTimeout(audioEnd, 300);
+    setSeriaArr([...seriaArr, seria])
     if (selectedGame === 'sprint') {
-      x !== undefined && clearTimeout(x);
+      clearTimeout(x);
     }
   }
   //выключает звук
@@ -257,9 +273,10 @@ export default function Games() {
         <Button refer={muteButton} class="mute-button" onClick={toggleSound} />
       </div>
       {showResult ? (
-        <GameResult words={wordsData} selectedGame={selectedGame} finalScore={score} trueWords={trueWords} falseWords={falseWords} />
+        <GameResult seriaArr={seriaArr} words={wordsData} selectedGame={selectedGame} finalScore={score} trueWords={trueWords} falseWords={falseWords} />
       ) : selectedGame === 'audiochallenge' ? (
         <Audiochallenge
+          allWords={allWords}
           words={wordsData}
           isSoundOn={isSoundOn}
           img={word?.image}
@@ -267,6 +284,7 @@ export default function Games() {
           currentWord={word}
           currentWordnumber={currentWordnumber}
           word={word?.word}
+          refer={gameStartRef}
           translation={word?.wordTranslate}
           showResult={showResult}
           trueButtonHandler={trueButtonHandler}
@@ -286,6 +304,7 @@ export default function Games() {
           circle3={circle3}
           words={wordsData}
           word={word?.word}
+          refer={gameStartRef}
           translation={translation}
           showResult={showResult}
           keysHandler={keysHandler}

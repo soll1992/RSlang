@@ -4,6 +4,8 @@ import ButtonRef from '../button-ref/button-ref';
 import shuffle from 'lodash/shuffle';
 import './audiochallenge.scss';
 import Word from 'src/types/Word';
+import { useDispatch } from 'react-redux';
+import { changeSeria } from '../../redux/actions/actions';
 
 interface Props {
   img: string;
@@ -13,8 +15,10 @@ interface Props {
   word: string;
   translation: string;
   words: Word[];
+  allWords: Word[];
   isSoundOn: boolean;
   showResult: boolean;
+  refer: React.MutableRefObject<HTMLButtonElement>;
   trueButtonHandler: React.MouseEventHandler;
   falseButtonHandler: React.MouseEventHandler;
   checkUserAnswer: (userAnswer: boolean) => void;
@@ -23,6 +27,7 @@ interface Props {
 }
 
 export default function Audiochallenge(props: Props) {
+  const dispatch = useDispatch()
   const [wordSound, setWordSound] = useState<HTMLAudioElement>();
   const [imgLink, setImgLink] = useState('');
   const [startGame, setStartGame] = useState(false);
@@ -50,25 +55,29 @@ export default function Audiochallenge(props: Props) {
   }, [props.soundLink, startGame]);
   // Генерирует 4 варианта ответов пользователя
   function makeAnswers(obj: Word) {
-    if (props.words.length < 4) {
-      alert('Невозможно начать аудиовызов, если у вас меньше 4 неизученных слов')
-      return;
-    } 
     if (obj === undefined) {
       props.gameEnder(null);
       return;
     }
     const answersSet = new Set();
-    const shuffledWords = shuffle(props.words);
     answersSet.add(obj.wordTranslate);
-    for (let i = 0; answersSet.size < 4; i++) {
-      answersSet.add(shuffledWords[i].wordTranslate);
+    if (props.words.length < 4) {
+      const shuffleAllWords = shuffle(props.allWords);
+      for (let i = 0; answersSet.size < 4; i++) {
+        answersSet.add(shuffleAllWords[i].wordTranslate);
+      }
+    } else {
+      const shuffledWords = shuffle(props.words);
+      for (let i = 0; answersSet.size < 4; i++) {
+        answersSet.add(shuffledWords[i].wordTranslate);
+      }
     }
     setStartGame(true); //запускает игру(необходимо для корректной работы автовоспроизведения)
     setUserAnswers(shuffle([...answersSet] as Array<string>));
   }
   //Генерирует 4 ответа для самой первой карточки.
-  function playGame() {
+  function playGame() {    
+    dispatch(changeSeria(0))
     makeAnswers(props.currentWord);
   }
   // Проверяет верность ответа пользователя, когда кликает мышкой
@@ -101,16 +110,24 @@ export default function Audiochallenge(props: Props) {
   }
 
   function checkLiveCount(boolean: boolean) {
-    if (!boolean) setliveCount(liveCount - 1);
-    liveCount - 1 < 0 && props.gameEnder(null);
+    if (!boolean) {
+      setliveCount(liveCount - 1);
+      liveCount - 1 < 0 && props.gameEnder(null);
+    }
   }
 
   function nextButtonHandler() {
+    if (!buttonBlock) {
+      props.checkUserAnswer(false);
+      checkLiveCount(false)
+    } else {
+      toggleWordInfo('remove');
+    }
     props.showNextQuestion(props.words);
     makeAnswers(props.words[props.currentWordnumber]);
     setButtonBlock(false);
-    toggleWordInfo('remove');
     buttonRefs.forEach((button) => removeButtonsStyles(button));
+
   }
 
   function toggleWordInfo(str: string) {
@@ -143,7 +160,7 @@ export default function Audiochallenge(props: Props) {
         <div>
           <h2>Аудиовызов</h2>
           <p>Однажды тут будет описание игры и правила</p>
-          <Button onClick={playGame} class="button" textContent="Старт" />
+          <Button refer={props.refer} onClick={playGame} class="button" textContent="Старт" />
         </div>
       ) : (
         <div>

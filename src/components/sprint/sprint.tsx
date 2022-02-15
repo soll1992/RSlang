@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../button/button';
 import Word from 'src/types/Word';
+import { useDispatch } from 'react-redux';
+import { changeSeria } from '../../redux/actions/actions';
 
 interface Props {
   timer: number;
@@ -10,6 +12,7 @@ interface Props {
   circle1: React.MutableRefObject<HTMLDivElement>;
   circle2: React.MutableRefObject<HTMLDivElement>;
   circle3: React.MutableRefObject<HTMLDivElement>;
+  refer: React.MutableRefObject<HTMLButtonElement>;
   word: string;
   words: Word[];
   translation: string;
@@ -23,10 +26,12 @@ interface Props {
 }
 
 export default function Sprint(props: Props) {
+  const dispatch = useDispatch()
   const [startGame, setStartGame] = useState(false);
   //запускает игру(нужно для запуска таймера)
   function start() {
     setStartGame(true);
+    dispatch(changeSeria(0))
   }
   //прослушивание событий клавиатуры
   useEffect(() => {
@@ -53,7 +58,7 @@ export default function Sprint(props: Props) {
         <div>
           <h2>Спринт</h2>
           <p>Однажды тут будет описание игры и правила</p>
-          <Button onClick={start} class="button" textContent="Старт" />
+          <Button refer={props.refer} onClick={start} class="button" textContent="Старт" />
         </div>
       ) : (
         <div>

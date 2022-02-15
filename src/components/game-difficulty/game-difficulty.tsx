@@ -3,7 +3,7 @@ import { NavLink } from '../link/link';
 import ButtonRef from '../button-ref/button-ref';
 import './game-difficulty.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeDifficulty, changePage, selectSprint, selectAudiochallenge} from '../../redux/actions/actions';
+import { fromMenu, changeDifficulty, changePage, selectSprint, selectAudiochallenge} from '../../redux/actions/actions';
 import random from 'lodash/random'
 
 interface RootState {
@@ -23,14 +23,21 @@ export default function SprintDifficulty() {
     }, [])
 
     function selectGameParams (i: number) {
-        dispatch(changePage(random(0,29)))
         dispatch(changeDifficulty(i))
         buttonsRefs.forEach(ref => ref.classList.remove('select'))
         buttonsRefs[i].classList.add('select')
     }
 
     function navLinkHandler(game: string) {
-      game === 'Спринт' ? dispatch(selectSprint('sprint')) : dispatch(selectAudiochallenge('audiochallenge'))
+      dispatch(changePage(random(0,29)))
+      dispatch(fromMenu())
+      if(game === 'Спринт') {
+        dispatch(selectSprint('sprint'))
+        localStorage.setItem('game', 'sprint')
+      } else {
+        dispatch(selectAudiochallenge('audiochallenge'))
+        localStorage.setItem('game', 'audiochallenge')
+      }
     }
 
   return (

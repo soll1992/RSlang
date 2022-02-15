@@ -1,4 +1,4 @@
-import {MUTE_GAME, UNMUTE_GAME, SELECT_AUDIOCHALLENGE, SELECT_SPRINT, CHANGE_DIFFICULTY, CHANGE_PAGE } from './consts';
+import { CHANGE_SERIA, FROM_MENU, FROM_TEXTBOOK, SELECT_AUDIOCHALLENGE, SELECT_SPRINT, CHANGE_DIFFICULTY, CHANGE_PAGE } from './consts';
 
 export function changeDifficulty(payload: number) {
   return { type: CHANGE_DIFFICULTY, payload };
@@ -16,10 +16,14 @@ export function selectAudiochallenge(payload: string) {
   return { type: SELECT_SPRINT, payload };
 }
 
-export function muteGame() {
-  return { type: MUTE_GAME };
+export function fromMenu() {
+  return { type: FROM_MENU };
 }
 
-export function unMuteGame() {
-  return { type: UNMUTE_GAME };
+export function fromTextbook() {
+  return { type: FROM_TEXTBOOK };
+}
+
+export function changeSeria(payload: number) {
+  return { type: CHANGE_SERIA, payload };
 }
