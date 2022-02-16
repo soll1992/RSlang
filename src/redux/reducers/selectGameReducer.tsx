@@ -6,7 +6,7 @@ interface Action {
 }
 
 const initialState = {
-    selectedGame: localStorage.getItem('game') || 'audiochallenge',
+  selectedGame: localStorage.getItem('game') || 'audiochallenge',
 };
 
 export function selectGameReducer(state = initialState, action: Action) {

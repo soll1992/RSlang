@@ -6,7 +6,7 @@ interface Action {
 }
 
 const initialState = {
-    seria: 0,
+  seria: 0,
 };
 
 export function changeSeriaReducer(state = initialState, action: Action) {

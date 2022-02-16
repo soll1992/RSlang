@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../button/button';
-import Word from 'src/types/Word';
 import { useDispatch } from 'react-redux';
+import Word from 'src/types/Word';
+import Button from '../button/button';
 import { changeSeria } from '../../redux/actions/actions';
 
 interface Props {
@@ -26,21 +26,21 @@ interface Props {
 }
 
 export default function Sprint(props: Props) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [startGame, setStartGame] = useState(false);
-  //запускает игру(нужно для запуска таймера)
+  // запускает игру(нужно для запуска таймера)
   function start() {
     setStartGame(true);
-    dispatch(changeSeria(0))
+    dispatch(changeSeria(0));
   }
-  //прослушивание событий клавиатуры
+  // прослушивание событий клавиатуры
   useEffect(() => {
     if (!props.showResult) {
       window.addEventListener('keyup', props.keysHandler);
     }
     return () => window.removeEventListener('keyup', props.keysHandler);
   });
-  //работа таймера
+  // работа таймера
   useEffect(() => {
     if (startGame) {
       const time = setTimeout(props.setTimer, 1000, props.timer - 1);
