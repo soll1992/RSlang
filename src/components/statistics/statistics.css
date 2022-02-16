@@ -1,0 +1,30 @@
+.day-statistics {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.day-statistics__title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.day-statistics__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.games-statictics,
+.words-statictics {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.games-statictics__title,
+.words-statictics__title {
+    margin-bottom: 20px;
+}

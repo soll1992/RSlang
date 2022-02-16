@@ -3,8 +3,8 @@ import { HashRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
 import GameDifficulty from '../game-difficulty/game-difficulty';
 import Games from '../games/games';
 import Textbook from '../textbook/Textbook';
-
 import Header from '../header/header';
+import Statistics from '../statistics/Statistics';
 
 const App = () => {
   return (
@@ -74,7 +74,7 @@ const App = () => {
           element={
             <Fragment>
               <Header />
-              <span>Статистика</span>
+              <Statistics />
             </Fragment>
           }
         />
