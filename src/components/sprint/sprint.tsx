@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../button/button';
+import Button from '../buttons/button';
 import Word from 'src/types/Word';
 import { useDispatch } from 'react-redux';
 import { changeSeria } from '../../redux/actions/actions';

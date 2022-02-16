@@ -24,7 +24,7 @@ const Home: FC<Props> = () => {
       <section id='home' className="home section">
         <div className='home-content-wrap'>
           <div className='home-title-wrap'>
-            <h1 className='home-title'>Учи английский язык с RSLang</h1>
+            <h1 className='home-title'>Учи английский язык с <span className='home-title__rs'>RSLang</span></h1>
             <p className='home-subtitle-text'>Запоминание английских слов может быть увлекательным и простым. Играйте в миниигры, слушайте произношение, совершенствуйте свои знания. Бесплатно. На любом устройстве.</p>
           </div>
           <div className='home-aside'>

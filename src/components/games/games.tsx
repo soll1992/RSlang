@@ -4,7 +4,7 @@ import { changeSeria } from '../../redux/actions/actions';
 import GameResult from '../game-result/game-result';
 import shuffle from 'lodash/shuffle';
 import random from 'lodash/random';
-import Button from '../button/button';
+import Button from '../buttons/button';
 import trueSound from '../../assets/sound/true.mp3';
 import falseSound from '../../assets/sound/false.mp3';
 import endSound from '../../assets/sound/result.mp3';
@@ -49,7 +49,7 @@ export default function Games() {
   const [translation, setTranlation] = useState('');
   const [answer, setAnswer] = useState(false);
   //От Даши>>
-    const [userData, setUserData] = useState<UserData | null>(() => {
+  const [userData, setUserData] = useState<UserData | null>(() => {
     const saved = localStorage.getItem('userData');
     if (saved !== null && saved !== undefined) {
       const initialValue = JSON.parse(saved);
@@ -139,7 +139,7 @@ export default function Games() {
       }
     }
 
-    if(userData && from ==='Textbook') {
+    if (userData && from === 'Textbook') {
       gameStartRef.current.disabled = true
       await addMore(data as Word[]);
       gameStartRef.current.disabled = false

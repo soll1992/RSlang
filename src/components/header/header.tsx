@@ -25,7 +25,7 @@ const Header: FC<Props> = () => {
   const [headerTitle, setHeaderTitle] = useState<string>(() => {
     const saved = localStorage.getItem('headerTitle');
     const initialValue = window.location.hash && saved !== 'undefined' ? saved : undefined;
-    return initialValue || 'Домашняя';
+    return initialValue || 'Главная';
   });
   useEffect(() => {
     localStorage.setItem('headerTitle', headerTitle);
@@ -113,7 +113,7 @@ const Header: FC<Props> = () => {
           : 'Главная'}</h2>
         <div className="login-container">
           {!authorization ? (
-            <button onClick={() => getLoginPopup()} className={loginIsOpen ? 'login-title active' : 'login-title'}>
+            <button onClick={() => getLoginPopup()} className={loginIsOpen ? ' btn-2 small active' : ' btn-2 small'}>
               Войти
             </button>
           ) : (

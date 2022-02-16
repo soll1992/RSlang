@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../button/button';
+import Button from '../buttons/button';
 import useSound from 'use-sound';
 import './result-words.scss';
 

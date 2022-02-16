@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Button from '../button/button';
+import Button from '../buttons/button';
 import ButtonRef from '../button-ref/button-ref';
 import shuffle from 'lodash/shuffle';
 import './audiochallenge.scss';
@@ -76,7 +76,7 @@ export default function Audiochallenge(props: Props) {
     setUserAnswers(shuffle([...answersSet] as Array<string>));
   }
   //Генерирует 4 ответа для самой первой карточки.
-  function playGame() {    
+  function playGame() {
     dispatch(changeSeria(0))
     makeAnswers(props.currentWord);
   }
@@ -100,8 +100,8 @@ export default function Audiochallenge(props: Props) {
       const isTrue = index === userAnswers.indexOf(props.translation);
       props.checkUserAnswer(isTrue);
       addStylesFromActiveButton(isTrue, buttonRefs[index]);
-      checkLiveCount(isTrue);
       toggleWordInfo('add');
+      checkLiveCount(isTrue);
     }
   }
 

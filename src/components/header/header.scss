@@ -303,18 +303,19 @@
   &-popup {
     &-wrap {
       position: fixed;
-      width: 300px;
+      width: 400px;
       height: 300px;
       top: calc(50% - 150px);
       left: calc(50% - 150px);
-      background-color: #d6d6d6;
+      // background-color: #d6d6d6;
+      background: linear-gradient(-135deg, #4c77d5 1%, #55f0b5 100%);
       z-index: 5;
       opacity: 0;
       border-radius: 5px;
       overflow: hidden;
       visibility: hidden;
       transition: opacity 0.5s, visibility 0.5s;
-      color: #000;
+      color: #fff;
       &.active {
         visibility: visible;
         opacity: 1;
@@ -333,12 +334,12 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 100px;
+    max-width: 180px;
     align-items: center;
   }
   &-avatar {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background-color: rgb(39, 39, 39);
   }

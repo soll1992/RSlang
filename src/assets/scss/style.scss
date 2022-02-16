@@ -13,12 +13,67 @@
 
 //</Подключаем шрифты>=======================================================================================
 
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Regular.eot");
+	src: local("Gilroy Regular"), local("../fonts/Gilroy-Regular"),
+		url("../fonts/Gilroy-Regular.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Regular.woff2") format("woff2"), url("../fonts/Gilroy-Regular.woff") format("woff"),
+		url("../fonts/Gilroy-Regular.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Bold.eot");
+	src: local("Gilroy Bold"), local("../fonts/Gilroy-Bold"),
+		url("../fonts/Gilroy-Bold.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Bold.woff2") format("woff2"), url("../fonts/Gilroy-Bold.woff") format("woff"),
+		url("../fonts/Gilroy-Bold.ttf") format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Light.eot");
+	src: local("Gilroy Light"), local("../fonts/Gilroy-Light"),
+		url("../fonts/Gilroy-Light.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Light.woff2") format("woff2"), url("../fonts/Gilroy-Light.woff") format("woff"),
+		url("../fonts/Gilroy-Light.ttf") format("truetype");
+	font-weight: 300;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Medium.eot");
+	src: local("Gilroy Medium"), local("../fonts/Gilroy-Medium"),
+		url("../fonts/Gilroy-Medium.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Medium.woff2") format("woff2"), url("../fonts/Gilroy-Medium.woff") format("woff"),
+		url("../fonts/Gilroy-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Heavy.eot");
+	src: local("Gilroy Heavy"), local("../fonts/Gilroy-Heavy"),
+		url("../fonts/Gilroy-Heavy.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Heavy.woff2") format("woff2"), url("../fonts/Gilroy-Heavy.woff") format("woff"),
+		url("../fonts/Gilroy-Heavy.ttf") format("truetype");
+	font-weight: 900;
+	font-style: normal;
+}
 //<Иконочные шрифты>==========================================================================================
 // @import "icons";
 //</Иконочные шрифты>==========================================================================================
 
 //<Шрифт по умолчанию>==========================================================================================
-$fontFamily: "Roboto", sans-serif;
+$fontFamily: "Gilroy";
+
+// font-family: 'Neucha', cursive;
+
+// font-family: 'Playfair Display', serif;
+
 //</Шрифт по умолчанию>==========================================================================================
 
 //</ШРИФТЫ>=======================================================================================================
@@ -108,13 +163,17 @@ body {
 	background: #00000055; /* цвет дорожки */
 }
 *::-webkit-scrollbar-thumb {
-	background-color: #9d8665; /* цвет плашки */
+	background-color: #4c77d5; /* цвет плашки */
 	border-radius: 10px; /* закругления плашки */
-	border: 5px solid #9d8665; /* padding вокруг плашки */
+	border: 5px solid #4c77d5; /* padding вокруг плашки */
 }
 * {
 	scrollbar-width: auto; /* "auto" или "thin"  */
-	scrollbar-color: #9d8665 #192f2d44; /* плашка скролла и дорожка */
+	scrollbar-color: #4c77d5 #192f2d44; /* плашка скролла и дорожка */
+}
+.subtitle {
+	font-family: "Playfair Display", serif;
+	margin: 0px 0px 30px 0px;
 }
 .background-overlay {
 	top: 0;
@@ -139,4 +198,127 @@ body {
 	width: 100%;
 	height: 100%;
 	padding: 0px 20px;
+}
+
+.btn-2 {
+	&-wrap {
+		background-color: #55f07c;
+	}
+	color: #fff;
+	transition: color 0.5s ease-in-out;
+	position: relative;
+	display: block;
+	overflow: hidden;
+	width: 100%;
+	height: 50px;
+	max-width: 170px;
+	margin: 1rem auto;
+	text-transform: uppercase;
+	border: 1px solid #55f0c4;
+	background-color: transparent;
+	border-radius: 5px;
+	font-size: 14px;
+	z-index: 1;
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		transition: 0.5s ease-in-out;
+		z-index: -1;
+	}
+
+	&:before {
+		right: -50px;
+		border-right: 50px solid transparent;
+		border-bottom: 80px solid #55f0c4;
+		transform: translateX(-100%);
+	}
+
+	&:after {
+		left: -50px;
+		border-left: 50px solid transparent;
+		border-top: 80px solid #55f0c4;
+		transform: translateX(100%);
+	}
+
+	&:hover {
+		color: #000;
+
+		&:before {
+			transform: translateX(-49%);
+		}
+		&:after {
+			transform: translateX(49%);
+		}
+	}
+	&.small {
+		height: 30px;
+		max-width: 100px;
+		&:before {
+			right: -50px;
+			border-right: 50px solid transparent;
+			border-bottom: 80px solid #55f0c4;
+			transform: translateX(-100%);
+		}
+
+		&:after {
+			left: -50px;
+			border-left: 50px solid transparent;
+			border-top: 80px solid #55f0c4;
+			transform: translateX(100%);
+		}
+		&:hover {
+			color: #000;
+
+			&:before {
+				transform: translateX(-39%);
+			}
+			&:after {
+				transform: translateX(59%);
+			}
+		}
+		&.active {
+			color: #000;
+
+			&:before {
+				transform: translateX(-39%);
+			}
+			&:after {
+				transform: translateX(59%);
+			}
+		}
+	}
+}
+@keyframes criss-cross-left {
+	0% {
+		left: -20px;
+	}
+	50% {
+		left: 50%;
+		width: 20px;
+	}
+	100% {
+		left: 50%;
+		width: 200px;
+	}
+}
+
+@keyframes criss-cross-right {
+	0% {
+		right: -20px;
+	}
+	50% {
+		right: 50%;
+		width: 20px;
+	}
+	100% {
+		right: 50%;
+		width: 200px;
+	}
 }
