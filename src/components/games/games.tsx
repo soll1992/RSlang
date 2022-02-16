@@ -273,7 +273,7 @@ export default function Games() {
         <Button refer={muteButton} class="mute-button" onClick={toggleSound} />
       </div>
       {showResult ? (
-        <GameResult seriaArr={seriaArr} words={wordsData} selectedGame={selectedGame} finalScore={score} trueWords={trueWords} falseWords={falseWords} />
+        <GameResult gameName={selectedGame} seriaArr={seriaArr} words={wordsData} selectedGame={selectedGame} finalScore={score} trueWords={trueWords} falseWords={falseWords} />
       ) : selectedGame === 'audiochallenge' ? (
         <Audiochallenge
           allWords={allWords}

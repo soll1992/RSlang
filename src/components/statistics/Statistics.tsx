@@ -30,7 +30,7 @@ export default function Statistics() {
   const today = new Date().toLocaleDateString();
   const games = [
     ['Спринт', 'sprint'],
-    ['Аудиовызов', 'audiocall'],
+    ['Аудиовызов', 'audiochallenge'],
   ];
 
   useEffect(() => {
