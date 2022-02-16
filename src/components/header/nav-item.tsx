@@ -14,6 +14,10 @@ type Props = {
 const NavItem: FC<Props> = (props) => {
   const titleChange = () => {
     props.headerTitle.setValue(props.pagesRu[props.i]);
+    if (props.pageName === 'home/team') {
+      const el = document.getElementById('team')
+      el.scrollIntoView({ behavior: "smooth" })
+    }
   };
   return (
     <li className="nav__item">
@@ -23,8 +27,8 @@ const NavItem: FC<Props> = (props) => {
           window.location.hash && props.i === props.pagesRu.indexOf(props.headerTitle.value)
             ? 'nav__link active'
             : !window.location.hash && props.pageName === 'home'
-            ? 'nav__link active'
-            : 'nav__link'
+              ? 'nav__link active'
+              : 'nav__link'
         }
         href={`#/${props.pageName}`}
       >

@@ -32,7 +32,7 @@ const Header: FC<Props> = () => {
     localStorage.setItem('headerTitle', headerTitle);
   }, [headerTitle]);
   const allPages = {
-    pages: ['home', 'textbook', 'dictionary', 'audiocall', 'sprint', 'statistics', 'team'],
+    pages: ['home', 'textbook', 'dictionary', 'audiocall', 'sprint', 'statistics', 'home/team'],
     pagesRu: ['домашняя', 'учебник', 'словарь', 'аудиовызов', 'спринт', 'статистика', 'команда'],
   };
   useEffect(() => {

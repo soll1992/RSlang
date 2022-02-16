@@ -68,6 +68,10 @@
 		height: 25px;
 		background: url("../../assets/svg/github-white.svg") no-repeat;
 		background-size: contain;
+		&.black {
+			background: url("../../assets/svg/github.svg") no-repeat;
+			background-size: contain;
+		}
 		@media (max-width: 405px) {
 			margin: 0px 10px 0px 5px;
 		}
