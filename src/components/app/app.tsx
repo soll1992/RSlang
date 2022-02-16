@@ -12,7 +12,6 @@ const App = () => {
         <Router />
       </main>
       <ParticlesApp />
-
       <Footer />
     </Fragment>
   );

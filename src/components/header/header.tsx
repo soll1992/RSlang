@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FC } from 'react';
 import './header.scss';
 import LoginPopup from './login-popap';
-import bookImage from '../../assets/img/favicon.png'
 
 import NavItem from './nav-item';
 
@@ -32,8 +31,8 @@ const Header: FC<Props> = () => {
     localStorage.setItem('headerTitle', headerTitle);
   }, [headerTitle]);
   const allPages = {
-    pages: ['home', 'textbook', 'dictionary', 'audiocall', 'sprint', 'statistics', 'home/team'],
-    pagesRu: ['домашняя', 'учебник', 'словарь', 'аудиовызов', 'спринт', 'статистика', 'команда'],
+    pages: ['home', 'textbook', 'dictionary', 'game-difficulty', 'statistics', 'home/team'],
+    pagesRu: ['домашняя', 'учебник', 'словарь', 'игры', 'статистика', 'команда'],
   };
   useEffect(() => {
     const burger = document.getElementById('burger');
