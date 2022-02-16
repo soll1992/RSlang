@@ -32,7 +32,7 @@ const Header: FC<Props> = () => {
   }, [headerTitle]);
   const allPages = {
     pages: ['home', 'textbook', 'dictionary', 'game-difficulty', 'statistics', 'home/team'],
-    pagesRu: ['домашняя', 'учебник', 'словарь', 'игры', 'статистика', 'команда'],
+    pagesRu: ['главная', 'учебник', 'словарь', 'миниигры', 'статистика', 'команда'],
   };
   useEffect(() => {
     const burger = document.getElementById('burger');
@@ -80,55 +80,58 @@ const Header: FC<Props> = () => {
     } else setAuthorizations(false);
   }, [userData]);
   return (
-    <header id="Top" className="header">
-      <div onClick={(e) => handlerChange(e)} id="burger" className="burger-wrap">
-        <div className="burger"></div>
-        {/* <div className="burger-close-top"></div>
-        <div className="burger-close-bottom"></div> */}
-      </div>
-      <ul id='nav' className="nav">
-        <div className='nav-title-wrap'>
-          <div className='nav-aside-earth'>
-            <div className='nav-aside-earth-container'></div >
-          </div>
-          <h2 className='nav-title'>RSLang</h2>
-          <div onClick={handlerChange} className="burger-wrap active black">
-            <div className="burger"></div>
-            <div className="burger-close-top"></div>
-            <div className="burger-close-bottom"></div>
-          </div>
+    <div className='header-wrap'>
+      <header id="Top" className="header">
+        <div onClick={(e) => handlerChange(e)} id="burger" className="burger-wrap">
+          <div className="burger"></div>
+          {/* <div className="burger-close-top"></div>
+          <div className="burger-close-bottom"></div> */}
         </div>
-        {allPages.pages.map((pageName, index) => (
-          <NavItem
-            headerTitle={{ value: headerTitle, setValue: setHeaderTitle }}
-            i={index}
-            pagesRu={allPages.pagesRu}
-            pageName={pageName}
-            key={index}
-          />
-        ))}
-      </ul>
-      <h2 className="header__title">{headerTitle.charAt(0).toUpperCase() + headerTitle.slice(1)}</h2>
-      <div className="login-container">
-        {!authorization ? (
-          <button onClick={() => getLoginPopup()} className={loginIsOpen ? 'login-title active' : 'login-title'}>
-            Войти
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              deleteLocalStorage();
-            }}
-            className={'login-title '}
-          >
-            Выйти
-          </button>
-        )}
-        <div className="login-avatar"></div>
-      </div>
-      <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={{ value: userData, setValue: setUserData }} />
-      <div onClick={hiddenOverlay} className={!isOverlay ? 'background-overlay' : 'background-overlay active'}></div>
-    </header>
+        <ul id='nav' className="nav">
+          <div className='nav-title-wrap'>
+            <div className='nav-aside-earth'>
+              <div className='nav-aside-earth-container'></div >
+            </div>
+            <h2 className='nav-title'>RSLang</h2>
+            <div onClick={handlerChange} className="burger-wrap active black">
+              <div className="burger"></div>
+              <div className="burger-close-top"></div>
+              <div className="burger-close-bottom"></div>
+            </div>
+          </div>
+          {allPages.pages.map((pageName, index) => (
+            <NavItem
+              headerTitle={{ value: headerTitle, setValue: setHeaderTitle }}
+              i={index}
+              pagesRu={allPages.pagesRu}
+              pageName={pageName}
+              key={index}
+            />
+          ))}
+        </ul>
+        <h2 className="header__title">{headerTitle !== 'команда' ? headerTitle.charAt(0).toUpperCase() + headerTitle.slice(1)
+          : 'Главная'}</h2>
+        <div className="login-container">
+          {!authorization ? (
+            <button onClick={() => getLoginPopup()} className={loginIsOpen ? 'login-title active' : 'login-title'}>
+              Войти
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                deleteLocalStorage();
+              }}
+              className={'login-title '}
+            >
+              Выйти
+            </button>
+          )}
+          <div className="login-avatar"></div>
+        </div>
+        <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={{ value: userData, setValue: setUserData }} />
+        <div onClick={hiddenOverlay} className={!isOverlay ? 'background-overlay' : 'background-overlay active'}></div>
+      </header>
+    </div>
   );
 };
 

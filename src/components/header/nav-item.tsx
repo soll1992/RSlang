@@ -17,7 +17,8 @@ const NavItem: FC<Props> = (props) => {
     props.headerTitle.setValue(props.pagesRu[props.i]);
     if (props.pageName === 'home/team') {
       const el = document.getElementById('team')
-      el.scrollIntoView({ behavior: "smooth" })
+      if (el) el.scrollIntoView({ behavior: "smooth" })
+
     }
   };
   return (
