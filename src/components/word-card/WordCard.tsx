@@ -66,7 +66,7 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
         const newData: UserWord = {
           difficulty: 'hard',
           optional: {
-            isLearned: false,
+            isLearned: undefined,
           },
         };
         const created = createUserWord(
@@ -80,7 +80,9 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
       if (isUserWord(answer)) {
         const newData: UserWord = {
           difficulty: 'hard',
-          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: false })) as { [key: string]: unknown },
+          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: undefined })) as {
+            [key: string]: unknown;
+          },
         };
         const updated = updateUserWord(
           info.id || info._id,
@@ -105,7 +107,9 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
       if (isUserWord(answer)) {
         const newData: UserWord = {
           difficulty: 'easy',
-          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: false })) as { [key: string]: unknown },
+          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: undefined })) as {
+            [key: string]: unknown;
+          },
         };
         const updated = updateUserWord(
           info.id || info._id,
@@ -141,7 +145,7 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
         const newData: UserWord = {
           difficulty: 'easy',
           optional: {
-            isLearned: true,
+            isLearned: new Date().toLocaleDateString(),
           },
         };
         const created = createUserWord(
@@ -155,7 +159,9 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
       if (isUserWord(answer)) {
         const newData: UserWord = {
           difficulty: 'easy',
-          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: true })) as { [key: string]: unknown },
+          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: new Date().toLocaleDateString() })) as {
+            [key: string]: unknown;
+          },
         };
         const updated = updateUserWord(
           info.id || info._id,
@@ -180,7 +186,9 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
       if (isUserWord(answer)) {
         const newData: UserWord = {
           difficulty: 'easy',
-          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: false })) as { [key: string]: unknown },
+          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: undefined })) as {
+            [key: string]: unknown;
+          },
         };
         const updated = updateUserWord(
           info.id || info._id,
