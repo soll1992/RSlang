@@ -1,0 +1,18 @@
+.word-img {
+    display: none;
+    margin: 0 auto;
+}
+.word {
+    display: none;
+}
+.wordinfo-active {
+    display: block;
+}
+.true-answer {
+    border-color: green;
+    color: green;
+}
+.false-answer {
+    border-color: red;
+    color: red;
+}

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { HashRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
-import SprintDifficulty from '../sprint-difficulty/sprint-difficulty';
-import Sprint from '../sprint-game/sprint-game';
+import GameDifficulty from '../game-difficulty/game-difficulty';
+import Games from '../games/games';
 import Textbook from '../textbook/Textbook';
 import Header from '../header/header';
 import Statistics from '../statistics/Statistics';
@@ -50,31 +50,21 @@ const App = () => {
         />
 
         <Route
-          path="/audiocall"
+          path="/game-difficulty"
           element={
             <Fragment>
               <Header />
-              <span>Игра Аудиовызов</span>
+              <GameDifficulty />
             </Fragment>
           }
         />
 
         <Route
-          path="/sprint"
+          path="/game"
           element={
             <Fragment>
               <Header />
-              <SprintDifficulty />
-            </Fragment>
-          }
-        />
-
-        <Route
-          path="/sprint/sprint-game"
-          element={
-            <Fragment>
-              <Header />
-              <Sprint />
+              <Games />
             </Fragment>
           }
         />

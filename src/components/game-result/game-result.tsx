@@ -1,5 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import './game-result.scss';
+import Word from 'src/types/Word';
+import { useSelector } from 'react-redux';
 import ResultWords from '../result-words/result-words';
 import { NavLink } from '../link/link';
 import UserData from '../../types/UserData';
@@ -12,30 +15,29 @@ import getUserStatistics from '../../utils/getUserStatistics';
 import updateUserStatistics from '../../utils/updateUserStatistics';
 
 interface Props {
+  gameName: string;
+  words: Word[];
   finalScore: number;
-  trueAnswersNumber: number;
-  trueWords: Array<WordData>;
-  falseWords: Array<WordData>;
+  trueWords: Array<Word>;
+  falseWords: Array<Word>;
+  selectedGame: string;
+  seriaArr: Array<number>;
 }
 
-interface WordData {
-  id: 'string';
-  group: 0;
-  page: 0;
-  word: 'string';
-  image: 'string';
-  audio: 'string';
-  audioMeaning: 'string';
-  audioExample: 'string';
-  textMeaning: 'string';
-  textExample: 'string';
-  transcription: 'string';
-  wordTranslate: 'string';
-  textMeaningTranslate: 'string';
-  textExampleTranslate: 'string';
+interface RootState {
+  seria: {
+    seria: number;
+  };
 }
 
-export default function GameResult({ finalScore, trueAnswersNumber, trueWords, falseWords }: Props) {
+export default function GameResult({ gameName, finalScore, trueWords, falseWords, seriaArr, selectedGame }: Props) {
+  // "Эта функция вернет лучшую серию ответов"
+  const seria = useSelector((state: RootState) => state.seria.seria);
+
+  function checkBestSeria() {
+    return seriaArr.length ? seriaArr.sort((a, b) => b - a)[0] : 0;
+  }
+
   // Authorization check
   const [userData, setUserData] = useState<UserData | null>(null);
   useEffect(() => {
@@ -50,15 +52,14 @@ export default function GameResult({ finalScore, trueAnswersNumber, trueWords, f
   }, []);
   // ------
 
-  const series = 0;
+  const series = seria > checkBestSeria() ? seria : checkBestSeria();
   let gameNewWordsCounter = 0;
 
-  const changeWordStatisticData = async (answersType: string, answersArr: WordData[]) => {
+  const changeWordStatisticData = async (answersType: string, answersArr: Word[]) => {
     return Promise.allSettled(
       answersArr.map((wordData) => {
         return (async () => {
-          const wordInfo = await getUserWordById(wordData.id, userData.id, userData.token);
-          console.log(wordInfo);
+          const wordInfo = await getUserWordById(wordData.id || wordData._id, userData.id, userData.token);
           if (wordInfo instanceof Error && wordInfo.message === '404') {
             const newData: UserWord = {
               difficulty: 'easy',
@@ -67,7 +68,7 @@ export default function GameResult({ finalScore, trueAnswersNumber, trueWords, f
               },
             };
             gameNewWordsCounter += 1;
-            await createUserWord(wordData.id, userData.id, userData.token, newData);
+            await createUserWord(wordData.id || wordData._id, userData.id, userData.token, newData);
           }
 
           if (isUserWord(wordInfo)) {
@@ -83,7 +84,7 @@ export default function GameResult({ finalScore, trueAnswersNumber, trueWords, f
             } else {
               newData.optional[answersType] = ((wordInfo.optional[answersType] as number) || 0) + 1;
             }
-            await updateUserWord(wordInfo.wordId, userData.id, userData.token, newData);
+            await updateUserWord(wordData.id || wordData._id, userData.id, userData.token, newData);
           }
         })();
       })
@@ -91,6 +92,7 @@ export default function GameResult({ finalScore, trueAnswersNumber, trueWords, f
   };
 
   const changeStatisticData = async () => {
+    console.log(gameName);
     const gameDataToday = {
       newWordsQuantity: gameNewWordsCounter,
       rightAnswers: trueWords.length,
@@ -98,39 +100,41 @@ export default function GameResult({ finalScore, trueAnswersNumber, trueWords, f
       responsesSeries: series,
       gamesCounter: 1,
     };
+    console.log(gameDataToday);
 
     const userStatistic = await getUserStatistics(userData.id, userData.token);
+    console.log(userStatistic);
     const newData = {
       learnedWords: 0,
       optional: {
-        sprint: { [new Date().toLocaleDateString()]: gameDataToday },
+        [gameName]: { [new Date().toLocaleDateString()]: gameDataToday },
       },
     };
     if (userStatistic instanceof Error && userStatistic.message === '404') {
       updateUserStatistics(userData.id, userData.token, newData);
     }
 
-    if (isUserStatistics(userStatistic)) {
+    if (!(userStatistic instanceof Error) && isUserStatistics(userStatistic)) {
       if (!userStatistic.optional) {
         updateUserStatistics(userData.id, userData.token, newData);
       } else {
-        if (!userStatistic.optional.sprint) {
-          userStatistic.optional.sprint = { [new Date().toLocaleDateString()]: gameDataToday };
+        if (!userStatistic.optional[gameName]) {
+          userStatistic.optional[gameName] = { [new Date().toLocaleDateString()]: gameDataToday };
         } else {
-          const dayStatistic = Object.keys(userStatistic.optional.sprint).find(
+          const dayStatistic = Object.keys(userStatistic.optional[gameName]).find(
             (date) => date === new Date().toLocaleDateString()
           );
           if (dayStatistic) {
-            userStatistic.optional.sprint[dayStatistic].newWordsQuantity += gameNewWordsCounter;
-            userStatistic.optional.sprint[dayStatistic].rightAnswers += trueWords.length;
-            userStatistic.optional.sprint[dayStatistic].wrongAnswers += falseWords.length;
-            userStatistic.optional.sprint[dayStatistic].responsesSeries =
-              userStatistic.optional.sprint[dayStatistic].responsesSeries > series
-                ? userStatistic.optional.sprint[dayStatistic].responsesSeries
+            userStatistic.optional[gameName][dayStatistic].newWordsQuantity += gameNewWordsCounter;
+            userStatistic.optional[gameName][dayStatistic].rightAnswers += trueWords.length;
+            userStatistic.optional[gameName][dayStatistic].wrongAnswers += falseWords.length;
+            userStatistic.optional[gameName][dayStatistic].responsesSeries =
+              userStatistic.optional[gameName][dayStatistic].responsesSeries > series
+                ? userStatistic.optional[gameName][dayStatistic].responsesSeries
                 : series;
-            userStatistic.optional.sprint[dayStatistic].gamesCounter += 1;
+            userStatistic.optional[gameName][dayStatistic].gamesCounter += 1;
           } else {
-            userStatistic.optional.sprint[new Date().toLocaleDateString()] = gameDataToday;
+            userStatistic.optional[gameName][new Date().toLocaleDateString()] = gameDataToday;
           }
         }
         delete userStatistic.id;
@@ -152,11 +156,14 @@ export default function GameResult({ finalScore, trueAnswersNumber, trueWords, f
   return (
     <div className="game-result">
       <h2>Результаты:</h2>
-      <div>{`Вы набрали ${finalScore} очков`}</div>
+      {selectedGame === 'sprint' && <div>{`Вы набрали ${finalScore} очков`}</div>}
+      <div>{`Лучшая серия верных ответов: ${seria > checkBestSeria() ? seria : checkBestSeria()}`}</div>
       <div>{`Правильных ответов: ${trueWords.length}`}</div>
       <div>{`Неверных ответов: ${falseWords.length}`}</div>
-      <div>{`Процент верных ответов: ${(100 / 20) * trueWords.length}%`}</div>
-      <NavLink class="link" textContent="Новая игра" link="/sprint" />
+      <div>{`Процент верных ответов: ${
+        trueWords.length ? Math.round((trueWords.length * 100) / (trueWords.length + falseWords.length)) : 0
+      }%`}</div>
+      <NavLink class="link" textContent="Новая игра" link="/game-difficulty" />
       <div className="result-wrapper">
         <h3>Я знаю:</h3>
         {trueWords.map((item, i) => (

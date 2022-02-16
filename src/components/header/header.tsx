@@ -29,7 +29,7 @@ const Header: FC<Props> = () => {
   const [headerTitle, setHeaderTitle] = useState('Домашняя')
   const allPages = {
     pages: [
-      'home', 'textbook', 'dictionary', 'audiocall', 'sprint', 'statistics', 'team',],
+      'home', 'textbook', 'dictionary', 'game-difficulty', 'game-difficulty', 'statistics', 'team',],
     pagesRu: [
       'домашняя', 'учебник', 'словарь', 'аудиовызов', 'спринт', 'статистика', 'команда',]
   }

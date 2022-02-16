@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 
+
 type Props = {
   i: number;
   pageName: string;
@@ -9,6 +10,7 @@ type Props = {
 };
 
 const NavItem: FC<Props> = (props: Props) => {
+
   const titleChange = () => {
     props.setHeaderTitle(props.pagesRu[props.i])
   }
