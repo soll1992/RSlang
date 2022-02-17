@@ -7,7 +7,6 @@ import createUserWord from '../../utils/createUserWord';
 import updateUserWord from '../../utils/updateUserWord';
 import { isUserWord } from '../../utils/typeGuards';
 import './wordCard.css';
-import removeUserDataFromStorage from '../../utils/removeUserDataFromStorage';
 /* eslint no-underscore-dangle: 0 */
 
 type Props = {
@@ -51,73 +50,52 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
 
   //  Words section -------------
   const [isWordDifficult, setIsWordDifficult] = useState(info.userWord?.difficulty === 'hard');
-  const [isWordLearned, setIsWordLearned] = useState(Boolean(info.userWord?.optional.isLearned));
+  const [isWordLearned, setIsWordLearned] = useState(Boolean(info.userWord?.optional?.learned));
 
   const addToDifficultWords = async () => {
     if (authorization.userData) {
-      const answer = await getUserWordById(
+      const wordData = await getUserWordById(
         info.id || info._id,
         authorization.userData.id,
         authorization.userData.token
       );
 
-      if (answer instanceof Error && answer.message === '401') removeUserDataFromStorage();
-      if (answer instanceof Error && answer.message === '404') {
-        const newData: UserWord = {
-          difficulty: 'hard',
-          optional: {
-            isLearned: undefined,
-          },
-        };
-        const created = createUserWord(
-          info.id || info._id,
-          authorization.userData.id,
-          authorization.userData.token,
-          newData
-        );
-        if (created instanceof Error && created.message === '401') removeUserDataFromStorage();
+      const newData: UserWord = {
+        difficulty: 'hard',
+        optional: {
+          learned: undefined,
+        },
+      };
+
+      if (wordData instanceof Error && wordData.message === '404') {
+        await createUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, newData);
       }
-      if (isUserWord(answer)) {
-        const newData: UserWord = {
-          difficulty: 'hard',
-          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: undefined })) as {
-            [key: string]: unknown;
-          },
+
+      if (isUserWord(wordData)) {
+        newData.optional = JSON.parse(JSON.stringify({ ...wordData.optional, learned: undefined })) as {
+          [key: string]: unknown;
         };
-        const updated = updateUserWord(
-          info.id || info._id,
-          authorization.userData.id,
-          authorization.userData.token,
-          newData
-        );
-        if (updated instanceof Error && updated.message === '401') removeUserDataFromStorage();
+        await updateUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, newData);
       }
     }
   };
 
   const deleteFromDifficultWords = async () => {
     if (authorization.userData) {
-      const answer = await getUserWordById(
+      const wordData = await getUserWordById(
         info.id || info._id,
         authorization.userData.id,
         authorization.userData.token
       );
 
-      if (answer instanceof Error && answer.message === '401') removeUserDataFromStorage();
-      if (isUserWord(answer)) {
-        const newData: UserWord = {
-          difficulty: 'easy',
-          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: undefined })) as {
-            [key: string]: unknown;
-          },
+      if (isUserWord(wordData)) {
+        wordData.difficulty = 'easy';
+        wordData.optional = JSON.parse(JSON.stringify({ ...wordData.optional, learned: undefined })) as {
+          [key: string]: unknown;
         };
-        const updated = updateUserWord(
-          info.id || info._id,
-          authorization.userData.id,
-          authorization.userData.token,
-          newData
-        );
-        if (updated instanceof Error && updated.message === '401') removeUserDataFromStorage();
+        delete wordData.id;
+        delete wordData.wordId;
+        await updateUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, wordData);
       }
     }
   };
@@ -134,69 +112,50 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
 
   const addToLearnedWords = async () => {
     if (authorization.userData) {
-      const answer = await getUserWordById(
+      const wordData = await getUserWordById(
         info.id || info._id,
         authorization.userData.id,
         authorization.userData.token
       );
 
-      if (answer instanceof Error && answer.message === '401') removeUserDataFromStorage();
-      if (answer instanceof Error && answer.message === '404') {
-        const newData: UserWord = {
-          difficulty: 'easy',
-          optional: {
-            isLearned: new Date().toLocaleDateString(),
-          },
-        };
-        const created = createUserWord(
-          info.id || info._id,
-          authorization.userData.id,
-          authorization.userData.token,
-          newData
-        );
-        if (created instanceof Error && created.message === '401') removeUserDataFromStorage();
+      const newData: UserWord = {
+        difficulty: 'easy',
+        optional: {
+          learned: new Date().toLocaleDateString(),
+        },
+      };
+
+      if (wordData instanceof Error && wordData.message === '404') {
+        await createUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, newData);
       }
-      if (isUserWord(answer)) {
-        const newData: UserWord = {
-          difficulty: 'easy',
-          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: new Date().toLocaleDateString() })) as {
-            [key: string]: unknown;
-          },
+
+      if (isUserWord(wordData)) {
+        newData.optional = JSON.parse(
+          JSON.stringify({ ...wordData.optional, learned: new Date().toLocaleDateString() })
+        ) as {
+          [key: string]: unknown;
         };
-        const updated = updateUserWord(
-          info.id || info._id,
-          authorization.userData.id,
-          authorization.userData.token,
-          newData
-        );
-        if (updated instanceof Error && updated.message === '401') removeUserDataFromStorage();
+        await updateUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, newData);
       }
     }
   };
 
   const deleteFromLearnedWords = async () => {
     if (authorization.userData) {
-      const answer = await getUserWordById(
+      const wordData = await getUserWordById(
         info.id || info._id,
         authorization.userData.id,
         authorization.userData.token
       );
 
-      if (answer instanceof Error && answer.message === '401') removeUserDataFromStorage();
-      if (isUserWord(answer)) {
-        const newData: UserWord = {
-          difficulty: 'easy',
-          optional: JSON.parse(JSON.stringify({ ...answer.optional, isLearned: undefined })) as {
-            [key: string]: unknown;
-          },
+      if (isUserWord(wordData)) {
+        wordData.difficulty = 'easy';
+        wordData.optional = JSON.parse(JSON.stringify({ ...wordData.optional, learned: undefined })) as {
+          [key: string]: unknown;
         };
-        const updated = updateUserWord(
-          info.id || info._id,
-          authorization.userData.id,
-          authorization.userData.token,
-          newData
-        );
-        if (updated instanceof Error && updated.message === '401') removeUserDataFromStorage();
+        delete wordData.id;
+        delete wordData.wordId;
+        await updateUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, wordData);
       }
     }
   };
@@ -254,10 +213,10 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
           <div className="word-card__additionally">
             <div className="word-card__answers">
               <span className="word-card__right-answers">
-                Правильные ответы: {info.userWord?.optional.rightAnswers || 0}
+                Правильные ответы: {info.userWord?.optional?.rightAnswers || 0}
               </span>
               <span className="word-card__wrong-answers">
-                Неправильные ответы: {info.userWord?.optional.wrongAnswers || 0}
+                Неправильные ответы: {info.userWord?.optional?.wrongAnswers || 0}
               </span>
             </div>
 

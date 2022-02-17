@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import UserWord from 'src/types/UserWord';
+import removeUserDataFromStorage from './removeUserDataFromStorage';
 
 function getUserWordById(wordId: string, userId: string, token: string) {
   return axios
@@ -10,7 +11,10 @@ function getUserWordById(wordId: string, userId: string, token: string) {
       },
     })
     .then((response) => response.data)
-    .catch((err: AxiosError) => new Error(String(err.response?.status)));
+    .catch((err: AxiosError) => {
+      if (err.response.status === 401) removeUserDataFromStorage();
+      return new Error(String(err.response.status));
+    });
 }
 
 export default getUserWordById;
