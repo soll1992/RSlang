@@ -66,7 +66,7 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
 
         if (wordsData instanceof Error) {
           if (wordsData.message === '401') removeUserDataFromStorage();
-        } else if (isWordsData(wordsData)) setWords(wordsData);
+        } else setWords(wordsData);
       }
 
       if (group.activeGroup && group.activeGroup === 'difficult-words' && authorization.userData) {
@@ -74,7 +74,7 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
         const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
         if (wordsData instanceof Error) {
           if (wordsData.message === '401') removeUserDataFromStorage();
-        } else if (isWordsData(wordsData)) setWords(wordsData);
+        } else setWords(wordsData);
       }
     })();
     setWordChanged(false);
@@ -96,16 +96,16 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
       {group.activeGroup === 'difficult-words' && !authorization.userData
         ? 'Для доступа к данному разделу необходимо авторизироваться'
         : words.map((word: Word) => {
-            return (
-              <WordCard
-                info={word}
-                audio={{ audiotrack, setAudiotrack }}
-                key={word.id || word._id}
-                authorization={authorization}
-                wordState={{ wordChanged, setWordChanged }}
-              />
-            );
-          })}
+          return (
+            <WordCard
+              info={word}
+              audio={{ audiotrack, setAudiotrack }}
+              key={word.id || word._id}
+              authorization={authorization}
+              wordState={{ wordChanged, setWordChanged }}
+            />
+          );
+        })}
 
       {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}
     </div>

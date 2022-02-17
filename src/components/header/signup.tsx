@@ -111,7 +111,7 @@ const SugnUp: FC<Props> = (props: Props) => {
           Пароль
         </label>
       </div>
-      <button type="submit" onClick={() => createDataUsers()} className="login-submit btn-2 signup">
+      <button onClick={() => createDataUsers()} className="login-submit btn-2 signup">
         Зарегистрироваться
       </button>
     </div>

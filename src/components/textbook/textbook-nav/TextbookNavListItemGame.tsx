@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function TextbookNavListItemGame({ text, link, activeGroup, activePage, disabled }: Props) {
-  
+
   const dispatch = useDispatch()
 
   const groupsValue: { [key: string]: number } = { // добавил этот объект для преобразования значения группы
@@ -48,7 +48,7 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
         href={`#/${link}`}
         onClick={goToGame}
       >
-        <span className="textbook-nav__link-text">{text}</span>
+        <button className='btn-2'><span className="textbook-nav__link-text">{text}</span></button>
       </a>
     </li>
   );

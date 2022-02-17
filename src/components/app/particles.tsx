@@ -2,22 +2,22 @@ import React from "react";
 import Particles from "react-tsparticles";
 
 const ParticlesApp = () => {
-  const particlesInit = (main): Promise<void> => {
-    console.log(main);
-    return
-  };
+  // const particlesInit = (main): Promise<void> => {
+  //   console.log(main);
+  //   return
+  // };
 
-  const particlesLoaded = (container): Promise<void> => {
-    console.log(container);
-    return
-  };
+  // const particlesLoaded = (container): Promise<void> => {
+  //   console.log(container);
+  //   return
+  // };
 
   return (
     <div className='home-particles'>
       <Particles
         id="tsparticles"
-        init={particlesInit}
-        loaded={particlesLoaded}
+        // init={particlesInit}
+        // loaded={particlesLoaded}
         options={{
           zIndex: {
             value: '-1'

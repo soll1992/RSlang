@@ -2,10 +2,10 @@
 	max-width: 1500px;
 	padding: 10px;
 	margin: 0 auto;
-	min-height: calc(100vh - 60px);
+	min-height: calc(88vh - 60px);
 
 	display: flex;
 	flex-direction: column;
 	gap: 25px;
-	color: #000;
+	color: #fff;
 }

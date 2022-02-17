@@ -4,18 +4,19 @@
 	padding: 10px;
 
 	display: flex;
-    gap: 20px;
+	gap: 20px;
 
 	text-align: start;
 
-	background-color: white;
+	background-color: #00000040;
 	border-radius: 10px;
 	box-shadow: 0px 0px 16px 1px rgba(34, 60, 80, 0.2);
 	box-shadow: 0px 0px 17px -2px rgb(34 60 80 / 20%);
 }
 
 .word-card__picture {
-	width: 230px;
+	flex: 0 0 30%;
+	object-fit: cover;
 	height: 100%;
 
 	border-radius: 10px;
@@ -39,12 +40,12 @@
 	top: 0;
 	right: 0;
 
-	background: url('../../assets/svg/audio-speaker.svg') no-repeat;
+	background: url("../../assets/svg/audio-speaker.svg") no-repeat;
 	background-size: 100%;
 }
 
 .word-card__word {
-    padding: 10px;
+	padding: 10px;
 	margin-bottom: 30px;
 
 	border-left: 5px solid black;
@@ -75,7 +76,7 @@
 }
 
 .word-card__word_4 {
-	border-left-color:  rgb(249 123 123);
+	border-left-color: rgb(249 123 123);
 }
 
 .word-card__word_5 {
@@ -99,8 +100,8 @@
 	display: inline-block;
 	padding: 10px 20px;
 	margin-right: 10px;
-
-    border-radius: 10px;
+	color: #000;
+	border-radius: 10px;
 	background-color: #f1efef;
 
 	cursor: pointer;
@@ -121,4 +122,3 @@
 .word-card-mark__checkbox {
 	display: none;
 }
-

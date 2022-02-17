@@ -12,10 +12,10 @@ interface Props {
 
 export function NavLink(props: Props) {
   return (
-    <>
+    <div className=''>
       <Link onClick={props.onClick} className={props.class} to={props.link}>
         {props.textContent}
       </Link>
-    </>
+    </div>
   );
 }

@@ -23,12 +23,13 @@ const Team: FC<Props> = () => {
             </div>
             <div className='app-team-item__title-wrap'>
               <h3 className='app-team-item__title'>Константин</h3>
-              <a href="https://github.com/ConstantineTU" target="_blank">
+              <a className='app-team-item__url' href="https://github.com/ConstantineTU" target="_blank">
                 <div className='footer__github-wrap black'>Developer<div className="footer__github black"></div></div>
               </a>
+              <p className='app-team-item__text'>Подготовил бэкенд, структуру проекта, функционал авторизации, главную страницу и дизайн проекта</p>
+
             </div>
           </div>
-          <p className='app-team-item__text'>Подготовил бэкенд, структуру проекта, функционал авторизации, главную страницу и дизайн проекта</p>
 
         </div>
         <div className="app-team-item">
@@ -38,12 +39,13 @@ const Team: FC<Props> = () => {
             </div>
             <div className='app-team-item__title-wrap'>
               <h3 className='app-team-item__title'>Антон</h3>
-              <a href="https://github.com/ConstantineTU" target="_blank">
+              <a className='app-team-item__url' href="https://github.com/ConstantineTU" target="_blank">
                 <div className='footer__github-wrap black'>Developer<div className="footer__github black"></div></div>
               </a>
+              <p className='app-team-item__text'>Сделал функционал минигр Спринт и Аудиовызов, настроил их для взаимной работы с учебником</p>
+
             </div >
           </div>
-          <p className='app-team-item__text'>Сделал функционал минигр Спринт и Аудиовызов, настроил их для взаимной работы с учебником</p>
         </div>
         <div className="app-team-item">
           <div className='app-team-header'>
@@ -52,12 +54,13 @@ const Team: FC<Props> = () => {
             </div>
             <div className='app-team-item__title-wrap'>
               <h3 className='app-team-item__title'>Дарья</h3>
-              <a href="https://github.com/ConstantineTU" target="_blank">
+              <a className='app-team-item__url' href="https://github.com/ConstantineTU" target="_blank">
                 <div className='footer__github-wrap black'>Developer<div className="footer__github black"></div></div>
               </a>
+              <p className='app-team-item__text'>Разработала электронный учебник, список слов, страницу статистики и прогресс изучения.</p>
+
             </div>
           </div>
-          <p className='app-team-item__text'>Разработала электронный учебник, список слов, страницу статистики и прогресс изучения.</p>
         </div>
       </div>
     </div>

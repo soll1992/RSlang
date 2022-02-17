@@ -105,7 +105,7 @@ const Login: FC<Props> = (props) => {
         </label>
       </div>
 
-      <button type="button" onClick={() => createDataUsers()} className="login-submit btn-2 login">
+      <button onClick={() => createDataUsers()} className="login-submit btn-2 login">
         Войти
       </button>
     </div>

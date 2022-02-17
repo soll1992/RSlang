@@ -31,8 +31,8 @@ const Header: FC<Props> = () => {
     localStorage.setItem('headerTitle', headerTitle);
   }, [headerTitle]);
   const allPages = {
-    pages: ['home', 'textbook', 'dictionary', 'game-difficulty', 'statistics', 'home/team'],
-    pagesRu: ['главная', 'учебник', 'словарь', 'миниигры', 'статистика', 'команда'],
+    pages: ['home', 'textbook/A1/1', 'textbook/difficult-words/1', 'game-difficulty', 'statistics', 'home/team'],
+    pagesRu: ['главная', 'учебник', 'сложные слова', 'миниигры', 'статистика', 'команда'],
   };
   useEffect(() => {
     const burger = document.getElementById('burger');
