@@ -7,8 +7,6 @@ import getUserAggregatedWords from '../../../utils/getUserAggregatedWords';
 import getWords from '../../../utils/getWords';
 import UserData from '../../../types/UserData';
 import './textbookPage.css';
-import removeUserDataFromStorage from '../../../utils/removeUserDataFromStorage';
-import { isWordsData } from '../../../utils/typeGuards';
 /* eslint no-underscore-dangle: 0 */
 
 type Props = {
@@ -63,27 +61,23 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
       if (group.activeGroup && group.activeGroup !== 'difficult-words' && authorization.userData) {
         const params = { wordsPerPage: 20, group: groupsValue[group.activeGroup], page: page.activePage - 1 };
         const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
-
-        if (wordsData instanceof Error) {
-          if (wordsData.message === '401') removeUserDataFromStorage();
-        } else setWords(wordsData);
+        if (!(wordsData instanceof Error)) setWords(wordsData);
       }
 
       if (group.activeGroup && group.activeGroup === 'difficult-words' && authorization.userData) {
         const params = { wordsPerPage: 3600, filter: { 'userWord.difficulty': 'hard' } };
         const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
-        if (wordsData instanceof Error) {
-          if (wordsData.message === '401') removeUserDataFromStorage();
-        } else setWords(wordsData);
+        if (!(wordsData instanceof Error)) setWords(wordsData);
       }
     })();
+
     setWordChanged(false);
   }, [[authorization.userData], [wordChanged]]);
 
   useEffect(() => {
     if (words.length > 0 && group.activeGroup !== 'difficult-words') {
       wordsState.setAllWordsDiffOrLearned(
-        words.every((word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional.isLearned)
+        words.every((word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional?.learned)
       );
     }
   }, [words]);

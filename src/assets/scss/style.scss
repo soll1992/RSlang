@@ -148,21 +148,21 @@ body {
 		background-size: cover;
 	}
 }
-*::-webkit-scrollbar {
-	width: 15px; /* ширина scrollbar */
-}
-*::-webkit-scrollbar-track {
-	background: #00000055; /* цвет дорожки */
-}
-*::-webkit-scrollbar-thumb {
-	background-color: #4c77d5; /* цвет плашки */
-	border-radius: 10px; /* закругления плашки */
-	border: 5px solid #4c77d5; /* padding вокруг плашки */
-}
-* {
-	scrollbar-width: auto; /* "auto" или "thin"  */
-	scrollbar-color: #4c77d5 #192f2d44; /* плашка скролла и дорожка */
-}
+// *::-webkit-scrollbar {
+// 	width: 15px; /* ширина scrollbar */
+// }
+// *::-webkit-scrollbar-track {
+// 	background: #00000055; /* цвет дорожки */
+// }
+// *::-webkit-scrollbar-thumb {
+// 	background-color: #4c77d5; /* цвет плашки */
+// 	border-radius: 10px; /* закругления плашки */
+// 	border: 5px solid #4c77d5; /* padding вокруг плашки */
+// }
+// * {
+// 	scrollbar-width: auto; /* "auto" или "thin"  */
+// 	scrollbar-color: #4c77d5 #192f2d44; /* плашка скролла и дорожка */
+// }
 .subtitle {
 	font-family: "Playfair Display", serif;
 	margin: 0px 0px 30px 0px;

@@ -19,8 +19,8 @@ function updateUserStatistics(userId: string, token: string, requestBody: Reques
     })
     .then((response) => response.data)
     .catch((err: AxiosError) => {
-      if (err.response.status === 401) removeUserDataFromStorage();
-      return new Error(String(err.response.status));
+      if (err.response?.status === 401) removeUserDataFromStorage();
+      return new Error(String(err.response?.status));
     });
 }
 

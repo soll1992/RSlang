@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import AgregatedWords from 'src/types/AgregatedWord';
+import removeUserDataFromStorage from './removeUserDataFromStorage';
 
 type Params = {
   wordsPerPage?: number;
@@ -18,7 +19,10 @@ function getUserAggregatedWords(userId: string, token: string, params?: Params) 
       params,
     })
     .then((response) => response.data[0].paginatedResults)
-    .catch((err: AxiosError) => new Error(String(err.response?.status)));
+    .catch((err: AxiosError) => {
+      if (err.response?.status === 401) removeUserDataFromStorage();
+      return new Error(String(err.response?.status));
+    });
 }
 
 export default getUserAggregatedWords;
