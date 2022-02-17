@@ -39,7 +39,7 @@ export default function Statistics() {
         const userStatistic = await getUserStatistics(userData.id, userData.token);
         if (!(userStatistic instanceof Error)) setGamesData(userStatistic);
 
-        const paramsLearnedWords = { wordsPerPage: 3600, filter: { 'userWord.optional.isLearned': today } };
+        const paramsLearnedWords = { wordsPerPage: 3600, filter: { 'userWord.optional.learned': today } };
         const learnedWordsToday = await getUserAggregatedWords(userData.id, userData.token, paramsLearnedWords);
         console.log(learnedWordsToday);
         if (!(learnedWordsToday instanceof Error)) setLearnedWordsQuantity(learnedWordsToday.length);
@@ -49,22 +49,26 @@ export default function Statistics() {
 
   useEffect(() => {
     if (gamesData?.optional) {
-      const todayGamesData = Object.values(gamesData.optional).map((game) => game[today]);
+      const todayGamesData = Object.values(gamesData.optional)
+        .filter((game) => game[today])
+        .map((game) => game[today]);
 
-      const rightAnswersForAllGames = todayGamesData
-        .map((game) => game.rightAnswers)
-        .reduce((prev, curr) => prev + curr);
-      const wrongAnswersForAllGames = todayGamesData
-        .map((game) => game.wrongAnswers)
-        .reduce((prev, curr) => prev + curr);
-      setWordsRightAnswersPercent(
-        Math.round((rightAnswersForAllGames * 100) / (rightAnswersForAllGames + wrongAnswersForAllGames))
-      );
+      if (todayGamesData.length) {
+        const rightAnswersForAllGames = todayGamesData
+          .map((game) => game.rightAnswers)
+          .reduce((prev, curr) => prev + curr);
+        const wrongAnswersForAllGames = todayGamesData
+          .map((game) => game.wrongAnswers)
+          .reduce((prev, curr) => prev + curr);
+        setWordsRightAnswersPercent(
+          Math.round((rightAnswersForAllGames * 100) / (rightAnswersForAllGames + wrongAnswersForAllGames))
+        );
 
-      const newWordsQuantityForAllGames = todayGamesData
-        .map((game) => game.newWordsQuantity)
-        .reduce((prev, curr) => prev + curr);
-      setNewWordsQuantity(newWordsQuantityForAllGames);
+        const newWordsQuantityForAllGames = todayGamesData
+          .map((game) => game.newWordsQuantity)
+          .reduce((prev, curr) => prev + curr);
+        setNewWordsQuantity(newWordsQuantityForAllGames);
+      }
     }
   }, [gamesData]);
 
