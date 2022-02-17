@@ -35,11 +35,7 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
   const seria = useSelector((state: RootState) => state.seria.seria);
 
   function checkBestSeria() {
-<<<<<<< HEAD
-    return props.seriaArr.length ? props.seriaArr.sort((a, b) => b - a)[0] : 0
-=======
     return seriaArr.length ? seriaArr.sort((a, b) => b - a)[0] : 0;
->>>>>>> develop
   }
 
   // Authorization check
@@ -162,19 +158,11 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
       <h2>Результаты:</h2>
       {selectedGame === 'sprint' && <div>{`Вы набрали ${finalScore} очков`}</div>}
       <div>{`Лучшая серия верных ответов: ${seria > checkBestSeria() ? seria : checkBestSeria()}`}</div>
-<<<<<<< HEAD
-      <div>{`Правильных ответов: ${props.trueWords.length}`}</div>
-      <div>{`Неверных ответов: ${props.falseWords.length}`}</div>
-      <div>{`Процент верных ответов: ${props.trueWords.length ? Math.round(props.trueWords.length * 100 / (props.trueWords.length + props.falseWords.length)) : 0}%`}</div>
-      <NavLink class='link' textContent='Новая игра' link='/game-difficulty' />
-=======
       <div>{`Правильных ответов: ${trueWords.length}`}</div>
       <div>{`Неверных ответов: ${falseWords.length}`}</div>
-      <div>{`Процент верных ответов: ${
-        trueWords.length ? Math.round((trueWords.length * 100) / (trueWords.length + falseWords.length)) : 0
-      }%`}</div>
+      <div>{`Процент верных ответов: ${trueWords.length ? Math.round((trueWords.length * 100) / (trueWords.length + falseWords.length)) : 0
+        }%`}</div>
       <NavLink class="link" textContent="Новая игра" link="/game-difficulty" />
->>>>>>> develop
       <div className="result-wrapper">
         <h3>Я знаю:</h3>
         {trueWords.map((item, i) => (
