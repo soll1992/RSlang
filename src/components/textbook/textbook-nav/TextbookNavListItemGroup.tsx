@@ -12,7 +12,7 @@ export default function TextbookNavListItemGroup({ text, link, children, isActiv
   return (
     <li className={`textbook-nav__list-item ${isActive ? 'textbook-nav__list-item_active' : ''}`}>
       <a className="textbook-nav__link" href={`#/textbook/${link}/1`}>
-        <span className="textbook-nav__level-card level-card">
+        <span className="textbook-nav__level-card level-card btn-2 textbook">
           <span className="level-card__name">{text}</span>
           {children}
         </span>

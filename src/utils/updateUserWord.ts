@@ -19,8 +19,8 @@ function updateUserWord(wordId: string, userId: string, token: string, requestBo
     })
     .then((response) => response.data)
     .catch((err: AxiosError) => {
-      if (err.response.status === 401) removeUserDataFromStorage();
-      return new Error(String(err.response.status));
+      if (err.response?.status === 401) removeUserDataFromStorage();
+      return new Error(String(err.response?.status));
     });
 }
 

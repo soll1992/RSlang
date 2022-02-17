@@ -53,7 +53,7 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
         href={`#/${link}`}
         onClick={goToGame}
       >
-        <span className="textbook-nav__link-text">{text}</span>
+        <button className='btn-2'><span className="textbook-nav__link-text">{text}</span></button>
       </a>
     </li>
   );

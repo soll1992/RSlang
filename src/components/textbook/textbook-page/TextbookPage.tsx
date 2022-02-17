@@ -90,16 +90,16 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
       {group.activeGroup === 'difficult-words' && !authorization.userData
         ? 'Для доступа к данному разделу необходимо авторизироваться'
         : words.map((word: Word) => {
-            return (
-              <WordCard
-                info={word}
-                audio={{ audiotrack, setAudiotrack }}
-                key={word.id || word._id}
-                authorization={authorization}
-                wordState={{ wordChanged, setWordChanged }}
-              />
-            );
-          })}
+          return (
+            <WordCard
+              info={word}
+              audio={{ audiotrack, setAudiotrack }}
+              key={word.id || word._id}
+              authorization={authorization}
+              wordState={{ wordChanged, setWordChanged }}
+            />
+          );
+        })}
 
       {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}
     </div>

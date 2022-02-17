@@ -1,4 +1,5 @@
 .header {
+  position: fixed;
   z-index: 2;
   display: flex;
   align-items: center;
@@ -12,46 +13,104 @@
   color: #fff;
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
     0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  &-wrap {
+    height: 50px;
+  }
   &__title {
+    font-weight: bold;
     font-size: 22px;
+    margin: 0px 0px 0px 150px;
   }
   a {
-    color: #fff;
+    color: #000;
   }
 }
 .nav {
-  background: rgba(0, 0, 0, 0.55);
+  &-title {
+    font-weight: bold;
+    &-img {
+      width: 40px;
+      animation: up-down 5s infinite;
+    }
+    &-wrap {
+      padding: 10px 0px 20px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+  background: #d6d6d6;
+  color: #000;
+  font-size: 20px;
   transition: left 1s;
   z-index: 99;
   position: absolute;
   flex-direction: column;
   display: flex;
-  top: 0px;
+  top: 0;
   left: -100%;
-  height: 100%;
-  width: 150px;
-  padding-top: 70px;
+  height: 100vh;
+  width: 250px;
+  box-shadow: 0px -1px 4px 2px rgba(0, 0, 0, 0.2), 0px 0px 5px 4px rgba(0, 0, 0, 0.14),
+    0px 0px 10px 1px rgba(0, 0, 0, 0.12);
   &__item {
     height: 30px;
   }
   &__link {
+    font-weight: 300;
     display: flex;
     align-items: center;
     height: 100%;
     position: relative;
-    padding: 0 10px;
+    padding: 0 20px;
     transition: color 0.3s, background 0.3s;
 
     &.active {
-      color: #000;
-      background-color: #ffffffa1;
+      color: #fff;
+      background-color: #000000a1;
       &::after {
         opacity: 1;
       }
     }
 
     &:hover {
-      background: #ffffffa1;
+      color: #fff;
+
+      background-color: #000000a1;
+    }
+  }
+  &-aside {
+    position: relative;
+    // animation: up-down-man 4s infinite;
+    text-shadow: rgba(0, 0, 0, 0.4) 2px 0 16px;
+    &-earth {
+      left: 0;
+      top: 0;
+      height: 50px;
+      width: 50px;
+      &-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 0.5px solid rgba(255, 255, 255, 0.2);
+        text-shadow: rgba(0, 0, 0, 0.4) 2px 0 16px;
+
+        // animation: up-down-man 4s infinite;
+        cursor: pointer;
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 50px;
+          width: 200px;
+          animation: move 7s infinite linear;
+          background: url("../../assets/img/home/earth.jpg");
+          background-size: contain;
+        }
+      }
     }
   }
 }
@@ -84,7 +143,7 @@
     transform: rotate(135deg);
   }
   &-wrap {
-    z-index: 100;
+    z-index: 5;
     overflow: hidden;
     position: relative;
     width: 30px;
@@ -92,7 +151,6 @@
     cursor: pointer;
     overflow: hidden;
     transition: left 0.5s;
-    margin: 0px 50px 0px 0px;
     &::after {
       content: "";
       bottom: 5px;
@@ -171,6 +229,18 @@
         transition: left 1s, top 1s, transform 0.4s;
         transform: rotate(135deg);
       }
+      &.black {
+        & .burger-close-bottom,
+        & .burger-close-top {
+          opacity: 0.5;
+          background: #1a1919;
+          transition: opacity 0.1s;
+        }
+        &:hover .burger-close-bottom,
+        &:hover .burger-close-top {
+          opacity: 1;
+        }
+      }
     }
   }
 }
@@ -180,14 +250,13 @@
     &-buttons {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      margin: 0px 0px 25px 0px;
+      margin: 0px 0px 45px 0px;
     }
     &-button {
       position: relative;
       font-size: 22px;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(0, 0, 0, 0.2);
       padding: 5px;
-      color: #fff;
       transition: background 0.5s;
       opacity: 0.5;
       &:first-child {
@@ -197,8 +266,8 @@
           position: absolute;
           right: 0;
           bottom: 0;
-          height: 1px;
-          background-color: #fff;
+          height: 2px;
+          background-color: #000;
           transition: width 0.5s, background 0.5s;
         }
       }
@@ -213,8 +282,8 @@
           position: absolute;
           left: 0;
           bottom: 0;
-          height: 1px;
-          background-color: #fff;
+          height: 2px;
+          background-color: #000;
           transition: width 0.5s, background 0.5s;
         }
       }
@@ -233,18 +302,20 @@
   }
   &-popup {
     &-wrap {
-      position: absolute;
-      width: 300px;
-      height: 300px;
+      position: fixed;
+      width: 400px;
+      height: 400px;
       top: calc(50% - 150px);
       left: calc(50% - 150px);
-      background-color: rgba(44, 44, 44, 0.95);
+      // background-color: #d6d6d6;
+      background: rgb(240, 240, 240);
       z-index: 5;
       opacity: 0;
       border-radius: 5px;
       overflow: hidden;
       visibility: hidden;
       transition: opacity 0.5s, visibility 0.5s;
+      color: #000;
       &.active {
         visibility: visible;
         opacity: 1;
@@ -255,6 +326,7 @@
       justify-content: center;
       width: 100%;
       &-wrap {
+        width: 100%;
         padding: 15px;
       }
     }
@@ -263,14 +335,28 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 100px;
+    max-width: 180px;
     align-items: center;
+    &__login {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    &__signup {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
   }
   &-avatar {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background-color: rgb(105, 105, 105);
+    background-color: rgb(39, 39, 39);
   }
   &-title {
     position: relative;
@@ -284,7 +370,7 @@
       left: 0;
       width: 0%;
       height: 1px;
-      background-color: rgba(0, 0, 0, 0.664);
+      background-color: rgba(255, 255, 255);
       transition: width 0.3s;
     }
     &:hover {
@@ -301,16 +387,53 @@
 
   &-wrap-inputs {
     display: grid;
-    grid-template-columns: repeat(2, 30% 1fr);
-    gap: 15px;
-    margin: 0px 0px 20px 0px;
+    grid-template-columns: repeat(1, 1fr);
+    height: 40px;
+    margin: 0px 0px 30px 0px;
+    width: 100%;
+    max-width: 250px;
+
+    position: relative;
+    & .login-login.label,
+    & .login-password.label,
+    & .login-email.label {
+      position: absolute;
+      background-color: rgb(240, 240, 240);
+      top: 8px;
+      left: 20px;
+      transition: top 0.3s, left 0.3s, font-size 0.3s;
+    }
+
+    & .login-login.input,
+    & .login-password.input,
+    & .login-email.input {
+      background-color: transparent;
+      border-radius: 5px;
+      border: #000 1px solid;
+      transition: 0.3s;
+      &:hover {
+        border: 1px solid #9d8665;
+      }
+      &:focus {
+        border: 1px solid rgb(42, 42, 185);
+        box-shadow: 0px 0px 10px 0.5px rgb(42, 42, 185);
+      }
+    }
+    & .login-login.label {
+    }
+    & .login-login.input {
+    }
+    & .login-password.label {
+    }
+    & .login-password.input {
+    }
+    & .login-email.label {
+    }
+    & .login-email.input {
+    }
   }
   &-login {
     &-container {
-    }
-    & .label {
-    }
-    & .input {
     }
   }
   &-password {
@@ -319,6 +442,10 @@
     & .label {
     }
     & .input {
+    }
+  }
+  &-wrap {
+    &-inputs {
     }
   }
   &-submit {
@@ -331,4 +458,65 @@
 }
 .label {
   padding: 5px;
+}
+
+.login-login.input:focus ~ .login-login.label,
+.login-password.input:focus ~ .login-password.label,
+.login-email.input:focus ~ .login-email.label,
+.login-login.input.active ~ .login-login.label,
+.login-password.input.active ~ .login-password.label,
+.login-email.input.active ~ .login-email.label,
+.login-login.input.active.error ~ .login-login.label,
+.login-password.input.active.error ~ .login-password.label,
+.login-email.input.active.error ~ .login-email.label {
+  font-size: 12px;
+  position: absolute;
+  background-color: rgb(240, 240, 240);
+  top: -10px;
+  left: 20px;
+}
+.login-login.input:focus:invalid ~ .login-login.label,
+.login-password.input:focus:invalid ~ .login-password.label,
+.login-email.input:focus:invalid ~ .login-email.label,
+.login-login.input.active:invalid ~ .login-login.label,
+.login-password.input.active:invalid ~ .login-password.label,
+.login-email.input.active:invalid ~ .login-email.label {
+  color: rgb(202, 52, 52);
+  font-size: 12px;
+  position: absolute;
+  background-color: rgb(240, 240, 240);
+  top: -10px;
+  left: 20px;
+}
+.login-login.input.error ~ .login-login.label,
+.login-password.input.error ~ .login-password.label,
+.login-email.input.error ~ .login-email.label {
+  color: rgb(202, 52, 52);
+}
+@keyframes up-down {
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  25% {
+    -webkit-transform: translate(2px, 2px);
+    transform: translate(2px, 2px);
+  }
+  50% {
+    -webkit-transform: translate(-2px, 2px);
+    transform: translate(-2px, 2px);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes move {
+  0% {
+    left: 0px;
+  }
+  100% {
+    left: -88px;
+  }
 }

@@ -48,7 +48,7 @@ export default function SprintDifficulty() {
 
   return (
     <section>
-      <p>Выберите уровень сложности:</p>
+      <h2 className='games-title'>Выберите уровень сложности:</h2>
       <div className="links-wrapper">
         {difficultyName.map((name, i) => (
           <ButtonRef

@@ -73,8 +73,8 @@ export default function Audiochallenge(props: Props) {
       const isTrue = index === userAnswers.indexOf(props.translation);
       props.checkUserAnswer(isTrue);
       addStylesFromActiveButton(isTrue, buttonRefs[index]);
-      checkLiveCount(isTrue);
       toggleWordInfo('add');
+      checkLiveCount(isTrue);
     }
   }
 

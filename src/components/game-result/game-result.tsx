@@ -160,9 +160,8 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
       <div>{`Лучшая серия верных ответов: ${seria > checkBestSeria() ? seria : checkBestSeria()}`}</div>
       <div>{`Правильных ответов: ${trueWords.length}`}</div>
       <div>{`Неверных ответов: ${falseWords.length}`}</div>
-      <div>{`Процент верных ответов: ${
-        trueWords.length ? Math.round((trueWords.length * 100) / (trueWords.length + falseWords.length)) : 0
-      }%`}</div>
+      <div>{`Процент верных ответов: ${trueWords.length ? Math.round((trueWords.length * 100) / (trueWords.length + falseWords.length)) : 0
+        }%`}</div>
       <NavLink class="link" textContent="Новая игра" link="/game-difficulty" />
       <div className="result-wrapper">
         <h3>Я знаю:</h3>

@@ -20,8 +20,8 @@ function getUserAggregatedWords(userId: string, token: string, params?: Params) 
     })
     .then((response) => response.data[0].paginatedResults)
     .catch((err: AxiosError) => {
-      if (err.response.status === 401) removeUserDataFromStorage();
-      return new Error(String(err.response.status));
+      if (err.response?.status === 401) removeUserDataFromStorage();
+      return new Error(String(err.response?.status));
     });
 }
 
