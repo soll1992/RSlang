@@ -2,6 +2,7 @@
 import Word from 'src/types/Word';
 import UserWord from 'src/types/UserWord';
 import UserData from 'src/types/UserData';
+import UserStatistics from 'src/types/UserStatistics';
 
 function isWord(obj: any): obj is Word {
   return ('id' in obj || '_id' in obj) && 'word' in obj;
@@ -19,4 +20,8 @@ function isUserWord(obj: any): obj is UserWord {
   return 'difficulty' in obj;
 }
 
-export { isWord, isWordsData, isUserData, isUserWord };
+function isUserStatistics(obj: any): obj is UserStatistics {
+  return 'learnedWords' in obj;
+}
+
+export { isWord, isWordsData, isUserData, isUserWord, isUserStatistics };

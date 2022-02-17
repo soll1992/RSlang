@@ -1,4 +1,12 @@
-import { CHANGE_SERIA, FROM_MENU, FROM_TEXTBOOK, SELECT_AUDIOCHALLENGE, SELECT_SPRINT, CHANGE_DIFFICULTY, CHANGE_PAGE } from './consts';
+import {
+  CHANGE_SERIA,
+  FROM_MENU,
+  FROM_TEXTBOOK,
+  SELECT_AUDIOCHALLENGE,
+  SELECT_SPRINT,
+  CHANGE_DIFFICULTY,
+  CHANGE_PAGE,
+} from './consts';
 
 export function changeDifficulty(payload: number) {
   return { type: CHANGE_DIFFICULTY, payload };

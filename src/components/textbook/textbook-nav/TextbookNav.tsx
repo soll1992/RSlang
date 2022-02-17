@@ -62,7 +62,7 @@ export default function TextbookNav({ group, page, wordsState }: Props) {
           return (
             <TextbookNavListItemGame
               text={gameRu}
-              link={'game'} //убрал gameEn.toLowerCase() заменил просто на game
+              link={'game'} //  убрал gameEn.toLowerCase() заменил просто на game
               activeGroup={group.activeGroup}
               activePage={page.activePage}
               disabled={wordsState.allWordsDiffOrLearned}

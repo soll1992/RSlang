@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/app/app';
 import { Provider } from 'react-redux';
+<<<<<<< HEAD
 import favicon from './assets/img/favicon.png';
+=======
+import App from './components/app/app';
+// import favicon from './assets/favicon.png';
+>>>>>>> develop
 import './assets/scss/style.scss';
 
 // favicon скачан с сайта <a href="https://www.flaticon.com/ru/free-icons/" title="английский иконки">Английский иконки от Amethyst prime - Flaticon</a>

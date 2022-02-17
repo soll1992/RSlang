@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../buttons/button';
 import useSound from 'use-sound';
+import Button from '../button/button';
 import './result-words.scss';
 
 interface Props {
@@ -14,7 +14,7 @@ export default function ResultWords(props: Props) {
 
   return (
     <div className="word-conteiner">
-      <Button onClick={(e) => sound()} class="sound-button" />
+      <Button onClick={() => sound()} class="sound-button" />
       <div>{`${props.word} - ${props.translation}`}</div>
     </div>
   );
