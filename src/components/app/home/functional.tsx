@@ -23,7 +23,6 @@ const Functional: FC<Props> = () => {
           <h3 className='app-functional-item__title'>Учебник</h3>
           <p className='app-functional-item__text'>6 разделов с разным уровнем сложности, в каждом разделе по 600 слов.</p>
           <button className='btn-2'>Открыть учебник</button>
-          {/* <Btn /> */}
         </div>
         <div className="app-functional-item">
           <div className='app-functional-img-wrap'>

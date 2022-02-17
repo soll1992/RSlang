@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
+import ParticlesApp from '../app/particles';
 import Login from './login';
 import SignUp from './signup';
 
@@ -47,7 +48,8 @@ const LoginPopup: FC<Props> = (props: Props) => {
         </button>
       </div>
       <div className="login-popup-container">
-        <div className="login-popup-container-wrap">{!isSignUp ? <Login hiddenOverlay={props.hiddenOverlay} userData={props.userData} /> : <SignUp />}</div>
+        <div className="login-popup-container-wrap">{!isSignUp ? <Login setIsSignUp={setIsSignUp} hiddenOverlay={props.hiddenOverlay}
+          userData={props.userData} /> : <SignUp setIsSignUp={setIsSignUp} />}</div>
       </div>
     </div>
   );

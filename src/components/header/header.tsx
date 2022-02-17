@@ -121,7 +121,7 @@ const Header: FC<Props> = () => {
               onClick={() => {
                 deleteLocalStorage();
               }}
-              className={'login-title '}
+              className={loginIsOpen ? ' btn-2 small active' : ' btn-2 small'}
             >
               Выйти
             </button>

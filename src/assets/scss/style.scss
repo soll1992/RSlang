@@ -69,9 +69,6 @@
 
 //<Шрифт по умолчанию>==========================================================================================
 $fontFamily: "Gilroy";
-
-// font-family: 'Neucha', cursive;
-
 // font-family: 'Playfair Display', serif;
 
 //</Шрифт по умолчанию>==========================================================================================
@@ -292,6 +289,40 @@ body {
 			&:after {
 				transform: translateX(59%);
 			}
+		}
+	}
+	&.login {
+		color: #000;
+		&-wrap {
+			background-color: #2a2ab9;
+		}
+		border: 1px solid #2a2ab9;
+		&:before {
+			border-bottom: 80px solid #2a2ab9;
+		}
+
+		&:after {
+			border-top: 80px solid #2a2ab9;
+		}
+		&:hover {
+			color: #fff;
+		}
+	}
+	&.signup {
+		color: #000;
+		&-wrap {
+			background-color: #2a2ab9;
+		}
+		border: 1px solid #2a2ab9;
+		&:before {
+			border-bottom: 80px solid #2a2ab9;
+		}
+
+		&:after {
+			border-top: 80px solid #2a2ab9;
+		}
+		&:hover {
+			color: #fff;
 		}
 	}
 }
