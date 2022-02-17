@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import UserWord from 'src/types/UserWord';
+import removeUserDataFromStorage from './removeUserDataFromStorage';
 
 type RequestBody = {
   difficulty: string;
@@ -17,7 +18,10 @@ function updateUserWord(wordId: string, userId: string, token: string, requestBo
       },
     })
     .then((response) => response.data)
-    .catch((err: AxiosError) => new Error(String(err.response?.status)));
+    .catch((err: AxiosError) => {
+      if (err.response.status === 401) removeUserDataFromStorage();
+      return new Error(String(err.response.status));
+    });
 }
 
 export default updateUserWord;
