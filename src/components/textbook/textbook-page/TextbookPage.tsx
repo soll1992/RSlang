@@ -70,17 +70,24 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
         if (!(wordsData instanceof Error)) setWords(wordsData);
       }
     })();
+  }, []);
 
-    setWordChanged(false);
-  }, [[authorization.userData], [wordChanged]]);
+  const checkDifficultyOrLearned = () => {
+    const allDifficult = words.every((word) => word.userWord?.difficulty === 'hard');
+    const allDifficultOrLearned = words.every(
+      (word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional?.learned
+    );
+    wordsState.setAllWordsDiffOrLearned(!!(allDifficultOrLearned && allDifficult === false));
+  };
 
   useEffect(() => {
-    if (words.length > 0 && group.activeGroup !== 'difficult-words') {
-      wordsState.setAllWordsDiffOrLearned(
-        words.every((word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional?.learned)
-      );
-    }
+    checkDifficultyOrLearned();
   }, [words]);
+
+  useEffect(() => {
+    if (wordChanged) checkDifficultyOrLearned();
+    setWordChanged(false);
+  }, [wordChanged]);
 
   // Audio --------------
   const [audiotrack, setAudiotrack] = useState<HTMLAudioElement | null>(null);
@@ -90,16 +97,16 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
       {group.activeGroup === 'difficult-words' && !authorization.userData
         ? 'Для доступа к данному разделу необходимо авторизироваться'
         : words.map((word: Word) => {
-          return (
-            <WordCard
-              info={word}
-              audio={{ audiotrack, setAudiotrack }}
-              key={word.id || word._id}
-              authorization={authorization}
-              wordState={{ wordChanged, setWordChanged }}
-            />
-          );
-        })}
+            return (
+              <WordCard
+                info={word}
+                audio={{ audiotrack, setAudiotrack }}
+                key={word.id || word._id}
+                authorization={authorization}
+                wordState={{ wordChanged, setWordChanged }}
+              />
+            );
+          })}
 
       {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}
     </div>
