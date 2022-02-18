@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Word from 'src/types/Word';
-import UserWord from 'src/types/UserWord';
 import UserData from 'src/types/UserData';
-import getUserWordById from '../../utils/getUserWordById';
 import createUserWord from '../../utils/createUserWord';
 import updateUserWord from '../../utils/updateUserWord';
-import { isUserWord } from '../../utils/typeGuards';
 import './wordCard.css';
 /* eslint no-underscore-dangle: 0 */
 
@@ -54,48 +51,42 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
 
   const addToDifficultWords = async () => {
     if (authorization.userData) {
-      const wordData = await getUserWordById(
-        info.id || info._id,
-        authorization.userData.id,
-        authorization.userData.token
-      );
-
-      const newData: UserWord = {
-        difficulty: 'hard',
-        optional: {
-          learned: undefined,
-        },
-      };
-
-      if (wordData instanceof Error && wordData.message === '404') {
-        await createUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, newData);
+      if (!info.userWord) {
+        info.userWord = {
+          difficulty: 'hard',
+          optional: {},
+        };
+        await createUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          info.userWord
+        );
       }
 
-      if (isUserWord(wordData)) {
-        newData.optional = JSON.parse(JSON.stringify({ ...wordData.optional, learned: undefined })) as {
-          [key: string]: unknown;
-        };
-        await updateUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, newData);
+      if (info.userWord) {
+        info.userWord.difficulty = 'hard';
+        delete info.userWord.optional.learned;
+        await updateUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          info.userWord
+        );
       }
     }
   };
 
   const deleteFromDifficultWords = async () => {
     if (authorization.userData) {
-      const wordData = await getUserWordById(
-        info.id || info._id,
-        authorization.userData.id,
-        authorization.userData.token
-      );
-
-      if (isUserWord(wordData)) {
-        wordData.difficulty = 'easy';
-        wordData.optional = JSON.parse(JSON.stringify({ ...wordData.optional, learned: undefined })) as {
-          [key: string]: unknown;
-        };
-        delete wordData.id;
-        delete wordData.wordId;
-        await updateUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, wordData);
+      if (info.userWord) {
+        info.userWord.difficulty = 'easy';
+        await updateUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          info.userWord
+        );
       }
     }
   };
@@ -112,50 +103,50 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
 
   const addToLearnedWords = async () => {
     if (authorization.userData) {
-      const wordData = await getUserWordById(
-        info.id || info._id,
-        authorization.userData.id,
-        authorization.userData.token
-      );
-
-      const newData: UserWord = {
-        difficulty: 'easy',
-        optional: {
-          learned: new Date().toLocaleDateString(),
-        },
-      };
-
-      if (wordData instanceof Error && wordData.message === '404') {
-        await createUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, newData);
+      if (!info.userWord) {
+        info.userWord = {
+          difficulty: 'easy',
+          optional: {
+            learned: new Date().toLocaleDateString(),
+          },
+        };
+        await createUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          info.userWord
+        );
       }
 
-      if (isUserWord(wordData)) {
-        newData.optional = JSON.parse(
-          JSON.stringify({ ...wordData.optional, learned: new Date().toLocaleDateString() })
+      if (info.userWord) {
+        info.userWord.difficulty = 'easy';
+        info.userWord.optional = JSON.parse(
+          JSON.stringify({ ...info.userWord.optional, learned: new Date().toLocaleDateString() })
         ) as {
           [key: string]: unknown;
         };
-        await updateUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, newData);
+        await updateUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          info.userWord
+        );
       }
     }
   };
 
   const deleteFromLearnedWords = async () => {
     if (authorization.userData) {
-      const wordData = await getUserWordById(
-        info.id || info._id,
-        authorization.userData.id,
-        authorization.userData.token
-      );
-
-      if (isUserWord(wordData)) {
-        wordData.difficulty = 'easy';
-        wordData.optional = JSON.parse(JSON.stringify({ ...wordData.optional, learned: undefined })) as {
-          [key: string]: unknown;
-        };
-        delete wordData.id;
-        delete wordData.wordId;
-        await updateUserWord(info.id || info._id, authorization.userData.id, authorization.userData.token, wordData);
+      if (info.userWord) {
+        info.userWord.difficulty = 'easy';
+        delete info.userWord.optional.learned;
+        console.log(info);
+        await updateUserWord(
+          info.id || info._id,
+          authorization.userData.id,
+          authorization.userData.token,
+          info.userWord
+        );
       }
     }
   };
@@ -167,6 +158,7 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
     }
     if (!event.target.checked) deleteFromLearnedWords();
     setIsWordLearned(!isWordLearned);
+    wordState.setWordChanged(true);
   };
 
   return (

@@ -1,15 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import './game-result.scss';
-import Word from 'src/types/Word';
 import { useSelector } from 'react-redux';
+import Word from '../../types/Word';
 import ResultWords from '../result-words/result-words';
 import { NavLink } from '../link/link';
 import UserData from '../../types/UserData';
-import { isUserData, isUserStatistics, isUserWord } from '../../utils/typeGuards';
-import getUserWordById from '../../utils/getUserWordById';
+import { isUserData, isUserStatistics } from '../../utils/typeGuards';
 import createUserWord from '../../utils/createUserWord';
-import UserWord from '../../types/UserWord';
 import updateUserWord from '../../utils/updateUserWord';
 import getUserStatistics from '../../utils/getUserStatistics';
 import updateUserStatistics from '../../utils/updateUserStatistics';
@@ -59,32 +57,40 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
     return Promise.allSettled(
       answersArr.map((wordData) => {
         return (async () => {
-          const wordInfo = await getUserWordById(wordData.id || wordData._id, userData.id, userData.token);
-          if (wordInfo instanceof Error && wordInfo.message === '404') {
-            const newData: UserWord = {
+          if (!wordData.userWord) {
+            wordData.userWord = {
               difficulty: 'easy',
               optional: {
                 [answersType]: 1,
+                inRow: answersType === 'rightAnswers' ? 1 : 0,
               },
             };
             gameNewWordsCounter += 1;
-            await createUserWord(wordData.id || wordData._id, userData.id, userData.token, newData);
-          }
-
-          if (isUserWord(wordInfo)) {
-            const newData: UserWord = {
-              difficulty: wordInfo.difficulty,
-              optional: JSON.parse(JSON.stringify({ ...wordInfo.optional, [answersType]: 1 })) as {
-                [key: string]: unknown;
-              },
-            };
-            console.log(newData);
-            if (!(wordInfo.optional.rightAnswers || wordInfo.optional.wrongAnswers)) {
+            await createUserWord(wordData.id || wordData._id, userData.id, userData.token, wordData.userWord);
+          } else {
+            if (!(wordData.userWord.optional.rightAnswers || wordData.userWord.optional.wrongAnswers)) {
               gameNewWordsCounter += 1;
+              wordData.userWord.optional[answersType] = 1;
             } else {
-              newData.optional[answersType] = ((wordInfo.optional[answersType] as number) || 0) + 1;
+              wordData.userWord.optional[answersType] = ((wordData.userWord.optional[answersType] as number) || 0) + 1;
             }
-            await updateUserWord(wordData.id || wordData._id, userData.id, userData.token, newData);
+
+            if (answersType === 'rightAnswers' && !wordData.userWord.optional.learned) {
+              wordData.userWord.optional.inRow = ((wordData.userWord.optional.inRow as number) || 0) + 1;
+              if (
+                (wordData.userWord.difficulty === 'easy' && wordData.userWord.optional.inRow >= 3) ||
+                (wordData.userWord.difficulty === 'hard' && wordData.userWord.optional.inRow >= 5)
+              ) {
+                wordData.userWord.optional.learned = new Date().toLocaleDateString();
+                wordData.userWord.optional.inRow = 0;
+                if (wordData.userWord.difficulty === 'hard') wordData.userWord.difficulty = 'easy';
+              }
+            }
+            if (answersType === 'wrongAnswers') {
+              if (wordData.userWord.optional.learned) delete wordData.userWord.optional.learned;
+              wordData.userWord.optional.inRow = 0;
+            }
+            await updateUserWord(wordData.id || wordData._id, userData.id, userData.token, wordData.userWord);
           }
         })();
       })
@@ -92,7 +98,6 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
   };
 
   const changeStatisticData = async () => {
-    console.log(gameName);
     const gameDataToday = {
       newWordsQuantity: gameNewWordsCounter,
       rightAnswers: trueWords.length,
@@ -100,10 +105,8 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
       responsesSeries: series,
       gamesCounter: 1,
     };
-    console.log(gameDataToday);
 
     const userStatistic = await getUserStatistics(userData.id, userData.token);
-    console.log(userStatistic);
     const newData = {
       learnedWords: 0,
       optional: {
@@ -160,8 +163,9 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
       <div>{`Лучшая серия верных ответов: ${seria > checkBestSeria() ? seria : checkBestSeria()}`}</div>
       <div>{`Правильных ответов: ${trueWords.length}`}</div>
       <div>{`Неверных ответов: ${falseWords.length}`}</div>
-      <div>{`Процент верных ответов: ${trueWords.length ? Math.round((trueWords.length * 100) / (trueWords.length + falseWords.length)) : 0
-        }%`}</div>
+      <div>{`Процент верных ответов: ${
+        trueWords.length ? Math.round((trueWords.length * 100) / (trueWords.length + falseWords.length)) : 0
+      }%`}</div>
       <NavLink class="link" textContent="Новая игра" link="/game-difficulty" />
       <div className="result-wrapper">
         <h3>Я знаю:</h3>
