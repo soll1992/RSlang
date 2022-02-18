@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import './game-result.scss';
-import Word from 'src/types/Word';
 import { useSelector } from 'react-redux';
+import Word from '../../types/Word';
 import ResultWords from '../result-words/result-words';
 import { NavLink } from '../link/link';
 import UserData from '../../types/UserData';
@@ -62,6 +62,7 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
               difficulty: 'easy',
               optional: {
                 [answersType]: 1,
+                inRow: answersType === 'rightAnswers' ? 1 : 0,
               },
             };
             gameNewWordsCounter += 1;
@@ -73,6 +74,22 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
             } else {
               wordData.userWord.optional[answersType] = ((wordData.userWord.optional[answersType] as number) || 0) + 1;
             }
+
+            if (answersType === 'rightAnswers' && !wordData.userWord.optional.learned) {
+              wordData.userWord.optional.inRow = ((wordData.userWord.optional.inRow as number) || 0) + 1;
+              if (
+                (wordData.userWord.difficulty === 'easy' && wordData.userWord.optional.inRow >= 3) ||
+                (wordData.userWord.difficulty === 'hard' && wordData.userWord.optional.inRow >= 5)
+              ) {
+                wordData.userWord.optional.learned = new Date().toLocaleDateString();
+                wordData.userWord.optional.inRow = 0;
+                if (wordData.userWord.difficulty === 'hard') wordData.userWord.difficulty = 'easy';
+              }
+            }
+            if (answersType === 'wrongAnswers') {
+              if (wordData.userWord.optional.learned) delete wordData.userWord.optional.learned;
+              wordData.userWord.optional.inRow = 0;
+            }
             await updateUserWord(wordData.id || wordData._id, userData.id, userData.token, wordData.userWord);
           }
         })();
@@ -81,7 +98,6 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
   };
 
   const changeStatisticData = async () => {
-    console.log(gameName);
     const gameDataToday = {
       newWordsQuantity: gameNewWordsCounter,
       rightAnswers: trueWords.length,
@@ -89,10 +105,8 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
       responsesSeries: series,
       gamesCounter: 1,
     };
-    console.log(gameDataToday);
 
     const userStatistic = await getUserStatistics(userData.id, userData.token);
-    console.log(userStatistic);
     const newData = {
       learnedWords: 0,
       optional: {
