@@ -64,11 +64,11 @@
 	&-content {
 		&-wrap {
 			width: 100%;
-			height: 800px;
+			height: 100vh;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			margin: 0px 0px 100px 0px;
+			margin: 0px 0px 0px 0px;
 			@media (max-width: 768px) {
 				flex-direction: column;
 			}

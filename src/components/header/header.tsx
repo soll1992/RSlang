@@ -6,7 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import NavItem from './nav-item';
 
+type UserData = {
+  token: string;
+  id: string;
+}
 type Props = {
+  userData: {
+    value: UserData;
+    setValue: React.Dispatch<UserData>;
+  }
 
 };
 interface RootState {
@@ -34,11 +42,7 @@ const Header: FC<Props> = (props) => {
   const dispatch = useDispatch();
   const headerTitle = useSelector((state: RootState) => state.title.title);
 
-  const [userData, setUserData] = useState(() => {
-    const saved = localStorage.getItem('userData');
-    const initialValue = JSON.parse(saved);
-    return initialValue || { token: '', id: '' };
-  });
+
 
   const [loginIsOpen, setLoginIsOpen] = useState(false);
   const [isOverlay, setIsOverlay] = useState(false);
@@ -90,19 +94,19 @@ const Header: FC<Props> = (props) => {
   };
   const deleteLocalStorage = () => {
     localStorage.clear();
-    setUserData({
+    props.userData.setValue({
       token: '',
       id: '',
     });
-    location.reload();
+    // location.reload();
   };
 
   useEffect(() => {
-    if (userData.token !== '') {
-      localStorage.setItem('userData', JSON.stringify(userData));
+    if (props.userData.value.token !== '') {
+      localStorage.setItem('userData', JSON.stringify(props.userData.value));
       setAuthorizations(true);
     } else setAuthorizations(false);
-  }, [userData]);
+  }, [props.userData]);
   return (
     <div className='header-wrap'>
       <header id="Top" className="header">
@@ -151,7 +155,7 @@ const Header: FC<Props> = (props) => {
           )}
           <div className="login-avatar"></div>
         </div>
-        <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={{ value: userData, setValue: setUserData }} />
+        <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={props.userData} />
         <div onClick={hiddenOverlay} className={!isOverlay ? 'background-overlay' : 'background-overlay active'}></div>
       </header>
     </div>
