@@ -10,7 +10,7 @@ export default function Textbook() {
   const [activeGroup, setActiveGroup] = useState('');
   const [activePage, setActivePage] = useState(1);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [allWordsDiffOrLearned, setAllWordsDiffOrLearned] = useState(true);
+  const [allWordsDiffOrLearned, setAllWordsDiffOrLearned] = useState(false);
 
   useEffect(() => {
     const checkUserData = () => {
@@ -34,8 +34,6 @@ export default function Textbook() {
       </div>
 
       <div className={`textbook__main ${allWordsDiffOrLearned ? `textbook__main_${activeGroup}` : ''}`}>
-        {activeGroup ? '' : <p>Пожалуйста, выберите категорию</p>}
-
         <Routes>
           <Route
             path=":groupId/:pageId"
