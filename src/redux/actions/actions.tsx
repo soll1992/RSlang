@@ -6,6 +6,7 @@ import {
   SELECT_SPRINT,
   CHANGE_DIFFICULTY,
   CHANGE_PAGE,
+  TITLE_CHANGE,
 } from './consts';
 
 export function changeDifficulty(payload: number) {
@@ -34,4 +35,7 @@ export function fromTextbook() {
 
 export function changeSeria(payload: number) {
   return { type: CHANGE_SERIA, payload };
+}
+export function titleChange(payload: string) {
+  return { type: TITLE_CHANGE, payload };
 }

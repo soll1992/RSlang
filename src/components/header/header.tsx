@@ -2,12 +2,38 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FC } from 'react';
 import './header.scss';
 import LoginPopup from './login-popap';
+import { useDispatch, useSelector } from 'react-redux';
 
 import NavItem from './nav-item';
 
-type Props = {};
+type Props = {
 
-const Header: FC<Props> = () => {
+};
+interface RootState {
+  gameWordPage: {
+    gameWordPage: number;
+  };
+  gameDifficulty: {
+    gameDifficulty: number;
+  };
+  selectedGame: {
+    selectedGame: string;
+  };
+  from: {
+    from: string;
+  };
+  seria: {
+    seria: number;
+  };
+  title: {
+    title: string;
+  };
+}
+
+const Header: FC<Props> = (props) => {
+  const dispatch = useDispatch();
+  const headerTitle = useSelector((state: RootState) => state.title.title);
+
   const [userData, setUserData] = useState(() => {
     const saved = localStorage.getItem('userData');
     const initialValue = JSON.parse(saved);
@@ -22,23 +48,20 @@ const Header: FC<Props> = () => {
     return initialValue || false;
   });
 
-  const [headerTitle, setHeaderTitle] = useState<string>(() => {
-    const saved = localStorage.getItem('headerTitle');
-    const initialValue = window.location.hash && saved !== 'undefined' ? saved : undefined;
-    return initialValue || 'Главная';
-  });
+
   useEffect(() => {
     localStorage.setItem('headerTitle', headerTitle);
   }, [headerTitle]);
-  const allPages = {
-    pages: ['home', 'textbook/A1/1', 'textbook/difficult-words/1', 'game-difficulty', 'statistics', 'home/team'],
-    pagesRu: ['главная', 'учебник', 'сложные слова', 'миниигры', 'статистика', 'команда'],
-  };
   useEffect(() => {
     const burger = document.getElementById('burger');
     burger.classList.remove('active');
     setIsOverlay(false);
   }, [headerTitle]);
+  const allPages = {
+    pages: ['home', 'textbook/A1/1', 'textbook/difficult-words/1', 'game-difficulty', 'statistics', 'home/team'],
+    pagesRu: ['главная', 'учебник', 'сложные слова', 'миниигры', 'статистика', 'команда'],
+  };
+
 
   const handlerChange = ({ currentTarget }: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const burger = document.getElementById('burger')
@@ -71,6 +94,7 @@ const Header: FC<Props> = () => {
       token: '',
       id: '',
     });
+    location.reload();
   };
 
   useEffect(() => {
@@ -101,7 +125,6 @@ const Header: FC<Props> = () => {
           </div>
           {allPages.pages.map((pageName, index) => (
             <NavItem
-              headerTitle={{ value: headerTitle, setValue: setHeaderTitle }}
               i={index}
               pagesRu={allPages.pagesRu}
               pageName={pageName}

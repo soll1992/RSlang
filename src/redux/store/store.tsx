@@ -6,6 +6,7 @@ import { pageReducer } from '../reducers/pageReducer';
 import { selectGameReducer } from '../reducers/selectGameReducer';
 import { gameLinkReducer } from '../reducers/gameLinkReducer';
 import { changeSeriaReducer } from '../reducers/seriaReducer';
+import { titleChangeReducer } from '../reducers/titleReducer';
 
 const rootReducer = combineReducers({
   gameDifficulty: difficultyReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   selectedGame: selectGameReducer,
   from: gameLinkReducer,
   seria: changeSeriaReducer,
+  title: titleChangeReducer,
 });
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));

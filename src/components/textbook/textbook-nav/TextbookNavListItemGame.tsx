@@ -7,6 +7,7 @@ import {
   changePage,
   selectSprint,
   selectAudiochallenge,
+  titleChange,
 } from '../../../redux/actions/actions';
 
 type Props = {
@@ -30,9 +31,14 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
     C2: 5,
   };
 
+  const titleChangeClick = () => {
+    dispatch(titleChange('Миниигры'));
+  };
+
   const goToGame = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (disabled) e.preventDefault();
     if (!disabled) {
+      titleChangeClick()
       dispatch(changePage(activePage - 1)); // добавил тут 4 диспатча
       dispatch(changeDifficulty(groupsValue[activeGroup]));
       if (text === 'Аудиовызов') {

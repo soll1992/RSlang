@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { FC } from 'react';
 import './home.scss';
-import './wave.scss';
-import kostik from '../../../assets/img/home/kostik.png'
-import anton from '../../../assets/img/home/anton.png'
-import darija from '../../../assets/img/home/darija.png'
+import kostik from '../../assets/img/home/kostik.png'
+import anton from '../../assets/img/home/anton.png'
+import darija from '../../assets/img/home/darija.png'
 
 
 type Props = {
@@ -39,7 +38,7 @@ const Team: FC<Props> = () => {
             </div>
             <div className='app-team-item__title-wrap'>
               <h3 className='app-team-item__title'>Антон</h3>
-              <a className='app-team-item__url' href="https://github.com/ConstantineTU" target="_blank">
+              <a className='app-team-item__url' href="https://github.com/soll1992" target="_blank">
                 <div className='footer__github-wrap black'>Developer<div className="footer__github black"></div></div>
               </a>
               <p className='app-team-item__text'>Сделал функционал минигр Спринт и Аудиовызов, настроил их для взаимной работы с учебником</p>
@@ -54,7 +53,7 @@ const Team: FC<Props> = () => {
             </div>
             <div className='app-team-item__title-wrap'>
               <h3 className='app-team-item__title'>Дарья</h3>
-              <a className='app-team-item__url' href="https://github.com/ConstantineTU" target="_blank">
+              <a className='app-team-item__url' href="https://github.com/dariija" target="_blank">
                 <div className='footer__github-wrap black'>Developer<div className="footer__github black"></div></div>
               </a>
               <p className='app-team-item__text'>Разработала электронный учебник, список слов, страницу статистики и прогресс изучения.</p>
