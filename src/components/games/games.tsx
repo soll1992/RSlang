@@ -104,7 +104,7 @@ export default function Games() {
 
   // Генерирует пару слово-перевод
   function generateQuestion(arr: Word[]) {
-    const isTrue = Boolean(random(0, 1)); // определяет будет ли слово соответствовать переводу
+    const isTrue = arr.length > 1 ? Boolean(random(0, 1)) : 1; // определяет будет ли слово соответствовать переводу
     if (currentWordnumber === arr.length) {
       // если 20 слово, то заканчиваем игру
       gameEnder(clock);
