@@ -135,6 +135,8 @@ export default function Audiochallenge(props: Props) {
       keysAnswerCheck(e, key);
     } else if (e.code === 'ArrowRight') {
       nextButtonHandler();
+    } else if (e.code === 'Space') {
+      wordSound.play();
     }
   }
 
