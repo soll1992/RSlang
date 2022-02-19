@@ -25,7 +25,11 @@ export default function SprintDifficulty() {
   const buttonsRefs = [];
 
   useEffect(() => {
-    (buttonsRefs[difficulty] as HTMLButtonElement).classList.add('select');
+    if (difficulty === 6) {
+      (buttonsRefs[0] as HTMLButtonElement).classList.add('select');
+    } else {
+      (buttonsRefs[difficulty] as HTMLButtonElement).classList.add('select');
+    }
   }, []);
 
   function selectGameParams(i: number) {
@@ -48,7 +52,7 @@ export default function SprintDifficulty() {
 
   return (
     <section>
-      <h2 className='games-title'>Выберите уровень сложности:</h2>
+      <h2 className="games-title">Выберите уровень сложности:</h2>
       <div className="links-wrapper">
         {difficultyName.map((name, i) => (
           <ButtonRef
