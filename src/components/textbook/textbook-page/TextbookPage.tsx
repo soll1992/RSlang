@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Word from 'src/types/Word';
@@ -50,26 +51,32 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
     C2: 5,
   };
 
+  const getWordsData = async () => {
+    console.log('Получаем данные при вызове getWordsData')
+    if (group.activeGroup && group.activeGroup !== 'difficult-words' && !authorization.userData) {
+      const params = { group: groupsValue[group.activeGroup], page: page.activePage - 1 };
+      const wordsData = await getWords(params);
+      if (wordsData) setWords(wordsData);
+    }
+
+    if (group.activeGroup && group.activeGroup !== 'difficult-words' && authorization.userData) {
+      const params = { wordsPerPage: 20, group: groupsValue[group.activeGroup], page: page.activePage - 1 };
+      const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
+      if (!(wordsData instanceof Error)) setWords(wordsData);
+    }
+
+    if (group.activeGroup && group.activeGroup === 'difficult-words' && authorization.userData) {
+      console.log('Получаем только сложные слова')
+      const params = { wordsPerPage: 3600, filter: { 'userWord.difficulty': 'hard' } };
+      const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
+      // console.log(wordsData)
+      if (!(wordsData instanceof Error)) setWords(wordsData);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      if (group.activeGroup && group.activeGroup !== 'difficult-words' && !authorization.userData) {
-        const params = { group: groupsValue[group.activeGroup], page: page.activePage - 1 };
-        const wordsData = await getWords(params);
-        if (wordsData) setWords(wordsData);
-      }
-
-      if (group.activeGroup && group.activeGroup !== 'difficult-words' && authorization.userData) {
-        const params = { wordsPerPage: 20, group: groupsValue[group.activeGroup], page: page.activePage - 1 };
-        const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
-        if (!(wordsData instanceof Error)) setWords(wordsData);
-      }
-
-      if (group.activeGroup && group.activeGroup === 'difficult-words' && authorization.userData) {
-        const params = { wordsPerPage: 3600, filter: { 'userWord.difficulty': 'hard' } };
-        const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
-        if (!(wordsData instanceof Error)) setWords(wordsData);
-      }
-    })();
+    console.log('Получаем данные при начальной инициализации компонента')
+    getWordsData();
   }, []);
 
   const checkDifficultyOrLearned = () => {
@@ -85,7 +92,16 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
   }, [words]);
 
   useEffect(() => {
-    if (wordChanged) checkDifficultyOrLearned();
+    console.log('Слово поменялось')
+    // if (wordChanged && group.activeGroup === 'difficult-words') {
+    //   console.log('Слово изменилось, мы в сложным словах и собираемся получать только сложные слова');
+    //   getWordsData()
+    // }
+    // else if (wordChanged) checkDifficultyOrLearned();
+
+    if (wordChanged) {
+      group.activeGroup === 'difficult-words' ? getWordsData() : checkDifficultyOrLearned();
+    }
     setWordChanged(false);
   }, [wordChanged]);
 
