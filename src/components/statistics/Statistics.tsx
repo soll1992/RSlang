@@ -7,8 +7,6 @@ import { isUserData } from '../../utils/typeGuards';
 import UserStatistics from '../../types/UserStatistics';
 import UserData from '../../types/UserData';
 import { MyResponsiveLine } from './long-term-statistics/long-term-statistics';
-import { dataTest } from './long-term-statistics/data';
-import { dataTest2 } from './long-term-statistics/data2';
 
 export default function Statistics() {
   // Authorization check
@@ -26,6 +24,9 @@ export default function Statistics() {
   // ------
 
   const [userStatisticData, setUserStatisticData] = useState<UserStatistics>(null);
+  const [newWordsLongtermStatiscticData, setNewWordsLongtermStatiscticData] = useState([]);
+  const [learnedWordsLongtermStatiscticData, setLearnedWordsLongtermStatiscticData] = useState([]);
+
   const today = new Date().toLocaleDateString();
   const games = [
     ['Спринт', 'sprint'],
@@ -41,12 +42,37 @@ export default function Statistics() {
     })();
   }, [userData]);
 
+  useEffect(() => {
+    if (userStatisticData) {
+      const newWordsData = Object.entries(userStatisticData?.optional?.words).map(
+        ([wordsDateStatistic, wordsDataStatistic]) => ({
+          x: wordsDateStatistic,
+          y: wordsDataStatistic.newWordsQuantity,
+        })
+      );
+      setNewWordsLongtermStatiscticData([{ id: 'Новые слова', data: newWordsData }]);
+
+      const learnedWordsData = Object.entries(userStatisticData?.optional?.words).map(
+        ([wordsDateStatistic, wordsDataStatistic]) => ({
+          x: wordsDateStatistic,
+          y: wordsDataStatistic.learnedWordsQuantity,
+        })
+      );
+      const reducedLearnedWordsData = learnedWordsData.map((obj, index) =>
+        learnedWordsData
+          .slice(0, index + 1)
+          .reduce((prevData, currData) => ({ x: currData.x, y: prevData.y + currData.y }))
+      );
+      setLearnedWordsLongtermStatiscticData([{ id: 'Изученные', data: reducedLearnedWordsData }]);
+    }
+  }, [userStatisticData]);
+
   return (
     <div className="statistics">
-      <div className="day-statistics">
-        <h1 className="day-statistics__title">Статистика за сегодня</h1>
-        {userData ? (
-          <div>
+      {userData ? (
+        <div>
+          <div className="day-statistics">
+            <h1 className="day-statistics__title">Статистика за сегодня</h1>
             <div className="day-statistics__content">
               <div className="games-statictics">
                 <h2 className="games-statictics__title">Мини-игры</h2>
@@ -78,17 +104,20 @@ export default function Statistics() {
                 />
               </div>
             </div>
+          </div>
+          <div className="long-term-statistics">
+            <h1 className="long-term-statistic__title">Статистика за все время</h1>
             <div className="test-graph">
-              <MyResponsiveLine data={dataTest} />
+              <MyResponsiveLine data={newWordsLongtermStatiscticData} />
             </div>
             <div className="test-graph">
-              <MyResponsiveLine data={dataTest2} />
+              <MyResponsiveLine data={learnedWordsLongtermStatiscticData} />
             </div>
           </div>
-        ) : (
-          'Для доступа к данному разделу необходимо авторизироваться'
-        )}
-      </div>
+        </div>
+      ) : (
+        'Для доступа к данному разделу необходимо авторизироваться'
+      )}
     </div>
   );
 }
