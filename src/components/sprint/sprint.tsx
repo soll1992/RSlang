@@ -59,7 +59,11 @@ export default function Sprint(props: Props) {
         <div className='sprint-container'>
           <h2 className='sprint-title'>Спринт</h2>
           <div className='sprint-description-wrap'>
-            <p className='sprint-description'>Однажды тут будет описание игры и правила</p>
+            <p className='sprint-description'>Спринт - тренировка на скорость. Попробуй угадать как можно больше слов за 60 секунд.</p>
+            <ul>
+              <li>Можно использовать мышь для выбора правильного ответа</li>
+              <li>Либо клавиши влево или вправо</li>
+            </ul>
           </div>
           <Button refer={props.refer} onClick={start} class="button btn-start" textContent="Старт" />
         </div>

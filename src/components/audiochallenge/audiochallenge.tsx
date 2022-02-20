@@ -36,6 +36,7 @@ export default function Audiochallenge(props: Props) {
   const [startGame, setStartGame] = useState(false);
   const [userAnswers, setUserAnswers] = useState<Array<string>>([]);
   const wordRef = useRef<HTMLDivElement>(null);
+  const wordTraslateRef = useRef<HTMLDivElement>(null);
   const wordImgRef = useRef<HTMLImageElement>(null);
   const [buttonBlock, setButtonBlock] = useState(false);
   const [liveCount, setliveCount] = useState(5);
@@ -62,11 +63,13 @@ export default function Audiochallenge(props: Props) {
   function toggleWordInfo(str: string) {
     if (str === 'add') {
       wordRef.current.classList.add('wordinfo-active');
+      wordTraslateRef.current.classList.add('wordinfo-active');
       wordImgRef.current.classList.add('wordinfo-active');
       setIsShowAnswer(true)
     } else if (str === 'remove') {
       setIsShowAnswer(false)
       wordRef.current.classList.remove('wordinfo-active');
+      wordTraslateRef.current.classList.remove('wordinfo-active');
       wordImgRef.current.classList.remove('wordinfo-active');
     }
   }
@@ -188,7 +191,16 @@ export default function Audiochallenge(props: Props) {
       {!startGame ? (
         <div className='audiochallenge-container'>
           <div className='audiochallenge-description-wrap'>
-            <p className='audiochallenge-description'>Однажды тут будет описание игры и правила</p>
+            <p className='audiochallenge-description'>«Аудиовызов» - это тренировка, которая улучшает восприятие речи на слух.</p>
+            <h3>Правила</h3>
+            <p>Слушай слово на английском языке и выбирай правильный перевод, если отвечаешь неверно лопается пузырёк, при отстутствии пузырьков, следующий неверный ответ приведёт к окончанию игры</p>
+            <h3>Управление</h3>
+            <ul>
+              <li>Мышь, для выбора ответа.</li>
+              <li>Клавиши от 1 до 4 для выбора ответа</li>
+              <li>Пробел для повтроного звучания слова</li>
+              {/* <li>Используйте клавишу Enter для подсказки или для перехода к следующему слову</li> */}
+            </ul>
           </div>
           <Button refer={props.refer} onClick={(e) => playGame(e)} class="button btn-start" textContent="Старт" />
         </div>
@@ -200,6 +212,9 @@ export default function Audiochallenge(props: Props) {
               <div className='audiochallenge-correct-word'>
                 <div ref={wordRef} className="word">
                   {props.word}
+                </div>
+                <div ref={wordTraslateRef} className="word translate">
+                  {props.translation}
                 </div>
               </div>
               <div className='audiochallenge__panel-container'>

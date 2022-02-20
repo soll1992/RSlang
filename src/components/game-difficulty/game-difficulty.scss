@@ -1,5 +1,4 @@
 .links-wrapper {
-    width: 300px;
     display: grid;
 
     grid-column-start: 2;
@@ -44,6 +43,7 @@
             margin: 0px 0px 15px 0px;
         }
         &-wrap {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -51,9 +51,27 @@
             border-radius: 10px;
             background-color: rgba(0, 0, 0, 0.25);
             transition: transform 0.3s;
-            transform: scale(1);
+            overflow: hidden;
+            &::after {
+                content: "";
+                position: absolute;
+                top: calc(50% - 500px);
+                left: calc(50% - 500px);
+                width: 0;
+                height: 0;
+                border-radius: 50%;
+                z-index: -1;
+                background-color: rgb(115, 255, 150);
+                transition: background 1s, width 1s, height 1s;
+            }
             &:hover {
-                transform: scale(1.1);
+                &::after {
+                    opacity: 1;
+                    top: calc(50% - 500px);
+                    left: calc(50% - 500px);
+                    width: 1000px;
+                    height: 1000px;
+                }
             }
         }
         &-wrapper {
