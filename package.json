@@ -79,6 +79,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.17.0",
+    "@nivo/bar": "^0.79.1",
+    "@nivo/core": "^0.79.0",
+    "@nivo/line": "^0.79.1",
     "axios": "^0.26.0",
     "csstype": "^3.0.10",
     "lodash": "^4.17.21",
@@ -92,6 +95,7 @@
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
+    "start": "^5.1.0",
     "ts-loader": "^9.2.6",
     "use-sound": "^4.0.1"
   }

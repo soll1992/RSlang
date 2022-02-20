@@ -7,6 +7,9 @@ import { isUserData } from '../../utils/typeGuards';
 import UserStatistics from '../../types/UserStatistics';
 import UserData from '../../types/UserData';
 import getUserAggregatedWords from '../../utils/getUserAggregatedWords';
+import { MyResponsiveLine } from './long-term-statistics/long-term-statistics';
+import { dataTest } from './long-term-statistics/data';
+import { dataTest2 } from './long-term-statistics/data2';
 
 export default function Statistics() {
   // Authorization check
@@ -77,26 +80,34 @@ export default function Statistics() {
       <div className="day-statistics">
         <h1 className="day-statistics__title">Статистика за сегодня</h1>
         {userData ? (
-          <div className="day-statistics__content">
-            <div className="games-statictics">
-              <h2 className="games-statictics__title">Мини-игры</h2>
-              {games.map((game) => {
-                const [rusName, engName] = game;
-                return (
-                  <GameStatisticsCard
-                    gameName={rusName}
-                    gameData={gamesData?.optional?.[engName]?.[today]}
-                    key={`${engName}_statistics`}
-                  />
-                );
-              })}
-            </div>
+          <div>
+            <div className="day-statistics__content">
+              <div className="games-statictics">
+                <h2 className="games-statictics__title">Мини-игры</h2>
+                {games.map((game) => {
+                  const [rusName, engName] = game;
+                  return (
+                    <GameStatisticsCard
+                      gameName={rusName}
+                      gameData={gamesData?.optional?.[engName]?.[today]}
+                      key={`${engName}_statistics`}
+                    />
+                  );
+                })}
+              </div>
 
-            <div className="words-statictics">
-              <h2 className="words-statictics__title">Слова</h2>
-              <WordStatisticsCard data={newWordsQuantity} text="новых слов" />
-              <WordStatisticsCard data={learnedWordsQuantity} text="изученных слов" />
-              <WordStatisticsCard data={`${wordsRightAnswersPercent} %`} text="правильных ответов" />
+              <div className="words-statictics">
+                <h2 className="words-statictics__title">Слова</h2>
+                <WordStatisticsCard data={newWordsQuantity} text="новых слов" />
+                <WordStatisticsCard data={learnedWordsQuantity} text="изученных слов" />
+                <WordStatisticsCard data={`${wordsRightAnswersPercent} %`} text="правильных ответов" />
+              </div>
+            </div>
+            <div className="test-graph">
+              <MyResponsiveLine data={dataTest} />
+            </div>
+            <div className="test-graph">
+              <MyResponsiveLine data={dataTest2} />
             </div>
           </div>
         ) : (
