@@ -31,11 +31,14 @@
 		}
 	}
 	&__copyright {
-		font-family: Steppe;
+		font-family: "Playfair Display", serif;
 		font-size: 16px;
 		font-weight: 400;
 		line-height: 14px;
 		letter-spacing: 0em;
+		width: 100%;
+		max-width: 370px;
+		text-align: right;
 		margin: 0px 5px 0px 0px;
 		white-space: nowrap;
 		@media (max-width: 505px) {

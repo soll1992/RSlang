@@ -73,7 +73,6 @@ const Login: FC<Props> = (props) => {
         <input
           required
           minLength={4}
-          maxLength={15}
           pattern="^[a-z0-9._%+-]{3,15}@[a-z]{4,50}\.[a-z]{2,4}$"
           ref={emailInput}
           className="login-email input"

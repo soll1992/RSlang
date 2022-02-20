@@ -2,17 +2,47 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FC } from 'react';
 import './header.scss';
 import LoginPopup from './login-popap';
+import { useDispatch, useSelector } from 'react-redux';
 
 import NavItem from './nav-item';
 
-type Props = {};
+type UserData = {
+  token: string;
+  id: string;
+}
+type Props = {
+  userData: {
+    value: UserData;
+    setValue: React.Dispatch<UserData>;
+  }
 
-const Header: FC<Props> = () => {
-  const [userData, setUserData] = useState(() => {
-    const saved = localStorage.getItem('userData');
-    const initialValue = JSON.parse(saved);
-    return initialValue || { token: '', id: '' };
-  });
+};
+interface RootState {
+  gameWordPage: {
+    gameWordPage: number;
+  };
+  gameDifficulty: {
+    gameDifficulty: number;
+  };
+  selectedGame: {
+    selectedGame: string;
+  };
+  from: {
+    from: string;
+  };
+  seria: {
+    seria: number;
+  };
+  title: {
+    title: string;
+  };
+}
+
+const Header: FC<Props> = (props) => {
+  const dispatch = useDispatch();
+  const headerTitle = useSelector((state: RootState) => state.title.title);
+
+
 
   const [loginIsOpen, setLoginIsOpen] = useState(false);
   const [isOverlay, setIsOverlay] = useState(false);
@@ -22,23 +52,20 @@ const Header: FC<Props> = () => {
     return initialValue || false;
   });
 
-  const [headerTitle, setHeaderTitle] = useState<string>(() => {
-    const saved = localStorage.getItem('headerTitle');
-    const initialValue = window.location.hash && saved !== 'undefined' ? saved : undefined;
-    return initialValue || 'Главная';
-  });
+
   useEffect(() => {
     localStorage.setItem('headerTitle', headerTitle);
   }, [headerTitle]);
-  const allPages = {
-    pages: ['home', 'textbook/A1/1', 'textbook/difficult-words/1', 'game-difficulty', 'statistics', 'home/team'],
-    pagesRu: ['главная', 'учебник', 'сложные слова', 'миниигры', 'статистика', 'команда'],
-  };
   useEffect(() => {
     const burger = document.getElementById('burger');
     burger.classList.remove('active');
     setIsOverlay(false);
   }, [headerTitle]);
+  const allPages = {
+    pages: ['home', 'textbook/A1/1', 'textbook/difficult-words/1', 'game-difficulty', 'statistics', 'home/team'],
+    pagesRu: ['главная', 'учебник', 'сложные слова', 'миниигры', 'статистика', 'команда'],
+  };
+
 
   const handlerChange = ({ currentTarget }: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const burger = document.getElementById('burger')
@@ -66,19 +93,20 @@ const Header: FC<Props> = () => {
     setIsOverlay(false);
   };
   const deleteLocalStorage = () => {
-    localStorage.clear();
-    setUserData({
+    localStorage.removeItem('userData');
+    props.userData.setValue({
       token: '',
       id: '',
     });
+    // location.reload();
   };
 
   useEffect(() => {
-    if (userData.token !== '') {
-      localStorage.setItem('userData', JSON.stringify(userData));
+    if (props.userData.value.token !== '') {
+      localStorage.setItem('userData', JSON.stringify(props.userData.value));
       setAuthorizations(true);
     } else setAuthorizations(false);
-  }, [userData]);
+  }, [props.userData]);
   return (
     <div className='header-wrap'>
       <header id="Top" className="header">
@@ -101,7 +129,6 @@ const Header: FC<Props> = () => {
           </div>
           {allPages.pages.map((pageName, index) => (
             <NavItem
-              headerTitle={{ value: headerTitle, setValue: setHeaderTitle }}
               i={index}
               pagesRu={allPages.pagesRu}
               pageName={pageName}
@@ -128,7 +155,7 @@ const Header: FC<Props> = () => {
           )}
           <div className="login-avatar"></div>
         </div>
-        <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={{ value: userData, setValue: setUserData }} />
+        <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={props.userData} />
         <div onClick={hiddenOverlay} className={!isOverlay ? 'background-overlay' : 'background-overlay active'}></div>
       </header>
     </div>

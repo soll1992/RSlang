@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
-import ParticlesApp from '../app/particles';
 import Login from './login';
 import SignUp from './signup';
 
