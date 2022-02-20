@@ -29,7 +29,7 @@ const Main: FC<Props> = (props) => {
         </main>
         :
         <main id="main" className="main">
-          <div><Router /></div>
+          <div className='main container'><Router /></div>
         </main>
       }
     </>

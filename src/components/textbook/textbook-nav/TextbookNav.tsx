@@ -2,33 +2,6 @@ import React from 'react';
 import TextbookNavListItemGame from './TextbookNavListItemGame';
 import TextbookNavListItemGroup from './TextbookNavListItemGroup';
 import './textbookNav.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { titleChange } from '../../../redux/actions/actions';
-
-
-
-
-interface RootState {
-  gameWordPage: {
-    gameWordPage: number;
-  };
-  gameDifficulty: {
-    gameDifficulty: number;
-  };
-  selectedGame: {
-    selectedGame: string;
-  };
-  from: {
-    from: string;
-  };
-  seria: {
-    seria: number;
-  };
-  title: {
-    title: string;
-  };
-}
-
 
 type Props = {
   group: {
@@ -46,11 +19,6 @@ type Props = {
 };
 
 export default function TextbookNav({ group, page, wordsState }: Props) {
-  const dispatch = useDispatch();
-  const headerTitle = useSelector((state: RootState) => state.title.title);
-  const titleChangeClick = () => {
-    dispatch(titleChange(''));
-  };
   const wordsGroups = [
     ['Easy', 'A1'],
     ['Easy', 'A2'],

@@ -93,7 +93,7 @@ const Header: FC<Props> = (props) => {
     setIsOverlay(false);
   };
   const deleteLocalStorage = () => {
-    localStorage.clear();
+    localStorage.removeItem('userData');
     props.userData.setValue({
       token: '',
       id: '',

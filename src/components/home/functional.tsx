@@ -28,7 +28,7 @@ const Functional: FC<Props> = () => {
           </div>
           <h3 className='app-functional-item__title'>Учебник</h3>
           <p className='app-functional-item__text'>6 разделов с разным уровнем сложности, в каждом разделе по 600 слов.</p>
-          <a className='app-functional-item__url' href='#/textbook'><button onClick={() => titleChangeClick('Учебник')} className='btn-2'>Открыть учебник</button></a>
+          <a className='app-functional-item__url' href='#/textbook/A1/1'><button onClick={() => titleChangeClick('учебник')} className='btn-2'>Открыть учебник</button></a>
         </div>
         <div className="app-functional-item">
           <div className='app-functional-img-wrap'>
@@ -36,7 +36,7 @@ const Functional: FC<Props> = () => {
           </div>
           <h3 className='app-functional-item__title'>Миниигры</h3>
           <p className='app-functional-item__text'>Для изучения и закрепления слов в приложении есть игры Спринт и Аудиовызов, которые помогут вам в игровой форме «прокачать» словарный запас.</p>
-          <a className='app-functional-item__url' href='#/game-difficulty'><button onClick={() => titleChangeClick('Миниигры')} className='btn-2'>Выбрать игру</button></a>
+          <a className='app-functional-item__url' href='#/game-difficulty'><button onClick={() => titleChangeClick('миниигры')} className='btn-2'>Выбрать игру</button></a>
         </div>
         <div className="app-functional-item">
           <div className='app-functional-img-wrap'>
@@ -44,7 +44,7 @@ const Functional: FC<Props> = () => {
           </div>
           <h3 className='app-functional-item__title'>Статистика</h3>
           <p className='app-functional-item__text'>Весь прогресс обучения можно посмотреть в статистике, где представлены данные как за текущий день, так и за весь период обучения.</p>
-          <a className='app-functional-item__url' href='#/statistics'><button onClick={() => titleChangeClick('Статистика')} className='btn-2'>Открыть статистику</button></a>
+          <a className='app-functional-item__url' href='#/statistics'><button onClick={() => titleChangeClick('статистика')} className='btn-2'>Открыть статистику</button></a>
         </div>
       </div>
     </div>

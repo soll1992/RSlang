@@ -33,8 +33,8 @@ const Login: FC<Props> = (props) => {
     })
       .then((rawResponse) => rawResponse.json())
       .then((content) => addDataUsers(content))
-      .then(() => props.setIsSignUp(false))
       .then(() => props.setIsSignUp(true))
+      .then(() => props.setIsSignUp(false))
       .catch((err) => console.log('Error loginUser', err));
   };
 

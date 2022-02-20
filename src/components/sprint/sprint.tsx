@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import Word from 'src/types/Word';
 import Button from '../button/button';
 import { changeSeria } from '../../redux/actions/actions';
+import './sprint.scss'
 
 interface Props {
   timer: number;
@@ -53,12 +54,14 @@ export default function Sprint(props: Props) {
   }, [props.timer, startGame]);
 
   return (
-    <div>
+    <div className='sprint-wrap'>
       {!startGame ? (
-        <div>
-          <h2>Спринт</h2>
-          <p>Однажды тут будет описание игры и правила</p>
-          <Button refer={props.refer} onClick={start} class="button" textContent="Старт" />
+        <div className='sprint-container'>
+          <h2 className='sprint-title'>Спринт</h2>
+          <div className='sprint-description-wrap'>
+            <p className='sprint-description'>Однажды тут будет описание игры и правила</p>
+          </div>
+          <Button refer={props.refer} onClick={start} class="button btn-start" textContent="Старт" />
         </div>
       ) : (
         <div>

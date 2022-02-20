@@ -32,7 +32,7 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
   };
 
   const titleChangeClick = () => {
-    dispatch(titleChange('Миниигры'));
+    dispatch(titleChange('миниигры'));
   };
 
   const goToGame = (e: React.MouseEvent<HTMLAnchorElement>) => {

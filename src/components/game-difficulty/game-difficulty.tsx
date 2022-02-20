@@ -11,6 +11,9 @@ import {
   selectSprint,
   selectAudiochallenge,
 } from '../../redux/actions/actions';
+// От Кости
+import audiocall from '../../assets/img/home/12.png'
+import sprint from '../../assets/img/home/15.png'
 
 interface RootState {
   gameDifficulty: {
@@ -47,27 +50,45 @@ export default function SprintDifficulty() {
   }
 
   return (
-    <section>
-      <h2 className='games-title'>Выберите уровень сложности:</h2>
-      <div className="links-wrapper">
-        {difficultyName.map((name, i) => (
-          <ButtonRef
-            refArr={buttonsRefs}
-            class={`link dif-link${i + 1}`}
-            textContent={name}
-            onClick={() => selectGameParams(i)}
-            key={i}
-          />
-        ))}
-        {['Аудиовызов', 'Спринт'].map((game, i) => (
-          <NavLink
-            class={`link dif-link${i + 1}`}
-            onClick={() => navLinkHandler(game)}
-            textContent={game}
-            link="/game"
-            key={i}
-          />
-        ))}
+    <section className='games-section'>
+      <h2 className='games-title'>Выберите уровень сложности и игру:</h2>
+
+      <div className='games-section-container'>
+
+        <div className='games-wrap'>
+          <div className='games__btn-wrapper'>
+
+            <div className="links-wrapper">
+              {difficultyName.map((name, i) => (
+                <ButtonRef
+                  refArr={buttonsRefs}
+                  class={`btn-2 lvl link dif-link${i + 1}`}
+                  textContent={name}
+                  onClick={() => selectGameParams(i)}
+                  key={i}
+                />
+              ))}
+
+            </div>
+
+            {['Аудиовызов', 'Спринт'].map((game, i) => (
+
+              <div key={`div-${i}`} className='games__btn-wrap'>
+                <NavLink
+                  class={`games-url link dif-link${i + 1}`}
+                  onClick={() => navLinkHandler(game)}
+                  textContent={game}
+                  link="/game"
+                  key={i}
+                  i={i}
+                  divClass={'games__btn-img'}
+                  linkImg={[audiocall, sprint]}
+                />
+              </div>
+            ))}
+          </div>
+
+        </div>
       </div>
     </section>
   );

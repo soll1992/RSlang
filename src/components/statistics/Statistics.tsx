@@ -75,32 +75,35 @@ export default function Statistics() {
   return (
     <div className="statistics">
       <div className="day-statistics">
-        <h1 className="day-statistics__title">Статистика за сегодня</h1>
-        {userData ? (
-          <div className="day-statistics__content">
-            <div className="games-statictics">
-              <h2 className="games-statictics__title">Мини-игры</h2>
-              {games.map((game) => {
-                const [rusName, engName] = game;
-                return (
-                  <GameStatisticsCard
-                    gameName={rusName}
-                    gameData={gamesData?.optional?.[engName]?.[today]}
-                    key={`${engName}_statistics`}
-                  />
-                );
-              })}
-            </div>
 
-            <div className="words-statictics">
-              <h2 className="words-statictics__title">Слова</h2>
-              <WordStatisticsCard data={newWordsQuantity} text="новых слов" />
-              <WordStatisticsCard data={learnedWordsQuantity} text="изученных слов" />
-              <WordStatisticsCard data={`${wordsRightAnswersPercent} %`} text="правильных ответов" />
+        {userData ? (
+          <>
+            <h2 className="day-statistics__title">Статистика за сегодня</h2>
+            <div className="day-statistics__content">
+              <div className="games-statictics">
+                <h3 className="games-statictics__title">Мини-игры</h3>
+                {games.map((game) => {
+                  const [rusName, engName] = game;
+                  return (
+                    <GameStatisticsCard
+                      gameName={rusName}
+                      gameData={gamesData?.optional?.[engName]?.[today]}
+                      key={`${engName}_statistics`}
+                    />
+                  );
+                })}
+              </div>
+
+              <div className="words-statictics">
+                <h3 className="words-statictics__title">Слова</h3>
+                <WordStatisticsCard data={newWordsQuantity} text="новых слов" />
+                <WordStatisticsCard data={learnedWordsQuantity} text="изученных слов" />
+                <WordStatisticsCard data={`${wordsRightAnswersPercent} %`} text="правильных ответов" />
+              </div>
             </div>
-          </div>
+          </>
         ) : (
-          'Для доступа к данному разделу необходимо авторизироваться'
+          <div className='day-statictics__text-alert'>Для доступа к данному разделу необходимо авторизироваться</div>
         )}
       </div>
     </div>
