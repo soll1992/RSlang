@@ -11,6 +11,7 @@ import createUserWord from '../../utils/createUserWord';
 import updateUserWord from '../../utils/updateUserWord';
 import getUserStatistics from '../../utils/getUserStatistics';
 import updateUserStatistics from '../../utils/updateUserStatistics';
+import getUserAggregatedWords from '../../utils/getUserAggregatedWords';
 
 interface Props {
   gameName: string;
@@ -53,7 +54,7 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
   const series = seria > checkBestSeria() ? seria : checkBestSeria();
   let gameNewWordsCounter = 0;
 
-  const changeWordStatisticData = async (answersType: string, answersArr: Word[]) => {
+  const changeWordData = async (answersType: string, answersArr: Word[]) => {
     return Promise.allSettled(
       answersArr.map((wordData) => {
         return (async () => {
@@ -97,7 +98,7 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
     );
   };
 
-  const changeStatisticData = async () => {
+  const changeGameStatisticData = async () => {
     const gameDataToday = {
       newWordsQuantity: gameNewWordsCounter,
       rightAnswers: trueWords.length,
@@ -110,38 +111,99 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
     const newData = {
       learnedWords: 0,
       optional: {
-        [gameName]: { [new Date().toLocaleDateString()]: gameDataToday },
+        games: {
+          [gameName]: { [new Date().toLocaleDateString()]: gameDataToday },
+        },
       },
     };
     if (userStatistic instanceof Error && userStatistic.message === '404') {
-      updateUserStatistics(userData.id, userData.token, newData);
+      await updateUserStatistics(userData.id, userData.token, newData);
     }
 
     if (!(userStatistic instanceof Error) && isUserStatistics(userStatistic)) {
-      if (!userStatistic.optional) {
+      if (!userStatistic.optional) await updateUserStatistics(userData.id, userData.token, newData);
+      else if (!userStatistic.optional.games) {
+        userStatistic.optional.games = { [gameName]: { [new Date().toLocaleDateString()]: gameDataToday } };
         updateUserStatistics(userData.id, userData.token, newData);
       } else {
-        if (!userStatistic.optional[gameName]) {
-          userStatistic.optional[gameName] = { [new Date().toLocaleDateString()]: gameDataToday };
+        if (!userStatistic.optional.games[gameName]) {
+          userStatistic.optional.games[gameName] = { [new Date().toLocaleDateString()]: gameDataToday };
         } else {
-          const dayStatistic = Object.keys(userStatistic.optional[gameName]).find(
+          const dayGamesStatistic = Object.keys(userStatistic.optional.games[gameName]).find(
             (date) => date === new Date().toLocaleDateString()
           );
-          if (dayStatistic) {
-            userStatistic.optional[gameName][dayStatistic].newWordsQuantity += gameNewWordsCounter;
-            userStatistic.optional[gameName][dayStatistic].rightAnswers += trueWords.length;
-            userStatistic.optional[gameName][dayStatistic].wrongAnswers += falseWords.length;
-            userStatistic.optional[gameName][dayStatistic].responsesSeries =
-              userStatistic.optional[gameName][dayStatistic].responsesSeries > series
-                ? userStatistic.optional[gameName][dayStatistic].responsesSeries
-                : series;
-            userStatistic.optional[gameName][dayStatistic].gamesCounter += 1;
+          if (dayGamesStatistic) {
+            const gameTodayData = userStatistic.optional.games[gameName][dayGamesStatistic];
+            gameTodayData.newWordsQuantity += gameNewWordsCounter;
+            gameTodayData.rightAnswers += trueWords.length;
+            gameTodayData.wrongAnswers += falseWords.length;
+            gameTodayData.responsesSeries =
+              gameTodayData.responsesSeries > series ? gameTodayData.responsesSeries : series;
+            gameTodayData.gamesCounter += 1;
           } else {
-            userStatistic.optional[gameName][new Date().toLocaleDateString()] = gameDataToday;
+            userStatistic.optional.games[gameName][new Date().toLocaleDateString()] = gameDataToday;
           }
         }
         delete userStatistic.id;
-        updateUserStatistics(userData.id, userData.token, userStatistic);
+        await updateUserStatistics(userData.id, userData.token, userStatistic);
+        console.log(userStatistic);
+      }
+    }
+  };
+
+  const changeWordStatisticData = async () => {
+    const userStatistic = await getUserStatistics(userData.id, userData.token);
+    const today = new Date().toLocaleDateString();
+    const wordsDataToday = {
+      newWordsQuantity: 0,
+      learnedWordsQuantity: 0,
+      rightAnswersPercent: 0,
+    };
+
+    const newData = {
+      learnedWords: 0,
+      optional: {
+        words: { [today]: wordsDataToday },
+      },
+    };
+    if (userStatistic instanceof Error && userStatistic.message === '404')
+      await updateUserStatistics(userData.id, userData.token, newData);
+
+    if (!(userStatistic instanceof Error) && isUserStatistics(userStatistic)) {
+      if (!userStatistic.optional) await updateUserStatistics(userData.id, userData.token, newData);
+      else {
+        const todayGamesData = Object.values(userStatistic.optional?.games)
+          .filter((game) => game[today])
+          .map((game) => game[today]);
+
+        if (todayGamesData.length) {
+          const rightAnswersForAllGames = todayGamesData
+            .map((game) => game.rightAnswers)
+            .reduce((prev, curr) => prev + curr);
+          const wrongAnswersForAllGames = todayGamesData
+            .map((game) => game.wrongAnswers)
+            .reduce((prev, curr) => prev + curr);
+          const rightAnswersPercent = Math.round(
+            (rightAnswersForAllGames * 100) / (rightAnswersForAllGames + wrongAnswersForAllGames)
+          );
+          const newWordsQuantityForAllGames = todayGamesData
+            .map((game) => game.newWordsQuantity)
+            .reduce((prev, curr) => prev + curr);
+
+          wordsDataToday.newWordsQuantity = newWordsQuantityForAllGames;
+          wordsDataToday.rightAnswersPercent = rightAnswersPercent;
+        }
+
+        const paramsLearnedWords = { wordsPerPage: 3600, filter: { 'userWord.optional.learned': today } };
+        const learnedWordsToday = await getUserAggregatedWords(userData.id, userData.token, paramsLearnedWords);
+        if (!(learnedWordsToday instanceof Error)) wordsDataToday.learnedWordsQuantity = learnedWordsToday.length;
+
+        if (!userStatistic.optional.words) userStatistic.optional.words = { [today]: wordsDataToday };
+        else userStatistic.optional.words[today] = wordsDataToday;
+
+        delete userStatistic.id;
+        await updateUserStatistics(userData.id, userData.token, userStatistic);
+        console.log(userStatistic);
       }
     }
   };
@@ -149,9 +211,10 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
   useEffect(() => {
     (async () => {
       if (userData) {
-        await changeWordStatisticData('rightAnswers', trueWords);
-        await changeWordStatisticData('wrongAnswers', falseWords);
-        changeStatisticData();
+        await changeWordData('rightAnswers', trueWords);
+        await changeWordData('wrongAnswers', falseWords);
+        await changeGameStatisticData();
+        await changeWordStatisticData();
       }
     })();
   }, [userData]);
