@@ -15,6 +15,7 @@ interface Props {
   soundLink: string;
   currentWordnumber: number;
   currentWord: Word;
+  difficulty: number;
   word: string;
   translation: string;
   words: Word[];
@@ -96,9 +97,16 @@ export default function Audiochallenge(props: Props) {
     const answersSet = new Set();
     answersSet.add(obj.wordTranslate);
     if (props.words.length < 4) {
-      const shuffleAllWords = shuffle(props.allWords);
+      const shuffleAllWords =
+        props.difficulty === 6
+          ? shuffle(['лодка', 'орех', 'привыкание', 'аромат', 'удушение', 'кит', 'инженер', 'поверхность'])
+          : shuffle(props.allWords);
       for (let i = 0; answersSet.size < 4; i += 1) {
-        answersSet.add(shuffleAllWords[i].wordTranslate);
+        if ((shuffleAllWords[i] as Word).wordTranslate) {
+          answersSet.add((shuffleAllWords[i] as Word).wordTranslate);
+        } else {
+          answersSet.add(shuffleAllWords[i]);
+        }
       }
     } else {
       const shuffledWords = shuffle(props.words);
@@ -136,6 +144,8 @@ export default function Audiochallenge(props: Props) {
       keysAnswerCheck(e, key);
     } else if (e.code === 'ArrowRight') {
       nextButtonHandler();
+    } else if (e.code === 'Space') {
+      wordSound.play();
     }
   }
 

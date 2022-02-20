@@ -50,42 +50,58 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
     C2: 5,
   };
 
+  const getWordsData = () => {
+    if (group.activeGroup && group.activeGroup !== 'difficult-words' && !authorization.userData) {
+      const params = { group: groupsValue[group.activeGroup], page: page.activePage - 1 };
+      return getWords(params);
+    }
+    if (group.activeGroup && group.activeGroup !== 'difficult-words' && authorization.userData) {
+      const params = { wordsPerPage: 20, group: groupsValue[group.activeGroup], page: page.activePage - 1 };
+      return getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
+    }
+    if (group.activeGroup && group.activeGroup === 'difficult-words' && authorization.userData) {
+      const params = { wordsPerPage: 3600, filter: { 'userWord.difficulty': 'hard' } };
+      return getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
+    }
+    return null;
+  };
+
   useEffect(() => {
+    let cleanupFunction = false;
     (async () => {
-      if (group.activeGroup && group.activeGroup !== 'difficult-words' && !authorization.userData) {
-        const params = { group: groupsValue[group.activeGroup], page: page.activePage - 1 };
-        const wordsData = await getWords(params);
-        if (wordsData) setWords(wordsData);
-      }
-
-      if (group.activeGroup && group.activeGroup !== 'difficult-words' && authorization.userData) {
-        const params = { wordsPerPage: 20, group: groupsValue[group.activeGroup], page: page.activePage - 1 };
-        const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
-        if (!(wordsData instanceof Error)) setWords(wordsData);
-      }
-
-      if (group.activeGroup && group.activeGroup === 'difficult-words' && authorization.userData) {
-        const params = { wordsPerPage: 3600, filter: { 'userWord.difficulty': 'hard' } };
-        const wordsData = await getUserAggregatedWords(authorization.userData.id, authorization.userData.token, params);
-        if (!(wordsData instanceof Error)) setWords(wordsData);
-      }
+      const wordsData = await getWordsData();
+      if (!cleanupFunction && wordsData && !(wordsData instanceof Error)) setWords(wordsData);
     })();
+    return () => {
+      cleanupFunction = true;
+    };
   }, []);
 
   const checkDifficultyOrLearned = () => {
-    const allDifficult = words.every((word) => word.userWord?.difficulty === 'hard');
-    const allDifficultOrLearned = words.every(
-      (word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional?.learned
-    );
-    wordsState.setAllWordsDiffOrLearned(!!(allDifficultOrLearned && allDifficult === false));
+    if (authorization.userData) {
+      const allDifficult = words.every((word) => word.userWord?.difficulty === 'hard');
+      const allDifficultOrLearned = words.every(
+        (word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional?.learned
+      );
+      wordsState.setAllWordsDiffOrLearned(!!(allDifficultOrLearned && allDifficult === false));
+    }
   };
 
   useEffect(() => {
     checkDifficultyOrLearned();
+    if (
+      (group.activeGroup === 'difficult-words' && !authorization.userData) ||
+      (group.activeGroup === 'difficult-words' && authorization.userData && words.length === 0)
+    )
+      wordsState.setAllWordsDiffOrLearned(true);
   }, [words]);
 
   useEffect(() => {
-    if (wordChanged) checkDifficultyOrLearned();
+    if (wordChanged) {
+      if (group.activeGroup === 'difficult-words') {
+        setWords(words.filter((word) => word.userWord?.difficulty === 'hard'));
+      } else checkDifficultyOrLearned();
+    }
     setWordChanged(false);
   }, [wordChanged]);
 

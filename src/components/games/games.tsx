@@ -104,7 +104,7 @@ export default function Games() {
 
   // Генерирует пару слово-перевод
   function generateQuestion(arr: Word[]) {
-    const isTrue = Boolean(random(0, 1)); // определяет будет ли слово соответствовать переводу
+    const isTrue = arr.length > 1 ? Boolean(random(0, 1)) : 1; // определяет будет ли слово соответствовать переводу
     if (currentWordnumber === arr.length) {
       // если 20 слово, то заканчиваем игру
       gameEnder(clock);
@@ -124,7 +124,7 @@ export default function Games() {
   // перемешивает полученный с сервера массив
   async function generateWords(data: Word[]): Promise<Word[]> {
     console.log(data);
-    let dataArr = [];
+    let dataArr: Array<Word>;
     setAllWords(data);
     // рекурсивный запрос для создания массива из 20 слов
     async function addMore(arr: Word[]) {
@@ -147,23 +147,41 @@ export default function Games() {
       }
     }
 
+    function useDifficultWords(arr: Word[]) {
+      const diffArr = shuffle(arr);
+      if (diffArr.length > 20) {
+        dataArr = diffArr.slice(0, 20);
+      } else {
+        dataArr = arr;
+      }
+    }
+
     if (userData && from === 'Textbook') {
-      gameStartRef.current.disabled = true;
-      await addMore(data);
-      gameStartRef.current.disabled = false;
+      if (difficulty === 6) {
+        useDifficultWords(data);
+      } else {
+        gameStartRef.current.disabled = true;
+        await addMore(data);
+        gameStartRef.current.disabled = false;
+      }
     } else {
       dataArr = data;
     }
-    const shuffledData = shuffle(dataArr as Word[]);
+    const shuffledData = shuffle(dataArr);
     generateQuestion(shuffledData);
     return shuffledData;
   }
 
   //  получаем слова с сервера
   function getWordsData() {
-    (userData
-      ? getUserAggregatedWords(userData.id, userData.token, { wordsPerPage: 20, group: difficulty, page })
-      : getWords({ group: difficulty, page })
+    (!userData
+      ? getWords({ group: difficulty, page })
+      : difficulty === 6
+      ? getUserAggregatedWords(userData.id, userData.token, {
+          wordsPerPage: 3600,
+          filter: { 'userWord.difficulty': 'hard' },
+        })
+      : getUserAggregatedWords(userData.id, userData.token, { wordsPerPage: 20, group: difficulty, page })
     )
       .then((res) => generateWords(res))
       .then((result) => setWordsData(result))
@@ -307,6 +325,7 @@ export default function Games() {
           allWords={allWords}
           words={wordsData}
           isSoundOn={isSoundOn}
+          difficulty={difficulty}
           img={word?.image}
           soundLink={word?.audio}
           currentWord={word}

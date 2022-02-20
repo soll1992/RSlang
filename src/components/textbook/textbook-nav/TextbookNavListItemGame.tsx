@@ -29,6 +29,7 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
     B2: 3,
     C1: 4,
     C2: 5,
+    'difficult-words': 6,
   };
 
   const titleChangeClick = () => {
@@ -36,6 +37,7 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
   };
 
   const goToGame = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    console.log(activeGroup);
     if (disabled) e.preventDefault();
     if (!disabled) {
       titleChangeClick()
@@ -59,7 +61,9 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
         href={`#/${link}`}
         onClick={goToGame}
       >
-        <button className='btn-2'><span className="textbook-nav__link-text">{text}</span></button>
+        <button className="btn-2">
+          <span className="textbook-nav__link-text">{text}</span>
+        </button>
       </a>
     </li>
   );

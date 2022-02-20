@@ -16,6 +16,24 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 20px 20px;
     }
+    &__btn {
+      &-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+  &-correct {
+    &-word {
+      color: #55f07c;
+      font-weight: bold;
+      &-wrap {
+        font-size: 24px;
+      }
+      &__separator {
+        font-size: 16px;
+      }
+    }
   }
   &-wrap {
     width: 100%;

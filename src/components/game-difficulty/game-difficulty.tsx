@@ -28,7 +28,11 @@ export default function SprintDifficulty() {
   const buttonsRefs = [];
 
   useEffect(() => {
-    (buttonsRefs[difficulty] as HTMLButtonElement).classList.add('select');
+    if (difficulty === 6) {
+      (buttonsRefs[0] as HTMLButtonElement).classList.add('select');
+    } else {
+      (buttonsRefs[difficulty] as HTMLButtonElement).classList.add('select');
+    }
   }, []);
 
   function selectGameParams(i: number) {
