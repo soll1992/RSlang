@@ -7,6 +7,8 @@ import { isUserData } from '../../utils/typeGuards';
 import UserStatistics from '../../types/UserStatistics';
 import UserData from '../../types/UserData';
 import { MyResponsiveLine } from './long-term-statistics/long-term-statistics';
+import getUserAggregatedWords from '../../utils/getUserAggregatedWords';
+import updateUserStatistics from '../../utils/updateUserStatistics';
 
 export default function Statistics() {
   // Authorization check
@@ -37,7 +39,21 @@ export default function Statistics() {
     (async () => {
       if (userData) {
         const userStatistic = await getUserStatistics(userData.id, userData.token);
-        if (!(userStatistic instanceof Error)) setUserStatisticData(userStatistic);
+        if (!(userStatistic instanceof Error)) {
+          await Promise.allSettled(
+            Object.entries(userStatistic.optional?.words).map(async ([wordsDate, wordsData]) => {
+              const paramsLearnedWords = { wordsPerPage: 3600, filter: { 'userWord.optional.learned': wordsDate } };
+              const learnedWords = await getUserAggregatedWords(userData.id, userData.token, paramsLearnedWords);
+              if (!(learnedWords instanceof Error)) {
+                wordsData.learnedWordsQuantity = learnedWords.length;
+                delete userStatistic.id;
+                await updateUserStatistics(userData.id, userData.token, userStatistic);
+              }
+              return wordsData;
+            })
+          );
+          setUserStatisticData(userStatistic);
+        }
       }
     })();
   }, [userData]);
