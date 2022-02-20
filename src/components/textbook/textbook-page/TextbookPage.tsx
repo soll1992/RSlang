@@ -78,15 +78,22 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
   }, []);
 
   const checkDifficultyOrLearned = () => {
-    const allDifficult = words.every((word) => word.userWord?.difficulty === 'hard');
-    const allDifficultOrLearned = words.every(
-      (word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional?.learned
-    );
-    wordsState.setAllWordsDiffOrLearned(!!(allDifficultOrLearned && allDifficult === false));
+    if (authorization.userData) {
+      const allDifficult = words.every((word) => word.userWord?.difficulty === 'hard');
+      const allDifficultOrLearned = words.every(
+        (word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional?.learned
+      );
+      wordsState.setAllWordsDiffOrLearned(!!(allDifficultOrLearned && allDifficult === false));
+    }
   };
 
   useEffect(() => {
     checkDifficultyOrLearned();
+    if (
+      (group.activeGroup === 'difficult-words' && !authorization.userData) ||
+      (group.activeGroup === 'difficult-words' && authorization.userData && words.length === 0)
+    )
+      wordsState.setAllWordsDiffOrLearned(true);
   }, [words]);
 
   useEffect(() => {
