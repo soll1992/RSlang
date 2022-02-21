@@ -124,7 +124,6 @@ export default function Games() {
 
   // перемешивает полученный с сервера массив
   async function generateWords(data: Word[]): Promise<Word[]> {
-    console.log(data);
     let dataArr: Array<Word>;
     setAllWords(data);
     // рекурсивный запрос для создания массива из 20 слов
@@ -132,7 +131,6 @@ export default function Games() {
       let newArr: Word[];
       const baseArr = arr.filter((item) => !item.userWord?.optional?.learned);
       // возможно тут <=
-      console.log(prevPage);
       if (prevPage <= 0) {
         dataArr = baseArr;
       } else if (
@@ -145,7 +143,6 @@ export default function Games() {
           group: difficulty,
           page: prevPage,
         });
-        console.log(prev);
         const plusArr = (prev as Word[]).filter((item) => !item.userWord?.optional?.learned);
         newArr = baseArr.concat(plusArr);
         await addMore(newArr);
@@ -201,7 +198,6 @@ export default function Games() {
       await addMoreCommonWords(data);
       setDis(false);
     }
-    console.log(dataArr);
     const shuffledData = shuffle(dataArr);
     generateQuestion(shuffledData);
     return shuffledData;
