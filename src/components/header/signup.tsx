@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, useRef, useState, useEffect } from 'react';
 
 type Props = {
-  setIsSignUp: React.Dispatch<React.SetStateAction<boolean>>
+  setIsSignUp: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const SugnUp: FC<Props> = (props: Props) => {
@@ -25,15 +25,13 @@ const SugnUp: FC<Props> = (props: Props) => {
   };
 
   const createDataUsers = () => {
-
     const name = nameInput.current;
     const email = emailInput.current;
     const password = passwordInput.current;
-    name.classList.remove('error')
-    email.classList.remove('error')
-    password.classList.remove('error')
+    name.classList.remove('error');
+    email.classList.remove('error');
+    password.classList.remove('error');
     if (name.value && email.value && password.value.length >= 8) {
-
       createUser({ email: email.value, password: password.value })
         .then(() => {
           name.value = '';
@@ -42,24 +40,22 @@ const SugnUp: FC<Props> = (props: Props) => {
         })
         .catch((err) => console.log('Error createUser', err));
     } else {
-      if (!name.value) name.classList.add('error')
-      if (!email.value) email.classList.add('error')
-      if (!password.value) password.classList.add('error')
+      if (!name.value) name.classList.add('error');
+      if (!email.value) email.classList.add('error');
+      if (!password.value) password.classList.add('error');
     }
   };
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.value) {
-      e.currentTarget.classList.add('active')
-      e.currentTarget.classList.remove('error')
+      e.currentTarget.classList.add('active');
+      e.currentTarget.classList.remove('error');
     } else {
-      e.currentTarget.classList.remove('active')
+      e.currentTarget.classList.remove('active');
     }
-  }
+  };
   return (
-
     <div className="login-container__signup">
       <div className="login-wrap-inputs">
-
         <input
           required
           minLength={4}
@@ -77,7 +73,6 @@ const SugnUp: FC<Props> = (props: Props) => {
         </label>
       </div>
       <div className="login-wrap-inputs">
-
         <input
           required
           minLength={4}
@@ -94,7 +89,6 @@ const SugnUp: FC<Props> = (props: Props) => {
         </label>
       </div>
       <div className="login-wrap-inputs">
-
         <input
           required
           minLength={8}
@@ -113,7 +107,6 @@ const SugnUp: FC<Props> = (props: Props) => {
         Зарегистрироваться
       </button>
     </div>
-
   );
 };
 

@@ -2,12 +2,12 @@ import React, { Fragment, useEffect, useState } from 'react';
 import Main from './main';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import ParticlesApp from './particles-default'
+import ParticlesApp from './particles-default';
 
 type UserData = {
   token: string;
   id: string;
-}
+};
 
 const App = () => {
   const [userData, setUserData] = useState<UserData>(() => {

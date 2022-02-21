@@ -1,5 +1,5 @@
 import React from 'react';
-import './textbookPageNav.css';
+import './textbookPageNav.scss';
 
 type Props = {
   group: {
@@ -58,9 +58,8 @@ export default function TextbookPageNav({ group, page }: Props) {
         {navItems.map((navItemPage, index) => {
           return typeof navItemPage === 'string' ? (
             <li
-              className={`textbook-page-nav__list-item ${
-                page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
-              }`}
+              className={`textbook-page-nav__list-item ${page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
+                }`}
               key={`textbook-page_${index}`}
             >
               {' '}
@@ -68,9 +67,8 @@ export default function TextbookPageNav({ group, page }: Props) {
             </li>
           ) : (
             <li
-              className={`textbook-page-nav__list-item textbook-page-nav__list-item_page-number ${
-                page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
-              }`}
+              className={`textbook-page-nav__list-item textbook-page-nav__list-item_page-number ${page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
+                }`}
               key={`textbook-page_${index}`}
             >
               <a

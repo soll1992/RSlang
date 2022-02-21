@@ -88,10 +88,10 @@ export default function Statistics() {
       {userData ? (
         <div>
           <div className="day-statistics">
-            <h1 className="day-statistics__title">Статистика за сегодня</h1>
+            <h2 className="day-statistics__title">Статистика за сегодня</h2>
             <div className="day-statistics__content">
               <div className="games-statictics">
-                <h2 className="games-statictics__title">Мини-игры</h2>
+                <h3 className="games-statictics__title games-statistics__title">Мини-игры</h3>
                 {games.map((game) => {
                   const [rusName, engName] = game;
                   return (
@@ -105,7 +105,7 @@ export default function Statistics() {
               </div>
 
               <div className="words-statictics">
-                <h2 className="words-statictics__title">Слова</h2>
+                <h3 className="words-statictics__title games-statistics__title">Слова</h3>
                 <WordStatisticsCard
                   data={userStatisticData?.optional?.words?.[today]?.newWordsQuantity || 0}
                   text="новых слов"
@@ -122,12 +122,21 @@ export default function Statistics() {
             </div>
           </div>
           <div className="long-term-statistics">
-            <h1 className="long-term-statistic__title">Статистика за все время</h1>
-            <div className="test-graph">
-              <MyResponsiveLine data={newWordsLongtermStatiscticData} />
+            <h2 className="day-statistics__title">Статистика за все время</h2>
+            <div className='test-graph-wrap-title'>
             </div>
-            <div className="test-graph">
-              <MyResponsiveLine data={learnedWordsLongtermStatiscticData} />
+            <div className='test-graph-wrap'>
+
+              <div className="test-graph">
+                {/* <h3 className="games-statictics__title  games-statistics__title">Новые слова</h3> */}
+
+                <MyResponsiveLine data={newWordsLongtermStatiscticData} />
+              </div>
+              <div className="test-graph">
+                {/* <h3 className="games-statictics__title  games-statistics__title">Изученный слова</h3> */}
+
+                <MyResponsiveLine data={learnedWordsLongtermStatiscticData} />
+              </div>
             </div>
           </div>
         </div>

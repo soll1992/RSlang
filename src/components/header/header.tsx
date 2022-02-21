@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, FC } from 'react';
 import './header.scss';
 import { useDispatch, useSelector } from 'react-redux';
+import Button from '../button/button';
 import LoginPopup from './login-popap';
 
 import NavItem from './nav-item';
@@ -101,6 +102,16 @@ const Header: FC<Props> = (props) => {
       setAuthorizations(true);
     } else setAuthorizations(false);
   }, [props.userData]);
+
+  function fullscreenHandler(e: React.MouseEvent<Element, MouseEvent>) {
+    if (document.fullscreenElement) {
+      e.currentTarget.classList.remove('active');
+      document.exitFullscreen();
+    } else {
+      e.currentTarget.classList.add('active');
+      document.documentElement.requestFullscreen();
+    }
+  }
   return (
     <div className="header-wrap">
       <header id="Top" className="header">
@@ -143,7 +154,8 @@ const Header: FC<Props> = (props) => {
               Выйти
             </button>
           )}
-          <div className="login-avatar"></div>
+          <Button class="fullscreen-button" onClick={fullscreenHandler} />
+
         </div>
         {loginIsOpen && (
           <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={props.userData} />

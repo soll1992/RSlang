@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ResponsiveLine } from '@nivo/line';
 import React from 'react';
+import './test-graph.scss'
 
 export const MyResponsiveLine = ({ data }) => (
   <ResponsiveLine
     data={data}
     colors={'#55f07c'}
-    margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+    margin={{ top: 50, right: 110, bottom: 50, left: 35 }}
     xScale={{ type: 'point' }}
     yScale={{
       type: 'linear',
@@ -17,6 +18,101 @@ export const MyResponsiveLine = ({ data }) => (
     }}
     yFormat=" >-.2f"
     curve="catmullRom"
+    theme={{
+      background: 'transparent',
+      textColor: '#ffffff',
+      fontSize: 14,
+      axis: {
+        domain: {
+          line: {
+            stroke: '#777777',
+            strokeWidth: 1,
+          },
+        },
+        legend: {
+          text: {
+            fontSize: 11,
+            fill: '#333333',
+          },
+        },
+        ticks: {
+          line: {
+            stroke: '#777777',
+            strokeWidth: 1,
+          },
+          text: {
+            fontSize: 11,
+            fill: '#ffffff',
+          },
+        },
+      },
+      grid: {
+        line: {
+          stroke: '#dddddd',
+          strokeWidth: 0,
+        },
+      },
+      legends: {
+        title: {
+          text: {
+            fontSize: 11,
+            fill: '#ffffff',
+          },
+        },
+        text: {
+          fontSize: 11,
+          fill: '#ffffff',
+        },
+        ticks: {
+          line: {},
+          text: {
+            fontSize: 10,
+            fill: '#ffffff',
+          },
+        },
+      },
+      annotations: {
+        text: {
+          fontSize: 13,
+          fill: '#333333',
+          outlineWidth: 2,
+          outlineColor: '#ffffff',
+          outlineOpacity: 1,
+        },
+        link: {
+          stroke: '#000000',
+          strokeWidth: 1,
+          outlineWidth: 2,
+          outlineColor: '#ffffff',
+          outlineOpacity: 1,
+        },
+        outline: {
+          stroke: '#000000',
+          strokeWidth: 2,
+          outlineWidth: 2,
+          outlineColor: '#ffffff',
+          outlineOpacity: 1,
+        },
+        symbol: {
+          fill: '#000000',
+          outlineWidth: 2,
+          outlineColor: '#ffffff',
+          outlineOpacity: 1,
+        },
+      },
+      tooltip: {
+        container: {
+          background: '#ffffff',
+          color: '#333333',
+          fontSize: 12,
+        },
+        basic: {},
+        chip: {},
+        table: {},
+        tableCell: {},
+        tableCellValue: {},
+      },
+    }}
     axisTop={null}
     axisRight={null}
     axisBottom={{
@@ -43,7 +139,7 @@ export const MyResponsiveLine = ({ data }) => (
     isInteractive={false}
     legends={[
       {
-        anchor: 'bottom-right',
+        anchor: 'top-left',
         direction: 'column',
         justify: false,
         translateX: 100,
@@ -61,7 +157,7 @@ export const MyResponsiveLine = ({ data }) => (
             on: 'hover',
             style: {
               itemBackground: 'rgba(0, 0, 0, .03)',
-              itemOpacity: 1,
+              itemOpacity: 0,
             },
           },
         ],

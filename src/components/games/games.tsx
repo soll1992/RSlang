@@ -336,7 +336,7 @@ export default function Games() {
   return (
     <div className="game-wrapper">
       <div className="settings-button-wrapper">
-        <Button class="fullscreen-button" onClick={fullscreenHandler} />
+        {/* <Button class="fullscreen-button" onClick={fullscreenHandler} /> */}
         {/* {selectedGame === 'audiochallenge' &&
           
         } */}

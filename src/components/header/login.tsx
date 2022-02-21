@@ -56,11 +56,13 @@ const Login: FC<Props> = (props) => {
     }
   };
 
+
   function keysHandler(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.code === 'Enter') {
       createDataUsers();
+
     }
-  }
+  };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.value) {
@@ -88,7 +90,7 @@ const Login: FC<Props> = (props) => {
         <label
           className="login-email label"
           htmlFor="login-login"
-          // className={emailInput.current.value ? "login-email input active" : "login-email input"}
+        // className={emailInput.current.value ? "login-email input active" : "login-email input"}
         >
           Почта
         </label>

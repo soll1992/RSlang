@@ -186,6 +186,11 @@
       color: #000;
     }
   }
+  &:disabled {
+    background-color: #9b9b9ba4;
+    color: #686868;
+    border: 3px #9b9b9ba4 solid;
+  }
 }
 @keyframes combo-boom {
   0% {

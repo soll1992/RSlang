@@ -3,7 +3,7 @@ import Word from 'src/types/Word';
 import UserData from 'src/types/UserData';
 import createUserWord from '../../utils/createUserWord';
 import updateUserWord from '../../utils/updateUserWord';
-import './wordCard.css';
+import './wordCard.scss';
 /* eslint no-underscore-dangle: 0 */
 
 type Props = {
@@ -163,11 +163,13 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
 
   return (
     <div className="word-card">
-      <img
-        className="word-card__picture"
-        src={`https://rs-lang-server.herokuapp.com/${info.image}`}
-        alt={`${info.word}_picture`}
-      />
+      <div className='word-card__picture-wrap'>
+        <img
+          className="word-card__picture"
+          src={`https://rs-lang-server.herokuapp.com/${info.image}`}
+          alt={`${info.word}_picture`}
+        />
+      </div>
       <div className="word-card__content">
         <button className="word-card__audio" onClick={playAudio}></button>
         <audio

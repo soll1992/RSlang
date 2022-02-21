@@ -111,19 +111,21 @@ export default function TextbookPage({ group, page, authorization, gamesButtonsS
   return (
     <div className="textbook-page">
       {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}
-      {group.activeGroup === 'difficult-words' && !authorization.userData
-        ? 'Для доступа к данному разделу необходимо авторизироваться'
-        : words.map((word: Word) => {
-          return (
-            <WordCard
-              info={word}
-              audio={{ audiotrack, setAudiotrack }}
-              key={word.id || word._id}
-              authorization={authorization}
-              wordState={{ wordChanged, setWordChanged }}
-            />
-          );
-        })}
+      <div className='difficult-words-wrap'>
+        {group.activeGroup === 'difficult-words' && !authorization.userData
+          ? 'Для доступа к данному разделу необходимо авторизироваться'
+          : words.map((word: Word) => {
+            return (
+              <WordCard
+                info={word}
+                audio={{ audiotrack, setAudiotrack }}
+                key={word.id || word._id}
+                authorization={authorization}
+                wordState={{ wordChanged, setWordChanged }}
+              />
+            );
+          })}
+      </div>
 
       {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}
     </div>

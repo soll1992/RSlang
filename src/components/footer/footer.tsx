@@ -15,13 +15,19 @@ class Footer extends Component {
           <p className="footer__copyright">2022 г.</p>
           <div className="footer__column">
             <a href="https://github.com/dariija" target="_blank">
-              <div className='footer__github-wrap'>dariija<div className="footer__github"></div></div>
+              <div className="footer__github-wrap">
+                dariija<div className="footer__github"></div>
+              </div>
             </a>
             <a href="https://github.com/soll1992" target="_blank">
-              <div className='footer__github-wrap'>soll1992<div className="footer__github"></div></div>
+              <div className="footer__github-wrap">
+                soll1992<div className="footer__github"></div>
+              </div>
             </a>
             <a href="https://github.com/ConstantineTU" target="_blank">
-              <div className='footer__github-wrap'>ConstantineTU<div className="footer__github"></div></div>
+              <div className="footer__github-wrap">
+                ConstantineTU<div className="footer__github"></div>
+              </div>
             </a>
           </div>
         </div>

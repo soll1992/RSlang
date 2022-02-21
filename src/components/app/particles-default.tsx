@@ -1,5 +1,5 @@
-import React from "react";
-import Particles from "react-tsparticles";
+import React from 'react';
+import Particles from 'react-tsparticles';
 
 const ParticlesApp = () => {
   // const particlesInit = (main): Promise<void> => {
@@ -13,18 +13,18 @@ const ParticlesApp = () => {
   // };
 
   return (
-    <div className='home-particles'>
+    <div className="home-particles">
       <Particles
         id="tsparticles"
         // init={particlesInit}
         // loaded={particlesLoaded}
         options={{
           zIndex: {
-            value: '-1'
+            value: '-1',
           },
           background: {
             color: {
-              value: "transparent",
+              value: 'transparent',
             },
           },
           fpsLimit: 30,
@@ -32,11 +32,11 @@ const ParticlesApp = () => {
             events: {
               onClick: {
                 enable: false,
-                mode: "none",
+                mode: 'none',
               },
               onHover: {
                 enable: false,
-                mode: "none",
+                mode: 'none',
               },
               resize: true,
             },
@@ -58,10 +58,10 @@ const ParticlesApp = () => {
           },
           particles: {
             color: {
-              value: "#ffffff",
+              value: '#ffffff',
             },
             links: {
-              color: "#ffffff",
+              color: '#ffffff',
               distance: 0,
               enable: false,
               opacity: 0.5,
@@ -71,9 +71,9 @@ const ParticlesApp = () => {
               enable: true,
             },
             move: {
-              direction: "none",
+              direction: 'none',
               enable: true,
-              outMode: "bounce",
+              outMode: 'bounce',
               random: false,
               speed: 0.2,
               straight: false,
@@ -89,7 +89,7 @@ const ParticlesApp = () => {
               value: 0.5,
             },
             shape: {
-              type: "circle",
+              type: 'circle',
             },
             size: {
               random: true,
@@ -103,4 +103,4 @@ const ParticlesApp = () => {
   );
 };
 
-export default ParticlesApp
+export default ParticlesApp;
