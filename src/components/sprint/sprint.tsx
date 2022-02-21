@@ -88,7 +88,7 @@ export default function Sprint(props: Props) {
             >
               {({ remainingTime }) => remainingTime}
             </CountdownCircleTimer>
-            <div className='sprint-answered'>{`${props.currentWordnumber}`}</div>
+            {/* <div className='sprint-answered'>{`${props.currentWordnumber}`}</div> */}
             <div className='sprint-score'>{`Счет: ${props.score}`}</div>
             <div id='combo' className={props.scoreMultiplier === 2 || props.scoreMultiplier === 8 ? 'sprint-combo active' : 'sprint-combo'}>{`Комбо ${props.scoreMultiplier * 10}`}</div>
             <div className="combo-row sprint-combo-container">

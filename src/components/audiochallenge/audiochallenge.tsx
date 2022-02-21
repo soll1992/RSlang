@@ -208,6 +208,7 @@ export default function Audiochallenge(props: Props) {
             <ul>
               <li>Мышь, для выбора ответа</li>
               <li>Клавиши от 1 до 4 для выбора ответа</li>
+              <li>Клавиша стрелка вправо показать следующий вопрос</li>
               <li>Пробел для повтроного звучания слова</li>
               {/* <li>Используйте клавишу Enter для подсказки или для перехода к следующему слову</li> */}
             </ul>
@@ -253,7 +254,7 @@ export default function Audiochallenge(props: Props) {
                   />
                 ))}
               </div>
-              <Button onClick={nextButtonHandler} class="button btn-start" textContent="Следующее слово >>" />
+              <Button onClick={nextButtonHandler} class="button btn-start" textContent="Следующее слово" />
             </div>
           </div>
         </>

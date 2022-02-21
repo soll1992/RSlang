@@ -47,7 +47,7 @@
     }
   }
   &-score {
-    text-align: left;
+    text-align: right;
     color: #55f07c;
     font-weight: bold;
   }
@@ -169,6 +169,7 @@
   &.active {
   }
   &.false {
+    max-width: 150px;
     background-color: transparent;
     border: 3px #ca3434 solid;
     &:hover {
@@ -177,6 +178,7 @@
     }
   }
   &.true {
+    max-width: 150px;
     background-color: transparent;
     border: 3px #55f07c solid;
     &:hover {
