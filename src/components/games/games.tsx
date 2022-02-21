@@ -165,8 +165,13 @@ export default function Games() {
         (selectedGame === 'sprint' && arr.length < 100)
       ) {
         prevPage -= 1;
-        const prev = await getWords({ group: difficulty, page: prevPage });
-        console.log(prev);
+        const prev = userData
+          ? await getUserAggregatedWords(userData.id, userData.token, {
+              wordsPerPage: 20,
+              group: difficulty,
+              page: prevPage,
+            })
+          : await getWords({ group: difficulty, page: prevPage });
         newArr = arr.concat(prev as Word[]);
         await addMoreCommonWords(newArr);
       } else if (arr.length >= 20 && selectedGame === 'audiochallenge') {
