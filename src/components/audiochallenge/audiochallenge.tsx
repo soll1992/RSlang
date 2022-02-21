@@ -152,7 +152,7 @@ export default function Audiochallenge(props: Props) {
 
   // Вешаю и убираю эвентлисенер
   useEffect(() => {
-    if (!props.showResult) {
+    if (!props.showResult && startGame) {
       window.addEventListener('keyup', keysHandler);
     }
     return () => window.removeEventListener('keyup', keysHandler);
