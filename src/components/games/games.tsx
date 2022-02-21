@@ -130,7 +130,7 @@ export default function Games() {
     // рекурсивный запрос для создания массива из 20 слов
     async function addMore(arr: Word[]) {
       let newArr: Word[];
-      const baseArr = arr.filter((item) => !item.userWord?.optional.learned);
+      const baseArr = arr.filter((item) => !item.userWord?.optional?.learned);
       // возможно тут <=
       console.log(prevPage);
       if (prevPage <= 0) {
@@ -146,7 +146,7 @@ export default function Games() {
           page: prevPage,
         });
         console.log(prev);
-        const plusArr = (prev as Word[]).filter((item) => !item.userWord?.optional.learned);
+        const plusArr = (prev as Word[]).filter((item) => !item.userWord?.optional?.learned);
         newArr = baseArr.concat(plusArr);
         await addMore(newArr);
       } else if (baseArr.length >= 20 && selectedGame === 'audiochallenge') {

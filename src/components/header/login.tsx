@@ -14,8 +14,8 @@ type Props = {
       }>
     >;
   };
-  hiddenOverlay: () => void
-  setIsSignUp: React.Dispatch<React.SetStateAction<boolean>>
+  hiddenOverlay: () => void;
+  setIsSignUp: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Login: FC<Props> = (props) => {
@@ -45,31 +45,35 @@ const Login: FC<Props> = (props) => {
 
     email.value = '';
     password.value = '';
-    props.hiddenOverlay()
+    props.hiddenOverlay();
   };
 
   const createDataUsers = () => {
-
     const email = emailInput.current;
     const password = passwordInput.current;
     if (email.value && password.value.length >= 8) {
       loginUser({ email: email.value, password: password.value });
     }
   };
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value) {
-      e.currentTarget.classList.add('active')
-      e.currentTarget.classList.remove('error')
-    } else {
-      e.currentTarget.classList.remove('active')
+
+  function keysHandler(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.code === 'Enter') {
+      createDataUsers();
     }
   }
 
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.value) {
+      e.currentTarget.classList.add('active');
+      e.currentTarget.classList.remove('error');
+    } else {
+      e.currentTarget.classList.remove('active');
+    }
+  };
+
   return (
-
-    <div className="login-container__login">
+    <div onKeyUp={keysHandler} className="login-container__login">
       <div className="login-wrap-inputs">
-
         <input
           required
           minLength={4}
@@ -81,14 +85,15 @@ const Login: FC<Props> = (props) => {
           name="login-login"
           id="login-login"
         />
-        <label className="login-email label" htmlFor="login-login"
-        // className={emailInput.current.value ? "login-email input active" : "login-email input"}
+        <label
+          className="login-email label"
+          htmlFor="login-login"
+          // className={emailInput.current.value ? "login-email input active" : "login-email input"}
         >
           Почта
         </label>
       </div>
       <div className="login-wrap-inputs">
-
         <input
           onChange={(e) => handleChangeInput(e)}
           required
@@ -108,7 +113,6 @@ const Login: FC<Props> = (props) => {
         Войти
       </button>
     </div>
-
   );
 };
 
