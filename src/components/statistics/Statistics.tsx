@@ -6,7 +6,9 @@ import getUserStatistics from '../../utils/getUserStatistics';
 import { isUserData } from '../../utils/typeGuards';
 import UserStatistics from '../../types/UserStatistics';
 import UserData from '../../types/UserData';
+import { MyResponsiveLine } from './long-term-statistics/long-term-statistics';
 import getUserAggregatedWords from '../../utils/getUserAggregatedWords';
+import updateUserStatistics from '../../utils/updateUserStatistics';
 
 export default function Statistics() {
   // Authorization check
@@ -23,10 +25,10 @@ export default function Statistics() {
   }, []);
   // ------
 
-  const [gamesData, setGamesData] = useState<UserStatistics>(null);
-  const [learnedWordsQuantity, setLearnedWordsQuantity] = useState(0);
-  const [newWordsQuantity, setNewWordsQuantity] = useState(0);
-  const [wordsRightAnswersPercent, setWordsRightAnswersPercent] = useState(0);
+  const [userStatisticData, setUserStatisticData] = useState<UserStatistics>(null);
+  const [newWordsLongtermStatiscticData, setNewWordsLongtermStatiscticData] = useState([]);
+  const [learnedWordsLongtermStatiscticData, setLearnedWordsLongtermStatiscticData] = useState([]);
+
   const today = new Date().toLocaleDateString();
   const games = [
     ['Спринт', 'sprint'],
@@ -37,57 +39,65 @@ export default function Statistics() {
     (async () => {
       if (userData) {
         const userStatistic = await getUserStatistics(userData.id, userData.token);
-        if (!(userStatistic instanceof Error)) setGamesData(userStatistic);
-
-        const paramsLearnedWords = { wordsPerPage: 3600, filter: { 'userWord.optional.learned': today } };
-        const learnedWordsToday = await getUserAggregatedWords(userData.id, userData.token, paramsLearnedWords);
-        console.log(learnedWordsToday);
-        if (!(learnedWordsToday instanceof Error)) setLearnedWordsQuantity(learnedWordsToday.length);
+        if (!(userStatistic instanceof Error)) {
+          await Promise.allSettled(
+            Object.entries(userStatistic.optional?.words).map(async ([wordsDate, wordsData]) => {
+              const paramsLearnedWords = { wordsPerPage: 3600, filter: { 'userWord.optional.learned': wordsDate } };
+              const learnedWords = await getUserAggregatedWords(userData.id, userData.token, paramsLearnedWords);
+              if (!(learnedWords instanceof Error)) {
+                wordsData.learnedWordsQuantity = learnedWords.length;
+                delete userStatistic.id;
+                await updateUserStatistics(userData.id, userData.token, userStatistic);
+              }
+              return wordsData;
+            })
+          );
+          setUserStatisticData(userStatistic);
+        }
       }
     })();
   }, [userData]);
 
   useEffect(() => {
-    if (gamesData?.optional) {
-      const todayGamesData = Object.values(gamesData.optional)
-        .filter((game) => game[today])
-        .map((game) => game[today]);
+    if (userStatisticData) {
+      const newWordsData = Object.entries(userStatisticData?.optional?.words).map(
+        ([wordsDateStatistic, wordsDataStatistic]) => ({
+          x: wordsDateStatistic,
+          y: wordsDataStatistic.newWordsQuantity,
+        })
+      );
+      setNewWordsLongtermStatiscticData([{ id: 'Новые слова', data: newWordsData }]);
 
-      if (todayGamesData.length) {
-        const rightAnswersForAllGames = todayGamesData
-          .map((game) => game.rightAnswers)
-          .reduce((prev, curr) => prev + curr);
-        const wrongAnswersForAllGames = todayGamesData
-          .map((game) => game.wrongAnswers)
-          .reduce((prev, curr) => prev + curr);
-        setWordsRightAnswersPercent(
-          Math.round((rightAnswersForAllGames * 100) / (rightAnswersForAllGames + wrongAnswersForAllGames))
-        );
-
-        const newWordsQuantityForAllGames = todayGamesData
-          .map((game) => game.newWordsQuantity)
-          .reduce((prev, curr) => prev + curr);
-        setNewWordsQuantity(newWordsQuantityForAllGames);
-      }
+      const learnedWordsData = Object.entries(userStatisticData?.optional?.words).map(
+        ([wordsDateStatistic, wordsDataStatistic]) => ({
+          x: wordsDateStatistic,
+          y: wordsDataStatistic.learnedWordsQuantity,
+        })
+      );
+      const reducedLearnedWordsData = learnedWordsData.map((obj, index) =>
+        learnedWordsData
+          .slice(0, index + 1)
+          .reduce((prevData, currData) => ({ x: currData.x, y: prevData.y + currData.y }))
+      );
+      setLearnedWordsLongtermStatiscticData([{ id: 'Изученные', data: reducedLearnedWordsData }]);
     }
-  }, [gamesData]);
+  }, [userStatisticData]);
 
   return (
     <div className="statistics">
-      <div className="day-statistics">
-
-        {userData ? (
-          <>
-            <h2 className="day-statistics__title">Статистика за сегодня</h2>
+      {userData ? (
+        <div>
+          <div className="day-statistics">
+            <h1 className="day-statistics__title">Статистика за сегодня</h1>
             <div className="day-statistics__content">
               <div className="games-statictics">
-                <h3 className="games-statictics__title">Мини-игры</h3>
+                <h2 className="games-statictics__title">Мини-игры</h2>
                 {games.map((game) => {
                   const [rusName, engName] = game;
                   return (
                     <GameStatisticsCard
                       gameName={rusName}
-                      gameData={gamesData?.optional?.[engName]?.[today]}
+                      gameData={userStatisticData?.optional?.games?.[engName]?.[today]}
                       key={`${engName}_statistics`}
                     />
                   );
@@ -95,17 +105,35 @@ export default function Statistics() {
               </div>
 
               <div className="words-statictics">
-                <h3 className="words-statictics__title">Слова</h3>
-                <WordStatisticsCard data={newWordsQuantity} text="новых слов" />
-                <WordStatisticsCard data={learnedWordsQuantity} text="изученных слов" />
-                <WordStatisticsCard data={`${wordsRightAnswersPercent} %`} text="правильных ответов" />
+                <h2 className="words-statictics__title">Слова</h2>
+                <WordStatisticsCard
+                  data={userStatisticData?.optional?.words?.[today]?.newWordsQuantity || 0}
+                  text="новых слов"
+                />
+                <WordStatisticsCard
+                  data={userStatisticData?.optional?.words?.[today]?.learnedWordsQuantity || 0}
+                  text="изученных слов"
+                />
+                <WordStatisticsCard
+                  data={`${userStatisticData?.optional?.words?.[today]?.rightAnswersPercent || 0} %`}
+                  text="правильных ответов"
+                />
               </div>
             </div>
-          </>
-        ) : (
-          <div className='day-statictics__text-alert'>Для доступа к данному разделу необходимо авторизироваться</div>
-        )}
-      </div>
+          </div>
+          <div className="long-term-statistics">
+            <h1 className="long-term-statistic__title">Статистика за все время</h1>
+            <div className="test-graph">
+              <MyResponsiveLine data={newWordsLongtermStatiscticData} />
+            </div>
+            <div className="test-graph">
+              <MyResponsiveLine data={learnedWordsLongtermStatiscticData} />
+            </div>
+          </div>
+        </div>
+      ) : (
+        'Для доступа к данному разделу необходимо авторизироваться'
+      )}
     </div>
   );
 }
