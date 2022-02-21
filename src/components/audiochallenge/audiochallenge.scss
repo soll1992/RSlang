@@ -97,6 +97,9 @@
             & ul {
                 max-width: 600px;
                 text-align: left;
+                & li {
+                    list-style-type: disc;
+                }
             }
             display: flex;
             flex-direction: column;
@@ -142,15 +145,15 @@
 }
 .btn-start {
     width: 100%;
-    max-width: 150px;
-    height: 40px;
-    background-color: #4c77d5;
+    max-width: 170px;
+    height: 50px;
+    background-color: transparent;
     border-radius: 10px;
     transition: background 0.3s, color 0.3s;
     position: relative;
     color: #fff;
     overflow: hidden;
-    border: #55f0c479 0.5px solid;
+    border: 3px #55f07c solid;
     // &::after {
     //     content: "";
     //     position: absolute;
@@ -162,7 +165,7 @@
     //     background-color: rgba(85, 240, 196, 1);
     // }
     &:active {
-        background-color: #55f0c4;
+        background-color: #55f07c;
         color: #000;
         // &::after {
         //     content: "";

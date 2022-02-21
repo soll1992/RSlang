@@ -19,6 +19,33 @@
       overflow: hidden;
     }
   }
+  &-description {
+    font-size: 22px;
+    &-wrap {
+      padding: 15px;
+      background-color: rgba(0, 0, 0, 0.25);
+      margin: 0px 0px 25px 0px;
+      border-radius: 10px;
+      font-size: 20px;
+      & h3 {
+        padding: 20px 20px;
+        font-size: 26px;
+        font-weight: bold;
+      }
+      font-size: 22px;
+      & ul {
+        max-width: 600px;
+        text-align: left;
+        & li {
+          list-style-type: disc;
+        }
+      }
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
   &-score {
     text-align: left;
     color: #55f07c;
@@ -114,7 +141,6 @@
       margin: 0px 0px 25px 0px;
       border-radius: 10px;
     }
-    font-size: 16px;
   }
 }
 .button.btn-3.btn-2.lvl {
@@ -125,18 +151,19 @@
 }
 .btn-start {
   width: 100%;
-  max-width: 150px;
-  height: 40px;
-  background-color: #4c77d5;
+  max-width: 170px;
+  height: 50px;
+  background-color: transparent;
   border-radius: 10px;
   transition: background 0.3s, color 0.3s;
   position: relative;
   color: #fff;
   overflow: hidden;
-  border: #55f0c479 0.5px solid;
-
+  border: 3px #55f07c solid;
+  font-size: 20px;
+  font-weight: bold;
   &:hover {
-    background-color: #55f0c4;
+    background-color: #55f07c;
     color: #000;
   }
   &.active {

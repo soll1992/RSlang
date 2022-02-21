@@ -62,10 +62,13 @@ export default function Sprint(props: Props) {
       {!startGame ? (
         <div className='sprint-container'>
           <div className='sprint-description-wrap'>
-            <p className='sprint-description'>Спринт - тренировка на скорость. Попробуй угадать как можно больше слов за 60 секунд.</p>
+            <p className='sprint-description'><b>«Спринт»</b> - тренировка на скорость. Угадай как можно больше слов за 60 секунд.</p>
+            <h3>Правила</h3>
+            <p>Серии правильных ответов повышают комбо-множитель, который умножает количество получаемых бал за следующий ответ, если ответ будет неверным, комбо-множитель сбросится до начальных значений</p>
+            <h3>Управление</h3>
             <ul>
-              <li>Можно использовать мышь для выбора правильного ответа</li>
-              <li>Либо клавиши влево (неверно) или вправо (верно)</li>
+              <li>Мышь, для выбора ответа</li>
+              <li>Клавиши <b>стрелка влево</b> или <b>стрелка вправо</b> для выбора ответа</li>
             </ul>
           </div>
           <Button refer={props.refer} onClick={start} class="button btn-start" textContent="Старт" />
@@ -99,8 +102,8 @@ export default function Sprint(props: Props) {
               <span className='sprint-correct-word'>{props.translation}</span><span>?</span>
             </div>
             <div className='sprint-answers__btn-container'>
-              <Button onClick={props.falseButtonHandler} class="button btn-start false" textContent="<< Неверно" />
-              <Button onClick={props.trueButtonHandler} class="button btn-start true" textContent="Верно >>" />
+              <Button onClick={props.falseButtonHandler} class="button btn-start false" textContent="Неверно" />
+              <Button onClick={props.trueButtonHandler} class="button btn-start true" textContent="Верно" />
             </div>
           </div>
         </div>
