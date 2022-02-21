@@ -155,7 +155,7 @@ const Header: FC<Props> = (props) => {
           )}
           <div className="login-avatar"></div>
         </div>
-        <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={props.userData} />
+        {loginIsOpen && <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={props.userData} />}
         <div onClick={hiddenOverlay} className={!isOverlay ? 'background-overlay' : 'background-overlay active'}></div>
       </header>
     </div>
