@@ -12,13 +12,13 @@ type Props = {
     activePage: number;
     setActivePage: React.Dispatch<React.SetStateAction<number>>;
   };
-  wordsState: {
-    allWordsDiffOrLearned: boolean;
-    setAllWordsDiffOrLearned: React.Dispatch<React.SetStateAction<boolean>>;
+  gamesButtonsState: {
+    disabledGameButtons: boolean;
+    setDisabledGameButtons: React.Dispatch<React.SetStateAction<boolean>>;
   };
 };
 
-export default function TextbookNav({ group, page, wordsState }: Props) {
+export default function TextbookNav({ group, page, gamesButtonsState }: Props) {
   const wordsGroups = [
     ['Easy', 'A1'],
     ['Easy', 'A2'],
@@ -65,7 +65,7 @@ export default function TextbookNav({ group, page, wordsState }: Props) {
               link={'game'} //  убрал gameEn.toLowerCase() заменил просто на game
               activeGroup={group.activeGroup}
               activePage={page.activePage}
-              disabled={wordsState.allWordsDiffOrLearned}
+              disabled={gamesButtonsState.disabledGameButtons}
               key={`game_${gameEn}`}
             />
           );
