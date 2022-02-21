@@ -55,6 +55,15 @@ const Login: FC<Props> = (props) => {
       loginUser({ email: email.value, password: password.value });
     }
   };
+
+
+  function keysHandler(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.code === 'Enter') {
+      createDataUsers();
+
+    }
+  };
+
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.value) {
       e.currentTarget.classList.add('active');
@@ -65,7 +74,7 @@ const Login: FC<Props> = (props) => {
   };
 
   return (
-    <div className="login-container__login">
+    <div onKeyUp={keysHandler} className="login-container__login">
       <div className="login-wrap-inputs">
         <input
           required
@@ -81,7 +90,7 @@ const Login: FC<Props> = (props) => {
         <label
           className="login-email label"
           htmlFor="login-login"
-          // className={emailInput.current.value ? "login-email input active" : "login-email input"}
+        // className={emailInput.current.value ? "login-email input active" : "login-email input"}
         >
           Почта
         </label>

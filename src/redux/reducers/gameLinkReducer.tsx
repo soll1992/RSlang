@@ -5,7 +5,7 @@ interface Action {
 }
 
 const initialState = {
-  from: 'Menu',
+  from: localStorage.getItem('from') || 'Menu',
 };
 
 export function gameLinkReducer(state = initialState, action: Action) {

@@ -6,7 +6,7 @@ interface Action {
 }
 
 const initialState = {
-  gameDifficulty: 0,
+  gameDifficulty: localStorage.getItem('difficulty') || 0,
 };
 
 export function difficultyReducer(state = initialState, action: Action) {

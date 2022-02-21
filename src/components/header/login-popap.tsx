@@ -30,8 +30,12 @@ const LoginPopup: FC<Props> = (props: Props) => {
     setIsSignUp(false);
   };
 
+  function stopPropagation(e: React.KeyboardEvent<HTMLDivElement>) {
+    e.stopPropagation();
+  }
+
   return (
-    <div className={props.loginIsOpen ? 'login-popup-wrap active' : 'login-popup-wrap'}>
+    <div onKeyUp={stopPropagation} className={props.loginIsOpen ? 'login-popup-wrap active' : 'login-popup-wrap'}>
       <div className="login-header-buttons">
         <button
           onClick={hiddenSignUp}

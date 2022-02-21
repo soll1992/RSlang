@@ -146,7 +146,6 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
         }
         delete userStatistic.id;
         await updateUserStatistics(userData.id, userData.token, userStatistic);
-        console.log(userStatistic);
       }
     }
   };
@@ -203,7 +202,6 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
 
         delete userStatistic.id;
         await updateUserStatistics(userData.id, userData.token, userStatistic);
-        console.log(userStatistic);
       }
     }
   };

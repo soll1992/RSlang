@@ -42,14 +42,15 @@ export default function SprintDifficulty() {
   }
 
   function navLinkHandler(game: string) {
-    dispatch(changePage(random(0, 29)));
     dispatch(fromMenu());
     if (game === 'Спринт') {
       dispatch(selectSprint('sprint'));
       localStorage.setItem('game', 'sprint');
+      dispatch(changePage(random(5, 29)));
     } else {
       dispatch(selectAudiochallenge('audiochallenge'));
       localStorage.setItem('game', 'audiochallenge');
+      dispatch(changePage(random(0, 29)));
     }
   }
 

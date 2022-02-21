@@ -19,6 +19,7 @@ interface Props {
   word: string;
   translation: string;
   words: Word[];
+  dis: boolean;
   allWords: Word[];
   isSoundOn: boolean;
   showResult: boolean;
@@ -96,12 +97,12 @@ export default function Audiochallenge(props: Props) {
     }
     const answersSet = new Set();
     answersSet.add(obj.wordTranslate);
-    if (props.words.length < 4) {
+    if (props.words.length < 5) {
       const shuffleAllWords =
         props.difficulty === 6
           ? shuffle(['лодка', 'орех', 'привыкание', 'аромат', 'удушение', 'кит', 'инженер', 'поверхность'])
           : shuffle(props.allWords);
-      for (let i = 0; answersSet.size < 4; i += 1) {
+      for (let i = 0; answersSet.size < 5; i += 1) {
         if ((shuffleAllWords[i] as Word).wordTranslate) {
           answersSet.add((shuffleAllWords[i] as Word).wordTranslate);
         } else {
@@ -110,7 +111,7 @@ export default function Audiochallenge(props: Props) {
       }
     } else {
       const shuffledWords = shuffle(props.words);
-      for (let i = 0; answersSet.size < 4; i += 1) {
+      for (let i = 0; answersSet.size < 5; i += 1) {
         answersSet.add(shuffledWords[i].wordTranslate);
       }
     }
@@ -140,7 +141,7 @@ export default function Audiochallenge(props: Props) {
   // обработчик событий клавиатуры
   function keysHandler(e: KeyboardEvent) {
     const key = Number(e.key);
-    if (key === 1 || key === 2 || key === 3 || key === 4) {
+    if (key === 1 || key === 2 || key === 3 || key === 4 || key === 5) {
       keysAnswerCheck(e, key);
     } else if (e.code === 'ArrowRight') {
       nextButtonHandler();
@@ -151,7 +152,7 @@ export default function Audiochallenge(props: Props) {
 
   // Вешаю и убираю эвентлисенер
   useEffect(() => {
-    if (!props.showResult) {
+    if (!props.showResult && startGame) {
       window.addEventListener('keyup', keysHandler);
     }
     return () => window.removeEventListener('keyup', keysHandler);
@@ -218,7 +219,13 @@ export default function Audiochallenge(props: Props) {
               {/* <li>Используйте клавишу Enter для подсказки или для перехода к следующему слову</li> */}
             </ul>
           </div>
-          <Button refer={props.refer} onClick={(e) => playGame(e)} class="button btn-start" textContent="Старт" />
+          <Button
+            refer={props.refer}
+            dis={props.dis}
+            onClick={(e) => playGame(e)}
+            class="button btn-start"
+            textContent="Старт"
+          />
         </div>
       ) : (
         <>

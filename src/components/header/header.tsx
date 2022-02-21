@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FC } from 'react';
+import React, { useEffect, useRef, useState, FC } from 'react';
 import './header.scss';
-import LoginPopup from './login-popap';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../button/button';
+import LoginPopup from './login-popap';
+
 import NavItem from './nav-item';
 
 type UserData = {

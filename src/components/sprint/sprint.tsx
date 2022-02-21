@@ -18,6 +18,7 @@ interface Props {
   refer: React.MutableRefObject<HTMLButtonElement>;
   word: string;
   words: Word[];
+  dis: boolean;
   translation: string;
   showResult: boolean;
   trueButtonHandler: React.MouseEventHandler;
@@ -38,7 +39,7 @@ export default function Sprint(props: Props) {
   }
   // прослушивание событий клавиатуры
   useEffect(() => {
-    if (!props.showResult) {
+    if (!props.showResult && startGame) {
       window.addEventListener('keyup', props.keysHandler);
     }
     return () => window.removeEventListener('keyup', props.keysHandler);
@@ -77,7 +78,7 @@ export default function Sprint(props: Props) {
               </li>
             </ul>
           </div>
-          <Button refer={props.refer} onClick={start} class="button btn-start" textContent="Старт" />
+          <Button refer={props.refer} onClick={start} dis={props.dis} class="button btn-start" textContent="Старт" />
         </div>
       ) : (
         <div className="sprint-container">
