@@ -19,6 +19,7 @@ interface Props {
   word: string;
   translation: string;
   words: Word[];
+  dis: boolean;
   allWords: Word[];
   isSoundOn: boolean;
   showResult: boolean;
@@ -218,7 +219,13 @@ export default function Audiochallenge(props: Props) {
               {/* <li>Используйте клавишу Enter для подсказки или для перехода к следующему слову</li> */}
             </ul>
           </div>
-          <Button refer={props.refer} onClick={(e) => playGame(e)} class="button btn-start" textContent="Старт" />
+          <Button
+            refer={props.refer}
+            dis={props.dis}
+            onClick={(e) => playGame(e)}
+            class="button btn-start"
+            textContent="Старт"
+          />
         </div>
       ) : (
         <>

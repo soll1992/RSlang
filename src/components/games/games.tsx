@@ -47,6 +47,7 @@ export default function Games() {
   const [word, setWord] = useState<Word>();
   const [translation, setTranlation] = useState('');
   const [answer, setAnswer] = useState(false);
+  const [dis, setDis] = useState(true);
   //  От Даши>>
   const [userData] = useState<UserData | null>(() => {
     const saved = localStorage.getItem('userData');
@@ -185,17 +186,15 @@ export default function Games() {
     }
 
     if (userData && from === 'Textbook') {
-      gameStartRef.current.disabled = true;
       if (difficulty === 6) {
         useDifficultWords(data);
       } else {
         await addMore(data);
       }
-      gameStartRef.current.disabled = false;
+      setDis(false);
     } else {
-      gameStartRef.current.disabled = true;
       await addMoreCommonWords(data);
-      gameStartRef.current.disabled = false;
+      setDis(false);
     }
     console.log(dataArr);
     const shuffledData = shuffle(dataArr);
@@ -208,20 +207,23 @@ export default function Games() {
     (!userData
       ? getWords({ group: difficulty, page })
       : difficulty === 6
-        ? getUserAggregatedWords(userData.id, userData.token, {
+      ? getUserAggregatedWords(userData.id, userData.token, {
           wordsPerPage: 3600,
           filter: { 'userWord.difficulty': 'hard' },
         })
-        : getUserAggregatedWords(userData.id, userData.token, { wordsPerPage: 20, group: difficulty, page })
+      : getUserAggregatedWords(userData.id, userData.token, { wordsPerPage: 20, group: difficulty, page })
     )
       .then((res) => generateWords(res))
       .then((result) => setWordsData(result))
-      .catch((err) => console.log(`error`));
+      .catch((err) => console.log(`${err}`));
   }
 
   // получаем список слов с сервера
   useEffect(() => {
     getWordsData();
+    localStorage.setItem('page', String(page));
+    localStorage.setItem('difficulty', String(difficulty));
+    localStorage.setItem('from', from);
   }, []);
 
   // сбрасываем стили(кружки) комбо при ошибочном ответе
@@ -357,6 +359,7 @@ export default function Games() {
           isSoundOn={isSoundOn}
           difficulty={difficulty}
           img={word?.image}
+          dis={dis}
           soundLink={word?.audio}
           currentWord={word}
           currentWordnumber={currentWordnumber}
@@ -379,6 +382,7 @@ export default function Games() {
           circle1={circle1}
           circle2={circle2}
           circle3={circle3}
+          dis={dis}
           words={wordsData}
           word={word?.word}
           refer={gameStartRef}

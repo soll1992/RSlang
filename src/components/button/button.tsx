@@ -7,12 +7,13 @@ interface Props {
   refer?: React.MutableRefObject<HTMLButtonElement | null>;
   onClick?: React.MouseEventHandler;
   id?: string;
+  dis?: boolean;
 }
 
 export default function Button(props: Props) {
   return (
     <>
-      <button ref={props.refer} id={props.id} className={props.class} onClick={props.onClick}>
+      <button ref={props.refer} disabled={!!props.dis} id={props.id} className={props.class} onClick={props.onClick}>
         {props.textContent}
       </button>
     </>
