@@ -202,17 +202,18 @@ export default function Audiochallenge(props: Props) {
         <div className="audiochallenge-container">
           <div className="audiochallenge-description-wrap">
             <p className="audiochallenge-description">
-              «Аудиовызов» - это тренировка, которая улучшает восприятие речи на слух.
+              <b>«Аудиовызов»</b> - тренировка, которая улучшает восприятие речи на слух.
             </p>
             <h3>Правила</h3>
             <p>
-              Слушай слово на английском языке и выбирай правильный перевод, если отвечаешь неверно лопается пузырёк,
+              Слушай слово на английском языке и выбирай правильный перевод, если отвечаешь неверно, лопается пузырёк,
               при отстутствии пузырьков, следующий неверный ответ приведёт к окончанию игры
             </p>
             <h3>Управление</h3>
             <ul>
-              <li>Мышь, для выбора ответа.</li>
+              <li>Мышь, для выбора ответа</li>
               <li>Клавиши от 1 до 4 для выбора ответа</li>
+              <li>Клавиша стрелка вправо показать следующий вопрос</li>
               <li>Пробел для повтроного звучания слова</li>
               {/* <li>Используйте клавишу Enter для подсказки или для перехода к следующему слову</li> */}
             </ul>
@@ -272,7 +273,7 @@ export default function Audiochallenge(props: Props) {
                   />
                 ))}
               </div>
-              <Button onClick={nextButtonHandler} class="button btn-start" textContent="Следующее слово >>" />
+              <Button onClick={nextButtonHandler} class="button btn-start" textContent="Следующее слово" />
             </div>
           </div>
         </>

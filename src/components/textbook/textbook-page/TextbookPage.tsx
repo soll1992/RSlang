@@ -22,13 +22,13 @@ type Props = {
     userData: UserData | null;
     setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
   };
-  wordsState: {
-    allWordsDiffOrLearned: boolean;
-    setAllWordsDiffOrLearned: React.Dispatch<React.SetStateAction<boolean>>;
+  gamesButtonsState: {
+    disabledGameButtons: boolean;
+    setDisabledGameButtons: React.Dispatch<React.SetStateAction<boolean>>;
   };
 };
 
-export default function TextbookPage({ group, page, authorization, wordsState }: Props) {
+export default function TextbookPage({ group, page, authorization, gamesButtonsState }: Props) {
   // Router & URL --------------
   const pageUrlParams = useParams();
   const { groupId, pageId } = pageUrlParams;
@@ -83,8 +83,8 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
       const allDifficultOrLearned = words.every(
         (word) => word.userWord?.difficulty === 'hard' || word.userWord?.optional?.learned
       );
-      wordsState.setAllWordsDiffOrLearned(!!(allDifficultOrLearned && allDifficult === false));
-    }
+      gamesButtonsState.setDisabledGameButtons(!!(allDifficultOrLearned && allDifficult === false));
+    } else gamesButtonsState.setDisabledGameButtons(false);
   };
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
       (group.activeGroup === 'difficult-words' && !authorization.userData) ||
       (group.activeGroup === 'difficult-words' && authorization.userData && words.length === 0)
     )
-      wordsState.setAllWordsDiffOrLearned(true);
+      gamesButtonsState.setDisabledGameButtons(true);
   }, [words]);
 
   useEffect(() => {
@@ -110,19 +110,20 @@ export default function TextbookPage({ group, page, authorization, wordsState }:
 
   return (
     <div className="textbook-page">
+      {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}
       {group.activeGroup === 'difficult-words' && !authorization.userData
         ? 'Для доступа к данному разделу необходимо авторизироваться'
         : words.map((word: Word) => {
-            return (
-              <WordCard
-                info={word}
-                audio={{ audiotrack, setAudiotrack }}
-                key={word.id || word._id}
-                authorization={authorization}
-                wordState={{ wordChanged, setWordChanged }}
-              />
-            );
-          })}
+          return (
+            <WordCard
+              info={word}
+              audio={{ audiotrack, setAudiotrack }}
+              key={word.id || word._id}
+              authorization={authorization}
+              wordState={{ wordChanged, setWordChanged }}
+            />
+          );
+        })}
 
       {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}
     </div>

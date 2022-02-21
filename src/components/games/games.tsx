@@ -208,11 +208,11 @@ export default function Games() {
     (!userData
       ? getWords({ group: difficulty, page })
       : difficulty === 6
-      ? getUserAggregatedWords(userData.id, userData.token, {
+        ? getUserAggregatedWords(userData.id, userData.token, {
           wordsPerPage: 3600,
           filter: { 'userWord.difficulty': 'hard' },
         })
-      : getUserAggregatedWords(userData.id, userData.token, { wordsPerPage: 20, group: difficulty, page })
+        : getUserAggregatedWords(userData.id, userData.token, { wordsPerPage: 20, group: difficulty, page })
     )
       .then((res) => generateWords(res))
       .then((result) => setWordsData(result))

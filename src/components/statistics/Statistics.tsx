@@ -39,7 +39,7 @@ export default function Statistics() {
     (async () => {
       if (userData) {
         const userStatistic = await getUserStatistics(userData.id, userData.token);
-        if (!(userStatistic instanceof Error)) {
+        if (!(userStatistic instanceof Error) && userStatistic.optional?.words) {
           await Promise.allSettled(
             Object.entries(userStatistic.optional?.words).map(async ([wordsDate, wordsData]) => {
               const paramsLearnedWords = { wordsPerPage: 3600, filter: { 'userWord.optional.learned': wordsDate } };

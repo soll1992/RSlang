@@ -102,6 +102,7 @@ const NavItem: FC<Props> = (props) => {
         }
       } else {
         dispatch(titleChange('главная'))
+        body.style.background = 'linear-gradient(-135deg, #4c77d5 25%, #55f07c 100%)'
       }
     });
 

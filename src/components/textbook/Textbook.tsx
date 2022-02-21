@@ -10,7 +10,7 @@ export default function Textbook() {
   const [activeGroup, setActiveGroup] = useState('');
   const [activePage, setActivePage] = useState(1);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [allWordsDiffOrLearned, setAllWordsDiffOrLearned] = useState(false);
+  const [disabledGameButtons, setDisabledGameButtons] = useState(false);
 
   useEffect(() => {
     const checkUserData = () => {
@@ -29,11 +29,11 @@ export default function Textbook() {
         <TextbookNav
           group={{ activeGroup, setActiveGroup }}
           page={{ activePage, setActivePage }}
-          wordsState={{ allWordsDiffOrLearned, setAllWordsDiffOrLearned }}
+          gamesButtonsState={{ disabledGameButtons, setDisabledGameButtons }}
         />
       </div>
 
-      <div className={`textbook__main ${allWordsDiffOrLearned ? `textbook__main_${activeGroup}` : ''}`}>
+      <div className={`textbook__main ${disabledGameButtons ? `textbook__main_${activeGroup}` : ''}`}>
         <Routes>
           <Route
             path=":groupId/:pageId"
@@ -42,7 +42,7 @@ export default function Textbook() {
                 group={{ activeGroup, setActiveGroup }}
                 page={{ activePage, setActivePage }}
                 authorization={{ userData, setUserData }}
-                wordsState={{ allWordsDiffOrLearned, setAllWordsDiffOrLearned }}
+                gamesButtonsState={{ disabledGameButtons, setDisabledGameButtons }}
                 key={`${activeGroup}_${activePage}`}
               />
             }
