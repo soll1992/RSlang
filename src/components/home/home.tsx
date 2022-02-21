@@ -1,39 +1,42 @@
 import * as React from 'react';
 import { FC, useRef, useState, useEffect } from 'react';
 import './home.scss';
-import man from '../../assets/img/home/16.png'
+import man from '../../assets/img/home/16.png';
 import Functional from './functional';
 import Team from './team';
 
-
-type Props = {
-};
+type Props = {};
 
 const Home: FC<Props> = () => {
   useEffect(() => {
-    const hash = window.location.hash === '#/home/team' && window.location.hash
+    const hash = window.location.hash === '#/home/team' && window.location.hash;
     if (hash) {
-      const el = document.getElementById('team')
-      el.scrollIntoView({ behavior: "smooth" })
+      const el = document.getElementById('team');
+      el.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [window.location.hash])
+  }, [window.location.hash]);
 
   return (
-    <div className='home-wrap'>
-      <section id='home' className="home section">
-        <div className='home-content-wrap'>
-          <div className='home-title-wrap'>
-            <h1 className='home-title'>Учи английский язык с <span className='home-title__rs'>RSLang</span></h1>
-            <p className='home-subtitle-text'>Запоминание английских слов может быть увлекательным и простым. Играйте в миниигры, слушайте произношение, совершенствуйте свои знания. Бесплатно. На любом устройстве.</p>
+    <div className="home-wrap">
+      <section id="home" className="home section">
+        <div className="home-content-wrap">
+          <div className="home-title-wrap">
+            <h1 className="home-title">
+              Учи английский язык с <span className="home-title__rs">RSLang</span>
+            </h1>
+            <p className="home-subtitle-text">
+              Запоминание английских слов может быть увлекательным и простым. Играйте в миниигры, слушайте произношение,
+              совершенствуйте свои знания. Бесплатно. На любом устройстве.
+            </p>
           </div>
-          <div className='home-aside'>
+          <div className="home-aside">
             <img src={man} alt="" height={320} width={303.6}></img>
-
           </div>
-
         </div>
         <Functional />
-        <div id='team'><Team /></div>
+        <div id="team">
+          <Team />
+        </div>
 
         {/* <p>Ни для кого не является секретом тот факт, что самым популярным языком в мире является английский язык.</p>
         <h2 className='home-title'>Почему английский нужно учить прямо сейчас?</h2>
@@ -62,7 +65,6 @@ const Home: FC<Props> = () => {
       </div> */}
     </div>
   );
-
-}
+};
 
 export default Home;

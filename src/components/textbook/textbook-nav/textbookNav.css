@@ -5,13 +5,14 @@
 
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;	
+	justify-content: space-between;
 }
 
 .textbook-nav__list {
 	display: flex;
-    flex-direction: row;
-    gap: 20px;
+	flex-direction: row;
+	gap: 20px;
+	flex-wrap: wrap;
 }
 
 .level-card {
@@ -37,7 +38,7 @@
 }
 
 .level-card__level_B1 {
-	background-color:rgb(241 226 139);
+	background-color: rgb(241 226 139);
 }
 
 .level-card__level_B2 {
@@ -45,9 +46,9 @@
 }
 
 .level-card__level_C1 {
-    background-color: rgb(249 123 123);
+	background-color: rgb(249 123 123);
 }
 
 .level-card__level_C2 {
-    background-color: rgb(199 150 189);
+	background-color: rgb(199 150 189);
 }

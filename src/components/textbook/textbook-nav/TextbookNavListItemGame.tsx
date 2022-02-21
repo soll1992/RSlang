@@ -40,7 +40,7 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
     console.log(activeGroup);
     if (disabled) e.preventDefault();
     if (!disabled) {
-      titleChangeClick()
+      titleChangeClick();
       dispatch(changePage(activePage - 1)); // добавил тут 4 диспатча
       dispatch(changeDifficulty(groupsValue[activeGroup]));
       if (text === 'Аудиовызов') {

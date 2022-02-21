@@ -7,6 +7,7 @@ interface Props {
   word: string;
   translation: string;
   soundLink: string;
+  class?: string;
 }
 
 export default function ResultWords(props: Props) {
@@ -14,8 +15,10 @@ export default function ResultWords(props: Props) {
 
   return (
     <div className="word-conteiner">
-      <Button onClick={() => sound()} class="sound-button" />
-      <div>{`${props.word} - ${props.translation}`}</div>
+      <Button onClick={() => sound()} class={`${'sound-button ' + props.class}`} />
+      <div className="game-result-word-wrap">
+        <span className="game-result-word">{props.word}</span> - <span>{props.translation}</span>
+      </div>
     </div>
   );
 }

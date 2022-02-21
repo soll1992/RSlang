@@ -1,0 +1,93 @@
+.textbook-page-nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 15px;
+
+	margin-top: auto;
+	&:first-child {
+		justify-self: flex-start;
+	}
+}
+
+.textbook-page-nav__list {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	@media (max-width: 500px) {
+		gap: 5px;
+	}
+}
+
+.textbook-page-nav__list-item {
+	width: 30px;
+	height: 30px;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.textbook-page-nav__list-item_page-number:hover {
+	background-color: rgb(239, 239, 239);
+}
+
+.textbook-page-nav__list-item_active-A1,
+.textbook-page-nav__list-item_active-A1:hover {
+	background-color: rgb(177 211 235);
+}
+
+.textbook-page-nav__list-item_active-A2,
+.textbook-page-nav__list-item_active-A2:hover {
+	background-color: rgb(196, 230, 141);
+}
+
+.textbook-page-nav__list-item_active-B1,
+.textbook-page-nav__list-item_active-B1:hover {
+	background-color: rgb(241, 226, 139);
+}
+
+.textbook-page-nav__list-item_active-B2,
+.textbook-page-nav__list-item_active-B2:hover {
+	background-color: rgb(253, 171, 117);
+}
+
+.textbook-page-nav__list-item_active-C1,
+.textbook-page-nav__list-item_active-C1:hover {
+	background-color: rgb(249, 123, 123);
+}
+
+.textbook-page-nav__list-item_active-C2,
+.textbook-page-nav__list-item_active-C2:hover {
+	background-color: rgb(199, 150, 189);
+}
+
+.textbook-page-nav__link {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.button-prev,
+.button-next {
+	display: flex;
+	width: 100%;
+	height: 100%;
+
+	background: url("../../../../assets/svg/up-arrow.svg") no-repeat;
+	background-size: 50%;
+	background-position: 50% 50%;
+}
+
+.button-prev:hover,
+.button-next:hover {
+	background-color: rgb(239, 239, 239);
+}
+
+.button-prev {
+	transform: rotate(270deg);
+}
+
+.button-next {
+	transform: rotate(90deg);
+}

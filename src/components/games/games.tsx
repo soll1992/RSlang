@@ -290,20 +290,19 @@ export default function Games() {
   }
   // включает режим полного экрана
   function fullscreenHandler(e: React.MouseEvent<Element, MouseEvent>) {
-
     if (document.fullscreenElement) {
-      e.currentTarget.classList.remove('active')
+      e.currentTarget.classList.remove('active');
       document.exitFullscreen();
     } else {
-      e.currentTarget.classList.add('active')
+      e.currentTarget.classList.add('active');
       document.documentElement.requestFullscreen();
     }
   }
 
   return (
-    <div className='game-wrapper'>
+    <div className="game-wrapper">
       <div className="settings-button-wrapper">
-        <Button class="fullscreen-button" onClick={fullscreenHandler} />
+        {/* <Button class="fullscreen-button" onClick={fullscreenHandler} /> */}
         {/* {selectedGame === 'audiochallenge' &&
           
         } */}

@@ -220,24 +220,47 @@ export default function GameResult({ gameName, finalScore, trueWords, falseWords
   }, [userData]);
 
   return (
-    <div className="game-result">
-      <h2>Результаты:</h2>
-      {selectedGame === 'sprint' && <div>{`Вы набрали ${finalScore} очков`}</div>}
-      <div>{`Лучшая серия верных ответов: ${seria > checkBestSeria() ? seria : checkBestSeria()}`}</div>
-      <div>{`Правильных ответов: ${trueWords.length}`}</div>
-      <div>{`Неверных ответов: ${falseWords.length}`}</div>
-      <div>{`Процент верных ответов: ${trueWords.length ? Math.round((trueWords.length * 100) / (trueWords.length + falseWords.length)) : 0
-        }%`}</div>
-      <NavLink class="link" textContent="Новая игра" link="/game-difficulty" />
-      <div className="result-wrapper">
-        <h3>Я знаю:</h3>
-        {trueWords.map((item, i) => (
-          <ResultWords key={i} soundLink={item.audio} word={item.word} translation={item.wordTranslate} />
-        ))}
-        <h3>Я не знаю:</h3>
-        {falseWords.map((item, i) => (
-          <ResultWords key={i} soundLink={item.audio} word={item.word} translation={item.wordTranslate} />
-        ))}
+    <div className="game-result-wrap">
+      <div className="game-result">
+        <h2 className="game-result-title">Результаты:</h2>
+        {selectedGame === 'sprint' && (
+          <div className="game-result-score">
+            Вы набрали <span className="game-result-score-number">{finalScore}</span> очков
+          </div>
+        )}
+        <div className="game-result__top-answers">
+          Лучшая серия верных ответов:{' '}
+          <span className="game-result-score-number">{seria > checkBestSeria() ? seria : checkBestSeria()}</span>
+        </div>
+        <div className="game-result__percent">
+          Процент верных ответов:{' '}
+          <span className="game-result-score-number">
+            {trueWords.length ? Math.round((trueWords.length * 100) / (trueWords.length + falseWords.length)) : 0}%
+          </span>{' '}
+        </div>
+        <div className="result-wrapper">
+          <h3 className="game-result-subtitle">{`Я знаю - ${trueWords.length}`}</h3>
+          {trueWords.map((item, i) => (
+            <ResultWords
+              key={i}
+              soundLink={item.audio}
+              word={item.word}
+              translation={item.wordTranslate}
+              class={'result'}
+            />
+          ))}
+          <h3 className="game-result-subtitle wrong">{`Нужно подучить - ${falseWords.length}`}</h3>
+          {falseWords.map((item, i) => (
+            <ResultWords
+              key={i}
+              soundLink={item.audio}
+              word={item.word}
+              translation={item.wordTranslate}
+              class={'result'}
+            />
+          ))}
+        </div>
+        <NavLink class="link game-result-btn" textContent="Новая игра" link="/game-difficulty" />
       </div>
     </div>
   );

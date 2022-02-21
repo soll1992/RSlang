@@ -544,6 +544,32 @@ body {
 		}
 	}
 }
+.textbook-nav__list-item_disabled {
+	& .btn-2 {
+		background-color: #9b9b9ba4;
+		color: #686868;
+		border: 1px #9b9b9ba4 solid;
+		&:before {
+			right: -50px;
+			border-right: 0px solid transparent;
+			border-bottom: 0px solid #9b9b9b;
+			transform: translateX(0);
+		}
+
+		&:after {
+			left: 0px;
+			border-left: 0px solid transparent;
+			border-top: 0px solid #9b9b9b;
+			transform: translateX(0);
+		}
+		&:before {
+			transform: translateX(0);
+		}
+		&:after {
+			transform: translateX(0);
+		}
+	}
+}
 @keyframes criss-cross-left {
 	0% {
 		left: -20px;
