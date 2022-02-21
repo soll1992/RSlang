@@ -234,7 +234,7 @@ export default function Audiochallenge(props: Props) {
               </div>
               <div className='audiochallenge__main-wrap'>
                 <div className='audiochallenge__bubles-container' >
-                  {[...Array(liveCount)].map((_, i) => (<img key={`img-${i}`} className='audiochallenge__bubles-item' src={buble} alt="" width={40} height={40}></img>
+                  {liveCount >= 1 && [...Array(liveCount).keys()].map((_, i) => (<img key={`img-${i}`} className='audiochallenge__bubles-item' src={buble} alt="" width={40} height={40}></img>
                   ))}
                 </div>
                 <div className='word-img-wrap'>
