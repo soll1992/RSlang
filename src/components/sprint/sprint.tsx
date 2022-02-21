@@ -39,7 +39,7 @@ export default function Sprint(props: Props) {
   }
   // прослушивание событий клавиатуры
   useEffect(() => {
-    if (!props.showResult) {
+    if (!props.showResult && startGame) {
       window.addEventListener('keyup', props.keysHandler);
     }
     return () => window.removeEventListener('keyup', props.keysHandler);
