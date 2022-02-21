@@ -55,49 +55,60 @@ export default function Sprint(props: Props) {
     }
   }, [props.timer, startGame]);
 
+
   return (
     <div className='sprint-wrap'>
+      <h2 className='sprint-title'>Спринт</h2>
       {!startGame ? (
         <div className='sprint-container'>
-          <h2 className='sprint-title'>Спринт</h2>
           <div className='sprint-description-wrap'>
-            <p className='sprint-description'>Спринт - тренировка на скорость. Попробуй угадать как можно больше слов за 60 секунд.</p>
+            <p className='sprint-description'><b>«Спринт»</b> - тренировка на скорость. Угадай как можно больше слов за 60 секунд.</p>
+            <h3>Правила</h3>
+            <p>Серии правильных ответов повышают комбо-множитель, который умножает количество получаемых бал за следующий ответ, если ответ будет неверным, комбо-множитель сбросится до начальных значений</p>
+            <h3>Управление</h3>
             <ul>
-              <li>Можно использовать мышь для выбора правильного ответа</li>
-              <li>Либо клавиши влево или вправо</li>
+              <li>Мышь, для выбора ответа</li>
+              <li>Клавиши <b>стрелка влево</b> или <b>стрелка вправо</b> для выбора ответа</li>
             </ul>
           </div>
           <Button refer={props.refer} onClick={start} class="button btn-start" textContent="Старт" />
         </div>
       ) : (
-        <div>
-          <CountdownCircleTimer
-            isPlaying
-            duration={60}
-            colors={["#4c77d5", "#55f07c", "#ca3434"]}
-            colorsTime={[45, 20, 0]}
-          >
-            {({ remainingTime }) => remainingTime}
-          </CountdownCircleTimer>
-          <div>{`Слово: ${props.currentWordnumber} из ${props.words.length}`}</div>
-          <div>{`Счет: ${props.score}`}</div>
-          <div>{`Комбо множитель x${props.scoreMultiplier}`}</div>
-          <div className="combo-row">
-            <div ref={props.circle1} className="circle"></div>
-            <div ref={props.circle2} className="circle"></div>
-            <div ref={props.circle3} className="circle"></div>
-          </div>
-          <div className='sprint-correct-word-wrap'>
-            <span className='sprint-correct-word'>{props.word}</span>
-            <span className='sprint-correct-word__separator'> это </span>
-            <span className='sprint-correct-word'>{props.translation}</span><span>?</span>
-          </div>
-          <div className='sprint-answers__btn-container'>
-            <Button onClick={props.falseButtonHandler} class="button btn-start" textContent="<< Неверно" />
-            <Button onClick={props.trueButtonHandler} class="button btn-start" textContent="Верно >>" />
+        <div className='sprint-container'>
+          <div className='sprint-container-wrapper'>
+            <CountdownCircleTimer
+              isPlaying
+              duration={60}
+              size={50}
+              strokeWidth={5}
+              trailStrokeWidth={0}
+              strokeLinecap={'square'}
+              colors={["#55f07c", "#4c77d5", "#ca3434"]}
+              colorsTime={[45, 20, 0]}
+            >
+              {({ remainingTime }) => remainingTime}
+            </CountdownCircleTimer>
+            {/* <div className='sprint-answered'>{`${props.currentWordnumber}`}</div> */}
+            <div className='sprint-score'>{`Счет: ${props.score}`}</div>
+            <div id='combo' className={props.scoreMultiplier === 2 || props.scoreMultiplier === 8 ? 'sprint-combo active' : 'sprint-combo'}>{`Комбо ${props.scoreMultiplier * 10}`}</div>
+            <div className="combo-row sprint-combo-container">
+              <div ref={props.circle1} className="circle sprint-combo-item first"></div>
+              <div ref={props.circle2} className="circle sprint-combo-item second"></div>
+              <div ref={props.circle3} className="circle sprint-combo-item third"></div>
+            </div>
+            <div className='sprint-correct-word-wrap'>
+              <span className='sprint-correct-word'>{props.word}</span>
+              <span className='sprint-correct-word__separator'> это </span>
+              <span className='sprint-correct-word'>{props.translation}</span><span>?</span>
+            </div>
+            <div className='sprint-answers__btn-container'>
+              <Button onClick={props.falseButtonHandler} class="button btn-start false" textContent="Неверно" />
+              <Button onClick={props.trueButtonHandler} class="button btn-start true" textContent="Верно" />
+            </div>
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }

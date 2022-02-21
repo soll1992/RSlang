@@ -11,7 +11,7 @@ export const MyResponsiveLine = ({ data }) => (
     yScale={{
       type: 'linear',
       min: 0,
-      max: 100,
+      max: 'auto',
       stacked: true,
       reverse: false,
     }}
