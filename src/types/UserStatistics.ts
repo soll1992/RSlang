@@ -1,14 +1,15 @@
+import { WordsDayData, GameDayData } from './DayDataStatistics';
+
 type UserStatistics = {
   learnedWords: number;
   optional?: {
-    [key: string]: {
+    games?: {
       [key: string]: {
-        newWordsQuantity: number;
-        rightAnswers: number;
-        wrongAnswers: number;
-        responsesSeries: number;
-        gamesCounter: number;
+        [key: string]: GameDayData;
       };
+    };
+    words?: {
+      [key: string]: WordsDayData;
     };
   };
   id?: string;
