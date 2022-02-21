@@ -6,9 +6,9 @@ import { changeSeria } from '../../redux/actions/actions';
 import Button from '../button/button';
 import ButtonRef from '../button-ref/button-ref';
 import './audiochallenge.scss';
-import questionImg from '../../assets/img/home/question.jpg'
+import questionImg from '../../assets/img/home/question.jpg';
 // Костина часть
-import buble from '../../assets/img/home/buble.png'
+import buble from '../../assets/img/home/buble.png';
 
 interface Props {
   img: string;
@@ -19,6 +19,7 @@ interface Props {
   word: string;
   translation: string;
   words: Word[];
+  dis: boolean;
   allWords: Word[];
   isSoundOn: boolean;
   showResult: boolean;
@@ -42,7 +43,7 @@ export default function Audiochallenge(props: Props) {
   const [buttonBlock, setButtonBlock] = useState(false);
   const [liveCount, setliveCount] = useState(5);
   const buttonRefs = [];
-  const [isShowAnswer, setIsShowAnswer] = useState(false)
+  const [isShowAnswer, setIsShowAnswer] = useState(false);
 
   function addStylesFromActiveButton(boolean: boolean, button: HTMLButtonElement) {
     if (boolean) {
@@ -66,9 +67,9 @@ export default function Audiochallenge(props: Props) {
       wordRef.current.classList.add('wordinfo-active');
       wordTraslateRef.current.classList.add('wordinfo-active');
       wordImgRef.current.classList.add('wordinfo-active');
-      setIsShowAnswer(true)
+      setIsShowAnswer(true);
     } else if (str === 'remove') {
-      setIsShowAnswer(false)
+      setIsShowAnswer(false);
       wordRef.current.classList.remove('wordinfo-active');
       wordTraslateRef.current.classList.remove('wordinfo-active');
       wordImgRef.current.classList.remove('wordinfo-active');
@@ -96,12 +97,12 @@ export default function Audiochallenge(props: Props) {
     }
     const answersSet = new Set();
     answersSet.add(obj.wordTranslate);
-    if (props.words.length < 4) {
+    if (props.words.length < 5) {
       const shuffleAllWords =
         props.difficulty === 6
           ? shuffle(['лодка', 'орех', 'привыкание', 'аромат', 'удушение', 'кит', 'инженер', 'поверхность'])
           : shuffle(props.allWords);
-      for (let i = 0; answersSet.size < 4; i += 1) {
+      for (let i = 0; answersSet.size < 5; i += 1) {
         if ((shuffleAllWords[i] as Word).wordTranslate) {
           answersSet.add((shuffleAllWords[i] as Word).wordTranslate);
         } else {
@@ -110,7 +111,7 @@ export default function Audiochallenge(props: Props) {
       }
     } else {
       const shuffledWords = shuffle(props.words);
-      for (let i = 0; answersSet.size < 4; i += 1) {
+      for (let i = 0; answersSet.size < 5; i += 1) {
         answersSet.add(shuffledWords[i].wordTranslate);
       }
     }
@@ -140,7 +141,7 @@ export default function Audiochallenge(props: Props) {
   // обработчик событий клавиатуры
   function keysHandler(e: KeyboardEvent) {
     const key = Number(e.key);
-    if (key === 1 || key === 2 || key === 3 || key === 4) {
+    if (key === 1 || key === 2 || key === 3 || key === 4 || key === 5) {
       keysAnswerCheck(e, key);
     } else if (e.code === 'ArrowRight') {
       nextButtonHandler();
@@ -170,7 +171,7 @@ export default function Audiochallenge(props: Props) {
   function playGame(e: React.MouseEvent<Element>) {
     dispatch(changeSeria(0));
     makeAnswers(props.currentWord);
-    e.currentTarget.classList.add('active')
+    e.currentTarget.classList.add('active');
   }
   // Проверяет верность ответа пользователя, когда кликает мышкой
   function checkTrueAnswer(e: React.MouseEvent<Element, MouseEvent>) {
@@ -186,24 +187,29 @@ export default function Audiochallenge(props: Props) {
   }
 
   function audioWave(e: React.MouseEvent<Element, MouseEvent>) {
-    const obj = e.currentTarget
-    obj.classList.add('active')
+    const obj = e.currentTarget;
+    obj.classList.add('active');
 
     obj.addEventListener('animationend', () => {
-      obj.classList.remove('active')
-    })
-    wordSound.play()
+      obj.classList.remove('active');
+    });
+    wordSound.play();
   }
 
   return (
-    <div className='audiochallenge-wrap'>
-      <h2 className='audiochallenge-title'>Аудиовызов</h2>
+    <div className="audiochallenge-wrap">
+      <h2 className="audiochallenge-title">Аудиовызов</h2>
       {!startGame ? (
-        <div className='audiochallenge-container'>
-          <div className='audiochallenge-description-wrap'>
-            <p className='audiochallenge-description'><b>«Аудиовызов»</b> - тренировка, которая улучшает восприятие речи на слух.</p>
+        <div className="audiochallenge-container">
+          <div className="audiochallenge-description-wrap">
+            <p className="audiochallenge-description">
+              <b>«Аудиовызов»</b> - тренировка, которая улучшает восприятие речи на слух.
+            </p>
             <h3>Правила</h3>
-            <p>Слушай слово на английском языке и выбирай правильный перевод, если отвечаешь неверно, лопается пузырёк, при отстутствии пузырьков, следующий неверный ответ приведёт к окончанию игры</p>
+            <p>
+              Слушай слово на английском языке и выбирай правильный перевод, если отвечаешь неверно, лопается пузырёк,
+              при отстутствии пузырьков, следующий неверный ответ приведёт к окончанию игры
+            </p>
             <h3>Управление</h3>
             <ul>
               <li>Мышь, для выбора ответа</li>
@@ -213,14 +219,20 @@ export default function Audiochallenge(props: Props) {
               {/* <li>Используйте клавишу Enter для подсказки или для перехода к следующему слову</li> */}
             </ul>
           </div>
-          <Button refer={props.refer} onClick={(e) => playGame(e)} class="button btn-start" textContent="Старт" />
+          <Button
+            refer={props.refer}
+            dis={props.dis}
+            onClick={(e) => playGame(e)}
+            class="button btn-start"
+            textContent="Старт"
+          />
         </div>
       ) : (
         <>
           <Button onClick={(e) => audioWave(e)} class="sound-button" />
-          <div className='audiochallenge-container__wrap'>
-            <div className='audiochallenge-container'>
-              <div className='audiochallenge-correct-word'>
+          <div className="audiochallenge-container__wrap">
+            <div className="audiochallenge-container">
+              <div className="audiochallenge-correct-word">
                 <div ref={wordRef} className="word">
                   {props.word}
                 </div>
@@ -228,21 +240,35 @@ export default function Audiochallenge(props: Props) {
                   {props.translation}
                 </div>
               </div>
-              <div className='audiochallenge__panel-container'>
+              <div className="audiochallenge__panel-container">
                 <div>{`Пузырьки ${liveCount}`}</div>
 
                 <div>{`${props.currentWordnumber} / ${props.words.length}`}</div>
               </div>
-              <div className='audiochallenge__main-wrap'>
-                <div className='audiochallenge__bubles-container' >
-                  {liveCount >= 1 && [...Array(liveCount).keys()].map((_, i) => (<img key={`img-${i}`} className='audiochallenge__bubles-item' src={buble} alt="" width={40} height={40}></img>
-                  ))}
+              <div className="audiochallenge__main-wrap">
+                <div className="audiochallenge__bubles-container">
+                  {liveCount >= 1 &&
+                    [...Array(liveCount)].map((_, i) => (
+                      <img
+                        key={`img-${i}`}
+                        className="audiochallenge__bubles-item"
+                        src={buble}
+                        alt=""
+                        width={40}
+                        height={40}
+                      ></img>
+                    ))}
                 </div>
-                <div className='word-img-wrap'>
-                  <img ref={wordImgRef} className="word-img" src={isShowAnswer ? imgLink : questionImg} alt="word-img" />
+                <div className="word-img-wrap">
+                  <img
+                    ref={wordImgRef}
+                    className="word-img"
+                    src={isShowAnswer ? imgLink : questionImg}
+                    alt="word-img"
+                  />
                 </div>
               </div>
-              <div className='audiochallenge-answers-wrap'>
+              <div className="audiochallenge-answers-wrap">
                 {userAnswers.map((item, index) => (
                   <ButtonRef
                     refArr={buttonRefs}

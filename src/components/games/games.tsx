@@ -47,6 +47,7 @@ export default function Games() {
   const [word, setWord] = useState<Word>();
   const [translation, setTranlation] = useState('');
   const [answer, setAnswer] = useState(false);
+  const [dis, setDis] = useState(true);
   //  От Даши>>
   const [userData] = useState<UserData | null>(() => {
     const saved = localStorage.getItem('userData');
@@ -123,36 +124,66 @@ export default function Games() {
 
   // перемешивает полученный с сервера массив
   async function generateWords(data: Word[]): Promise<Word[]> {
-    console.log(data);
     let dataArr: Array<Word>;
     setAllWords(data);
     // рекурсивный запрос для создания массива из 20 слов
     async function addMore(arr: Word[]) {
       let newArr: Word[];
-      const baseArr = arr.filter((item) => !item.userWord?.optional.learned);
-      if (baseArr.length < 20 && prevPage <= 0) {
+      const baseArr = arr.filter((item) => !item.userWord?.optional?.learned);
+      // возможно тут <=
+      if (prevPage <= 0) {
         dataArr = baseArr;
-      } else if (baseArr.length < 20) {
+      } else if (
+        (baseArr.length < 20 && selectedGame === 'audiochallenge') ||
+        (selectedGame === 'sprint' && baseArr.length < 100)
+      ) {
         prevPage -= 1;
         const prev = await getUserAggregatedWords(userData.id, userData.token, {
           wordsPerPage: 20,
           group: difficulty,
           page: prevPage,
         });
-        const plusArr = (prev as Word[]).filter((item) => !item.userWord?.optional.learned);
+        const plusArr = (prev as Word[]).filter((item) => !item.userWord?.optional?.learned);
         newArr = baseArr.concat(plusArr);
         await addMore(newArr);
-      } else if (baseArr.length >= 20) {
+      } else if (baseArr.length >= 20 && selectedGame === 'audiochallenge') {
         dataArr = baseArr.slice(0, 20);
+      } else if (baseArr.length >= 100 && selectedGame === 'sprint') {
+        dataArr = baseArr.slice(0, 100);
+      }
+    }
+
+    async function addMoreCommonWords(arr: Word[]) {
+      let newArr: Word[];
+      if (prevPage <= 0) {
+        dataArr = arr;
+      } else if (
+        (arr.length < 20 && selectedGame === 'audiochallenge') ||
+        (selectedGame === 'sprint' && arr.length < 100)
+      ) {
+        prevPage -= 1;
+        const prev = userData
+          ? await getUserAggregatedWords(userData.id, userData.token, {
+              wordsPerPage: 20,
+              group: difficulty,
+              page: prevPage,
+            })
+          : await getWords({ group: difficulty, page: prevPage });
+        newArr = arr.concat(prev as Word[]);
+        await addMoreCommonWords(newArr);
+      } else if (arr.length >= 20 && selectedGame === 'audiochallenge') {
+        dataArr = arr.slice(0, 20);
+      } else if (arr.length >= 100 && selectedGame === 'sprint') {
+        dataArr = arr.slice(0, 100);
       }
     }
 
     function useDifficultWords(arr: Word[]) {
       const diffArr = shuffle(arr);
-      if (diffArr.length > 20) {
+      if (diffArr.length > 20 && selectedGame === 'audiochallenge') {
         dataArr = diffArr.slice(0, 20);
       } else {
-        dataArr = arr;
+        dataArr = diffArr;
       }
     }
 
@@ -160,12 +191,12 @@ export default function Games() {
       if (difficulty === 6) {
         useDifficultWords(data);
       } else {
-        gameStartRef.current.disabled = true;
         await addMore(data);
-        gameStartRef.current.disabled = false;
       }
+      setDis(false);
     } else {
-      dataArr = data;
+      await addMoreCommonWords(data);
+      setDis(false);
     }
     const shuffledData = shuffle(dataArr);
     generateQuestion(shuffledData);
@@ -177,20 +208,23 @@ export default function Games() {
     (!userData
       ? getWords({ group: difficulty, page })
       : difficulty === 6
-        ? getUserAggregatedWords(userData.id, userData.token, {
+      ? getUserAggregatedWords(userData.id, userData.token, {
           wordsPerPage: 3600,
           filter: { 'userWord.difficulty': 'hard' },
         })
-        : getUserAggregatedWords(userData.id, userData.token, { wordsPerPage: 20, group: difficulty, page })
+      : getUserAggregatedWords(userData.id, userData.token, { wordsPerPage: 20, group: difficulty, page })
     )
       .then((res) => generateWords(res))
       .then((result) => setWordsData(result))
-      .catch(() => console.log(`error`));
+      .catch((err) => console.log(`${err}`));
   }
 
   // получаем список слов с сервера
   useEffect(() => {
     getWordsData();
+    localStorage.setItem('page', String(page));
+    localStorage.setItem('difficulty', String(difficulty));
+    localStorage.setItem('from', from);
   }, []);
 
   // сбрасываем стили(кружки) комбо при ошибочном ответе
@@ -290,18 +324,17 @@ export default function Games() {
   }
   // включает режим полного экрана
   function fullscreenHandler(e: React.MouseEvent<Element, MouseEvent>) {
-
     if (document.fullscreenElement) {
-      e.currentTarget.classList.remove('active')
+      e.currentTarget.classList.remove('active');
       document.exitFullscreen();
     } else {
-      e.currentTarget.classList.add('active')
+      e.currentTarget.classList.add('active');
       document.documentElement.requestFullscreen();
     }
   }
 
   return (
-    <div className='game-wrapper'>
+    <div className="game-wrapper">
       <div className="settings-button-wrapper">
         <Button class="fullscreen-button" onClick={fullscreenHandler} />
         {/* {selectedGame === 'audiochallenge' &&
@@ -327,6 +360,7 @@ export default function Games() {
           isSoundOn={isSoundOn}
           difficulty={difficulty}
           img={word?.image}
+          dis={dis}
           soundLink={word?.audio}
           currentWord={word}
           currentWordnumber={currentWordnumber}
@@ -349,6 +383,7 @@ export default function Games() {
           circle1={circle1}
           circle2={circle2}
           circle3={circle3}
+          dis={dis}
           words={wordsData}
           word={word?.word}
           refer={gameStartRef}

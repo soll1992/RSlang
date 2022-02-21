@@ -1,21 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FC } from 'react';
+import React, { useEffect, useRef, useState, FC } from 'react';
 import './header.scss';
-import LoginPopup from './login-popap';
 import { useDispatch, useSelector } from 'react-redux';
+import LoginPopup from './login-popap';
 
 import NavItem from './nav-item';
 
 type UserData = {
   token: string;
   id: string;
-}
+};
 type Props = {
   userData: {
     value: UserData;
     setValue: React.Dispatch<UserData>;
-  }
-
+  };
 };
 interface RootState {
   gameWordPage: {
@@ -42,8 +40,6 @@ const Header: FC<Props> = (props) => {
   const dispatch = useDispatch();
   const headerTitle = useSelector((state: RootState) => state.title.title);
 
-
-
   const [loginIsOpen, setLoginIsOpen] = useState(false);
   const [isOverlay, setIsOverlay] = useState(false);
   const [authorization, setAuthorizations] = useState<boolean>(() => {
@@ -51,7 +47,6 @@ const Header: FC<Props> = (props) => {
     const initialValue = saved === 'true' ? true : undefined;
     return initialValue || false;
   });
-
 
   useEffect(() => {
     localStorage.setItem('headerTitle', headerTitle);
@@ -66,9 +61,8 @@ const Header: FC<Props> = (props) => {
     pagesRu: ['главная', 'учебник', 'сложные слова', 'миниигры', 'статистика', 'команда'],
   };
 
-
   const handlerChange = ({ currentTarget }: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const burger = document.getElementById('burger')
+    const burger = document.getElementById('burger');
     if (burger.classList.contains('active')) {
       setLoginIsOpen(false);
       setIsOverlay(false);
@@ -108,19 +102,19 @@ const Header: FC<Props> = (props) => {
     } else setAuthorizations(false);
   }, [props.userData]);
   return (
-    <div className='header-wrap'>
+    <div className="header-wrap">
       <header id="Top" className="header">
         <div onClick={(e) => handlerChange(e)} id="burger" className="burger-wrap">
           <div className="burger"></div>
           {/* <div className="burger-close-top"></div>
           <div className="burger-close-bottom"></div> */}
         </div>
-        <ul id='nav' className="nav">
-          <div className='nav-title-wrap'>
-            <div className='nav-aside-earth'>
-              <div className='nav-aside-earth-container'></div >
+        <ul id="nav" className="nav">
+          <div className="nav-title-wrap">
+            <div className="nav-aside-earth">
+              <div className="nav-aside-earth-container"></div>
             </div>
-            <h2 className='nav-title'>RSLang</h2>
+            <h2 className="nav-title">RSLang</h2>
             <div onClick={handlerChange} className="burger-wrap active black">
               <div className="burger"></div>
               <div className="burger-close-top"></div>
@@ -128,16 +122,12 @@ const Header: FC<Props> = (props) => {
             </div>
           </div>
           {allPages.pages.map((pageName, index) => (
-            <NavItem
-              i={index}
-              pagesRu={allPages.pagesRu}
-              pageName={pageName}
-              key={index}
-            />
+            <NavItem i={index} pagesRu={allPages.pagesRu} pageName={pageName} key={index} />
           ))}
         </ul>
-        <h2 className="header__title">{headerTitle !== 'команда' ? headerTitle.charAt(0).toUpperCase() + headerTitle.slice(1)
-          : 'Главная'}</h2>
+        <h2 className="header__title">
+          {headerTitle !== 'команда' ? headerTitle.charAt(0).toUpperCase() + headerTitle.slice(1) : 'Главная'}
+        </h2>
         <div className="login-container">
           {!authorization ? (
             <button onClick={() => getLoginPopup()} className={loginIsOpen ? ' btn-2 small active' : ' btn-2 small'}>
@@ -155,7 +145,9 @@ const Header: FC<Props> = (props) => {
           )}
           <div className="login-avatar"></div>
         </div>
-        {loginIsOpen && <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={props.userData} />}
+        {loginIsOpen && (
+          <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={props.userData} />
+        )}
         <div onClick={hiddenOverlay} className={!isOverlay ? 'background-overlay' : 'background-overlay active'}></div>
       </header>
     </div>
