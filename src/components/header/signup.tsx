@@ -81,7 +81,6 @@ const SugnUp: FC<Props> = (props: Props) => {
         <input
           required
           minLength={4}
-
           pattern="^[a-z0-9._%+-]{3,15}@[a-z]{3,50}\.[a-z]{2,4}$"
           ref={emailInput}
           className="login-email input"
@@ -99,7 +98,6 @@ const SugnUp: FC<Props> = (props: Props) => {
         <input
           required
           minLength={8}
-          maxLength={15}
           ref={passwordInput}
           className="login-password input"
           type="password"

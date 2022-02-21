@@ -1,5 +1,7 @@
 import React from 'react';
 import './textbookNavListItem.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { titleChange } from '../../../redux/actions/actions';
 
 type Props = {
   text?: string;
@@ -9,9 +11,15 @@ type Props = {
 };
 
 export default function TextbookNavListItemGroup({ text, link, children, isActive }: Props) {
+  const dispatch = useDispatch();
+  const titleChangeClick = () => {
+    console.log(text);
+    if (text === 'Сложные слова') dispatch(titleChange('Сложные слова'));
+    else dispatch(titleChange('Учебник'));
+  };
   return (
     <li className={`textbook-nav__list-item ${isActive ? 'textbook-nav__list-item_active' : ''}`}>
-      <a className="textbook-nav__link" href={`#/textbook/${link}/1`}>
+      <a onClick={titleChangeClick} className="textbook-nav__link" href={`#/textbook/${link}/1`}>
         <span className="textbook-nav__level-card level-card btn-2 textbook">
           <span className="level-card__name">{text}</span>
           {children}

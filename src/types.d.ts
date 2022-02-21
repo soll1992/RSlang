@@ -14,4 +14,8 @@ declare module '*.mp3' {
   const value: string;
   export = value;
 }
+declare module '*.webp' {
+  const value: string;
+  export = value;
+}
 // HadleProps

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactEventHandler, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Word from 'src/types/Word';
 import shuffle from 'lodash/shuffle';
@@ -6,6 +6,9 @@ import { changeSeria } from '../../redux/actions/actions';
 import Button from '../button/button';
 import ButtonRef from '../button-ref/button-ref';
 import './audiochallenge.scss';
+import questionImg from '../../assets/img/home/question.jpg'
+// Костина часть
+import buble from '../../assets/img/home/buble.png'
 
 interface Props {
   img: string;
@@ -34,10 +37,12 @@ export default function Audiochallenge(props: Props) {
   const [startGame, setStartGame] = useState(false);
   const [userAnswers, setUserAnswers] = useState<Array<string>>([]);
   const wordRef = useRef<HTMLDivElement>(null);
+  const wordTraslateRef = useRef<HTMLDivElement>(null);
   const wordImgRef = useRef<HTMLImageElement>(null);
   const [buttonBlock, setButtonBlock] = useState(false);
   const [liveCount, setliveCount] = useState(5);
   const buttonRefs = [];
+  const [isShowAnswer, setIsShowAnswer] = useState(false)
 
   function addStylesFromActiveButton(boolean: boolean, button: HTMLButtonElement) {
     if (boolean) {
@@ -59,9 +64,13 @@ export default function Audiochallenge(props: Props) {
   function toggleWordInfo(str: string) {
     if (str === 'add') {
       wordRef.current.classList.add('wordinfo-active');
+      wordTraslateRef.current.classList.add('wordinfo-active');
       wordImgRef.current.classList.add('wordinfo-active');
+      setIsShowAnswer(true)
     } else if (str === 'remove') {
+      setIsShowAnswer(false)
       wordRef.current.classList.remove('wordinfo-active');
+      wordTraslateRef.current.classList.remove('wordinfo-active');
       wordImgRef.current.classList.remove('wordinfo-active');
     }
   }
@@ -158,9 +167,10 @@ export default function Audiochallenge(props: Props) {
   }, [props.soundLink, startGame]);
 
   // Генерирует 4 ответа для самой первой карточки.
-  function playGame() {
+  function playGame(e: React.MouseEvent<Element>) {
     dispatch(changeSeria(0));
     makeAnswers(props.currentWord);
+    e.currentTarget.classList.add('active')
   }
   // Проверяет верность ответа пользователя, когда кликает мышкой
   function checkTrueAnswer(e: React.MouseEvent<Element, MouseEvent>) {
@@ -175,35 +185,78 @@ export default function Audiochallenge(props: Props) {
     }
   }
 
+  function audioWave(e: React.MouseEvent<Element, MouseEvent>) {
+    const obj = e.currentTarget
+    obj.classList.add('active')
+
+    obj.addEventListener('animationend', () => {
+      obj.classList.remove('active')
+    })
+    wordSound.play()
+  }
+
   return (
-    <div>
+    <div className='audiochallenge-wrap'>
+      <h2 className='audiochallenge-title'>Аудиовызов</h2>
       {!startGame ? (
-        <div>
-          <h2>Аудиовызов</h2>
-          <p>Однажды тут будет описание игры и правила</p>
-          <Button refer={props.refer} onClick={playGame} class="button" textContent="Старт" />
+        <div className='audiochallenge-container'>
+          <div className='audiochallenge-description-wrap'>
+            <p className='audiochallenge-description'>«Аудиовызов» - это тренировка, которая улучшает восприятие речи на слух.</p>
+            <h3>Правила</h3>
+            <p>Слушай слово на английском языке и выбирай правильный перевод, если отвечаешь неверно лопается пузырёк, при отстутствии пузырьков, следующий неверный ответ приведёт к окончанию игры</p>
+            <h3>Управление</h3>
+            <ul>
+              <li>Мышь, для выбора ответа.</li>
+              <li>Клавиши от 1 до 4 для выбора ответа</li>
+              <li>Пробел для повтроного звучания слова</li>
+              {/* <li>Используйте клавишу Enter для подсказки или для перехода к следующему слову</li> */}
+            </ul>
+          </div>
+          <Button refer={props.refer} onClick={(e) => playGame(e)} class="button btn-start" textContent="Старт" />
         </div>
       ) : (
-        <div>
-          <div>{`Слово: ${props.currentWordnumber} из ${props.words.length}`}</div>
-          <div>{`Осталось попыток: ${liveCount}`}</div>
-          <Button onClick={() => wordSound.play()} class="sound-button" />
-          <div ref={wordRef} className="word">
-            {props.word}
+        <>
+          <Button onClick={(e) => audioWave(e)} class="sound-button" />
+          <div className='audiochallenge-container__wrap'>
+            <div className='audiochallenge-container'>
+              <div className='audiochallenge-correct-word'>
+                <div ref={wordRef} className="word">
+                  {props.word}
+                </div>
+                <div ref={wordTraslateRef} className="word translate">
+                  {props.translation}
+                </div>
+              </div>
+              <div className='audiochallenge__panel-container'>
+                <div>{`Пузырьки ${liveCount}`}</div>
+
+                <div>{`${props.currentWordnumber} / ${props.words.length}`}</div>
+              </div>
+              <div className='audiochallenge__main-wrap'>
+                <div className='audiochallenge__bubles-container' >
+                  {[...Array(liveCount)].map((_, i) => (<img key={`img-${i}`} className='audiochallenge__bubles-item' src={buble} alt="" width={40} height={40}></img>
+                  ))}
+                </div>
+                <div className='word-img-wrap'>
+                  <img ref={wordImgRef} className="word-img" src={isShowAnswer ? imgLink : questionImg} alt="word-img" />
+                </div>
+              </div>
+              <div className='audiochallenge-answers-wrap'>
+                {userAnswers.map((item, index) => (
+                  <ButtonRef
+                    refArr={buttonRefs}
+                    onClick={(e) => checkTrueAnswer(e)}
+                    class="button btn-3 btn-2 lvl"
+                    id={String(index)}
+                    key={index}
+                    textContent={`${index + 1}. ${item}`}
+                  />
+                ))}
+              </div>
+              <Button onClick={nextButtonHandler} class="button btn-start" textContent="Следующее слово >>" />
+            </div>
           </div>
-          <img ref={wordImgRef} className="word-img" src={imgLink} alt="word-img" />
-          {userAnswers.map((item, index) => (
-            <ButtonRef
-              refArr={buttonRefs}
-              onClick={(e) => checkTrueAnswer(e)}
-              class="button"
-              id={String(index)}
-              key={index}
-              textContent={`${index + 1}. ${item}`}
-            />
-          ))}
-          <Button onClick={nextButtonHandler} class="button" textContent="Следующее слово >>" />
-        </div>
+        </>
       )}
     </div>
   );

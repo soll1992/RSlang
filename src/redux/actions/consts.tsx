@@ -5,3 +5,4 @@ export const SELECT_SPRINT = 'SELECT_SPRINT';
 export const FROM_TEXTBOOK = 'FROM_TEXTBOOK';
 export const FROM_MENU = 'FROM_MENU';
 export const CHANGE_SERIA = 'CHANGE_SERIA';
+export const TITLE_CHANGE = 'TITLE_CHANGE';

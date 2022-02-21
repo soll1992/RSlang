@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { FC, useRef, useState, useEffect } from 'react';
 import './home.scss';
-import './wave.scss';
-import man from '../../../assets/img/home/16.png'
+import man from '../../assets/img/home/16.png'
 import Functional from './functional';
 import Team from './team';
 
@@ -28,7 +27,7 @@ const Home: FC<Props> = () => {
             <p className='home-subtitle-text'>Запоминание английских слов может быть увлекательным и простым. Играйте в миниигры, слушайте произношение, совершенствуйте свои знания. Бесплатно. На любом устройстве.</p>
           </div>
           <div className='home-aside'>
-            <img src={man} alt="" width={300}></img>
+            <img src={man} alt="" height={320} width={303.6}></img>
 
           </div>
 
