@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import Word from 'src/types/Word';
 import Button from '../button/button';
 import { changeSeria } from '../../redux/actions/actions';
-import './sprint.scss'
+import './sprint.scss';
 // От Кости
-import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 interface Props {
   timer: number;
@@ -56,12 +56,14 @@ export default function Sprint(props: Props) {
   }, [props.timer, startGame]);
 
   return (
-    <div className='sprint-wrap'>
+    <div className="sprint-wrap">
       {!startGame ? (
-        <div className='sprint-container'>
-          <h2 className='sprint-title'>Спринт</h2>
-          <div className='sprint-description-wrap'>
-            <p className='sprint-description'>Спринт - тренировка на скорость. Попробуй угадать как можно больше слов за 60 секунд.</p>
+        <div className="sprint-container">
+          <h2 className="sprint-title">Спринт</h2>
+          <div className="sprint-description-wrap">
+            <p className="sprint-description">
+              Спринт - тренировка на скорость. Попробуй угадать как можно больше слов за 60 секунд.
+            </p>
             <ul>
               <li>Можно использовать мышь для выбора правильного ответа</li>
               <li>Либо клавиши влево или вправо</li>
@@ -74,12 +76,11 @@ export default function Sprint(props: Props) {
           <CountdownCircleTimer
             isPlaying
             duration={60}
-            colors={["#4c77d5", "#55f07c", "#ca3434"]}
+            colors={['#4c77d5', '#55f07c', '#ca3434']}
             colorsTime={[45, 20, 0]}
           >
             {({ remainingTime }) => remainingTime}
           </CountdownCircleTimer>
-          <div>{`Слово: ${props.currentWordnumber} из ${props.words.length}`}</div>
           <div>{`Счет: ${props.score}`}</div>
           <div>{`Комбо множитель x${props.scoreMultiplier}`}</div>
           <div className="combo-row">
@@ -87,12 +88,13 @@ export default function Sprint(props: Props) {
             <div ref={props.circle2} className="circle"></div>
             <div ref={props.circle3} className="circle"></div>
           </div>
-          <div className='sprint-correct-word-wrap'>
-            <span className='sprint-correct-word'>{props.word}</span>
-            <span className='sprint-correct-word__separator'> это </span>
-            <span className='sprint-correct-word'>{props.translation}</span><span>?</span>
+          <div className="sprint-correct-word-wrap">
+            <span className="sprint-correct-word">{props.word}</span>
+            <span className="sprint-correct-word__separator"> это </span>
+            <span className="sprint-correct-word">{props.translation}</span>
+            <span>?</span>
           </div>
-          <div className='sprint-answers__btn-container'>
+          <div className="sprint-answers__btn-container">
             <Button onClick={props.falseButtonHandler} class="button btn-start" textContent="<< Неверно" />
             <Button onClick={props.trueButtonHandler} class="button btn-start" textContent="Верно >>" />
           </div>

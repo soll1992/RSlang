@@ -130,43 +130,74 @@ export default function Games() {
     async function addMore(arr: Word[]) {
       let newArr: Word[];
       const baseArr = arr.filter((item) => !item.userWord?.optional.learned);
-      if (baseArr.length < 20 && prevPage <= 0) {
+      // возможно тут <=
+      console.log(prevPage);
+      if (prevPage <= 0) {
         dataArr = baseArr;
-      } else if (baseArr.length < 20) {
+      } else if (
+        (baseArr.length < 20 && selectedGame === 'audiochallenge') ||
+        (selectedGame === 'sprint' && baseArr.length < 100)
+      ) {
         prevPage -= 1;
         const prev = await getUserAggregatedWords(userData.id, userData.token, {
           wordsPerPage: 20,
           group: difficulty,
           page: prevPage,
         });
+        console.log(prev);
         const plusArr = (prev as Word[]).filter((item) => !item.userWord?.optional.learned);
         newArr = baseArr.concat(plusArr);
         await addMore(newArr);
-      } else if (baseArr.length >= 20) {
+      } else if (baseArr.length >= 20 && selectedGame === 'audiochallenge') {
         dataArr = baseArr.slice(0, 20);
+      } else if (baseArr.length >= 100 && selectedGame === 'sprint') {
+        dataArr = baseArr.slice(0, 100);
+      }
+    }
+
+    async function addMoreCommonWords(arr: Word[]) {
+      let newArr: Word[];
+      if (prevPage <= 0) {
+        dataArr = arr;
+      } else if (
+        (arr.length < 20 && selectedGame === 'audiochallenge') ||
+        (selectedGame === 'sprint' && arr.length < 100)
+      ) {
+        prevPage -= 1;
+        const prev = await getWords({ group: difficulty, page: prevPage });
+        console.log(prev);
+        newArr = arr.concat(prev as Word[]);
+        await addMoreCommonWords(newArr);
+      } else if (arr.length >= 20 && selectedGame === 'audiochallenge') {
+        dataArr = arr.slice(0, 20);
+      } else if (arr.length >= 100 && selectedGame === 'sprint') {
+        dataArr = arr.slice(0, 100);
       }
     }
 
     function useDifficultWords(arr: Word[]) {
       const diffArr = shuffle(arr);
-      if (diffArr.length > 20) {
+      if (diffArr.length > 20 && selectedGame === 'audiochallenge') {
         dataArr = diffArr.slice(0, 20);
       } else {
-        dataArr = arr;
+        dataArr = diffArr;
       }
     }
 
     if (userData && from === 'Textbook') {
+      gameStartRef.current.disabled = true;
       if (difficulty === 6) {
         useDifficultWords(data);
       } else {
-        gameStartRef.current.disabled = true;
         await addMore(data);
-        gameStartRef.current.disabled = false;
       }
+      gameStartRef.current.disabled = false;
     } else {
-      dataArr = data;
+      gameStartRef.current.disabled = true;
+      await addMoreCommonWords(data);
+      gameStartRef.current.disabled = false;
     }
+    console.log(dataArr);
     const shuffledData = shuffle(dataArr);
     generateQuestion(shuffledData);
     return shuffledData;
@@ -185,7 +216,7 @@ export default function Games() {
     )
       .then((res) => generateWords(res))
       .then((result) => setWordsData(result))
-      .catch(() => console.log(`error`));
+      .catch((err) => console.log(`error`));
   }
 
   // получаем список слов с сервера
@@ -290,18 +321,17 @@ export default function Games() {
   }
   // включает режим полного экрана
   function fullscreenHandler(e: React.MouseEvent<Element, MouseEvent>) {
-
     if (document.fullscreenElement) {
-      e.currentTarget.classList.remove('active')
+      e.currentTarget.classList.remove('active');
       document.exitFullscreen();
     } else {
-      e.currentTarget.classList.add('active')
+      e.currentTarget.classList.add('active');
       document.documentElement.requestFullscreen();
     }
   }
 
   return (
-    <div className='game-wrapper'>
+    <div className="game-wrapper">
       <div className="settings-button-wrapper">
         <Button class="fullscreen-button" onClick={fullscreenHandler} />
         {/* {selectedGame === 'audiochallenge' &&

@@ -12,8 +12,8 @@ import {
   selectAudiochallenge,
 } from '../../redux/actions/actions';
 // От Кости
-import audiocall from '../../assets/img/home/12.png'
-import sprint from '../../assets/img/home/15.png'
+import audiocall from '../../assets/img/home/12.png';
+import sprint from '../../assets/img/home/15.png';
 
 interface RootState {
   gameDifficulty: {
@@ -42,7 +42,7 @@ export default function SprintDifficulty() {
   }
 
   function navLinkHandler(game: string) {
-    dispatch(changePage(random(0, 29)));
+    dispatch(changePage(random(5, 29)));
     dispatch(fromMenu());
     if (game === 'Спринт') {
       dispatch(selectSprint('sprint'));
@@ -54,14 +54,12 @@ export default function SprintDifficulty() {
   }
 
   return (
-    <section className='games-section'>
-      <h2 className='games-title'>Выберите уровень сложности и игру:</h2>
+    <section className="games-section">
+      <h2 className="games-title">Выберите уровень сложности и игру:</h2>
 
-      <div className='games-section-container'>
-
-        <div className='games-wrap'>
-          <div className='games__btn-wrapper'>
-
+      <div className="games-section-container">
+        <div className="games-wrap">
+          <div className="games__btn-wrapper">
             <div className="links-wrapper">
               {difficultyName.map((name, i) => (
                 <ButtonRef
@@ -72,12 +70,10 @@ export default function SprintDifficulty() {
                   key={i}
                 />
               ))}
-
             </div>
 
             {['Аудиовызов', 'Спринт'].map((game, i) => (
-
-              <div key={`div-${i}`} className='games__btn-wrap'>
+              <div key={`div-${i}`} className="games__btn-wrap">
                 <NavLink
                   class={`games-url link dif-link${i + 1}`}
                   onClick={() => navLinkHandler(game)}
@@ -91,7 +87,6 @@ export default function SprintDifficulty() {
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </section>
