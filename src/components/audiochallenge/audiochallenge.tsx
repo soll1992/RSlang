@@ -1,4 +1,4 @@
-import React, { ReactEventHandler, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Word from 'src/types/Word';
 import shuffle from 'lodash/shuffle';
@@ -6,9 +6,9 @@ import { changeSeria } from '../../redux/actions/actions';
 import Button from '../button/button';
 import ButtonRef from '../button-ref/button-ref';
 import './audiochallenge.scss';
-import questionImg from '../../assets/img/home/question.jpg';
+import questionImg from '../../assets/img/home/question.webp';
 // Костина часть
-import buble from '../../assets/img/home/buble.png';
+import buble from '../../assets/img/home/buble.webp';
 
 interface Props {
   img: string;
@@ -213,7 +213,7 @@ export default function Audiochallenge(props: Props) {
             <h3>Управление</h3>
             <ul>
               <li>Мышь, для выбора ответа</li>
-              <li>Клавиши от 1 до 4 для выбора ответа</li>
+              <li>Клавиши от 1 до 5 для выбора ответа</li>
               <li>Клавиша стрелка вправо показать следующий вопрос</li>
               <li>Пробел для повтроного звучания слова</li>
               {/* <li>Используйте клавишу Enter для подсказки или для перехода к следующему слову</li> */}

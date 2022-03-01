@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import './game-result.scss';

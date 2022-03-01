@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import GameStatisticsCard from './game-statistics-card/GameStatisticsCard';
 import WordStatisticsCard from './word-statistics-card/WordStatisticsCard';
-import './statistics.css';
+import './statistics.scss';
 import getUserStatistics from '../../utils/getUserStatistics';
 import { isUserData } from '../../utils/typeGuards';
 import UserStatistics from '../../types/UserStatistics';
@@ -45,7 +45,7 @@ export default function Statistics() {
               const paramsLearnedWords = { wordsPerPage: 3600, filter: { 'userWord.optional.learned': wordsDate } };
               const learnedWords = await getUserAggregatedWords(userData.id, userData.token, paramsLearnedWords);
               if (!(learnedWords instanceof Error)) {
-                wordsData.learnedWordsQuantity = learnedWords.length;
+                wordsData.learnedWordsQuantity = learnedWords.length; // eslint-disable-line
                 delete userStatistic.id;
                 await updateUserStatistics(userData.id, userData.token, userStatistic);
               }
@@ -123,10 +123,8 @@ export default function Statistics() {
           </div>
           <div className="long-term-statistics">
             <h2 className="day-statistics__title">Статистика за все время</h2>
-            <div className='test-graph-wrap-title'>
-            </div>
-            <div className='test-graph-wrap'>
-
+            <div className="test-graph-wrap-title"></div>
+            <div className="test-graph-wrap">
               <div className="test-graph">
                 {/* <h3 className="games-statictics__title  games-statistics__title">Новые слова</h3> */}
 
@@ -141,7 +139,7 @@ export default function Statistics() {
           </div>
         </div>
       ) : (
-        'Для доступа к данному разделу необходимо авторизироваться'
+        <div className="statistics-wrap">Для доступа к данному разделу необходимо авторизироваться</div>
       )}
     </div>
   );

@@ -4,6 +4,8 @@
     grid-column-start: 2;
     grid-row-start: 1;
     @media (max-width: 900px) {
+        display: flex;
+        gap: 15px;
         grid-column-start: span 2;
     }
 }
@@ -31,6 +33,9 @@
         font-size: 36px;
         font-weight: bold;
         margin: 20px 0px 30px 0px;
+        @media (max-width: 400px) {
+            font-size: 28px;
+        }
     }
     &__item {
         &-lvl {
@@ -50,8 +55,10 @@
             padding: 10px;
             border-radius: 10px;
             background-color: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(2px);
             transition: transform 0.3s;
             overflow: hidden;
+            z-index: 1;
             &::after {
                 content: "";
                 position: absolute;
@@ -82,12 +89,21 @@
             height: max-content;
             @media (max-width: 900px) {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            @media (max-width: 700px) {
+                padding: 0px 5px;
+            }
+            @media (max-width: 360px) {
+                gap: 5px;
             }
         }
         &-img {
+            position: relative;
             object-fit: contain;
             width: 100%;
             height: 100%;
+            z-index: 2;
         }
     }
     &-statistics__title {

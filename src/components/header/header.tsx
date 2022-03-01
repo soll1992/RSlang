@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState, FC } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import './header.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Button from '../button/button';
 import LoginPopup from './login-popap';
 
@@ -38,9 +38,7 @@ interface RootState {
 }
 
 const Header: FC<Props> = (props) => {
-  const dispatch = useDispatch();
   const headerTitle = useSelector((state: RootState) => state.title.title);
-
   const [loginIsOpen, setLoginIsOpen] = useState(false);
   const [isOverlay, setIsOverlay] = useState(false);
   const [authorization, setAuthorizations] = useState<boolean>(() => {
@@ -62,7 +60,7 @@ const Header: FC<Props> = (props) => {
     pagesRu: ['главная', 'учебник', 'сложные слова', 'миниигры', 'статистика', 'команда'],
   };
 
-  const handlerChange = ({ currentTarget }: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handlerChange = () => {
     const burger = document.getElementById('burger');
     if (burger.classList.contains('active')) {
       setLoginIsOpen(false);
@@ -88,12 +86,13 @@ const Header: FC<Props> = (props) => {
     setIsOverlay(false);
   };
   const deleteLocalStorage = () => {
-    localStorage.removeItem('userData');
-    props.userData.setValue({
-      token: '',
-      id: '',
-    });
-    // location.reload();
+    if (window.confirm('Вы уверены что хотите выйти?')) {
+      localStorage.removeItem('userData');
+      props.userData.setValue({
+        token: '',
+        id: '',
+      });
+    }
   };
 
   useEffect(() => {
@@ -115,53 +114,59 @@ const Header: FC<Props> = (props) => {
   return (
     <div className="header-wrap">
       <header id="Top" className="header">
-        <div onClick={(e) => handlerChange(e)} id="burger" className="burger-wrap">
-          <div className="burger"></div>
-          {/* <div className="burger-close-top"></div>
-          <div className="burger-close-bottom"></div> */}
-        </div>
-        <ul id="nav" className="nav">
-          <div className="nav-title-wrap">
-            <div className="nav-aside-earth">
-              <div className="nav-aside-earth-container"></div>
-            </div>
-            <h2 className="nav-title">RSLang</h2>
-            <div onClick={handlerChange} className="burger-wrap active black">
-              <div className="burger"></div>
-              <div className="burger-close-top"></div>
-              <div className="burger-close-bottom"></div>
-            </div>
+        <div className="login-container">
+          <div onClick={() => handlerChange()} id="burger" className="burger-wrap">
+            <div className="burger"></div>
+            {/* <div className="burger-close-top"></div>
+            <div className="burger-close-bottom"></div> */}
           </div>
-          {allPages.pages.map((pageName, index) => (
-            <NavItem i={index} pagesRu={allPages.pagesRu} pageName={pageName} key={index} />
-          ))}
-        </ul>
+          <ul id="nav" className="nav">
+            <div className="nav-title-wrap">
+              <div className="nav-aside-earth">
+                <div className="nav-aside-earth-container"></div>
+              </div>
+              <h2 className="nav-title">RSLang</h2>
+              <div onClick={handlerChange} className="burger-wrap active black">
+                <div className="burger"></div>
+                <div className="burger-close-top"></div>
+                <div className="burger-close-bottom"></div>
+              </div>
+            </div>
+            {allPages.pages.map((pageName, index) => (
+              <NavItem i={index} pagesRu={allPages.pagesRu} pageName={pageName} key={index} />
+            ))}
+          </ul>
+          <div>
+            {!authorization ? (
+              <button
+                onClick={() => getLoginPopup()}
+                className={loginIsOpen ? ' btn-2 small login-btn active' : ' btn-2 small login-btn'}
+              >
+                Войти
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  deleteLocalStorage();
+                }}
+                className={loginIsOpen ? ' btn-2 small login-btn active' : ' btn-2 login-btn small'}
+              >
+                Выйти
+              </button>
+            )}
+          </div>
+        </div>
         <h2 className="header__title">
           {headerTitle !== 'команда' ? headerTitle.charAt(0).toUpperCase() + headerTitle.slice(1) : 'Главная'}
         </h2>
-        <div className="login-container">
-          {!authorization ? (
-            <button onClick={() => getLoginPopup()} className={loginIsOpen ? ' btn-2 small active' : ' btn-2 small'}>
-              Войти
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                deleteLocalStorage();
-              }}
-              className={loginIsOpen ? ' btn-2 small active' : ' btn-2 small'}
-            >
-              Выйти
-            </button>
-          )}
-          <Button class="fullscreen-button" onClick={fullscreenHandler} />
 
+        <div className="login-container last">
+          <Button class="fullscreen-button" onClick={fullscreenHandler} />
         </div>
-        {loginIsOpen && (
-          <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={props.userData} />
-        )}
+
         <div onClick={hiddenOverlay} className={!isOverlay ? 'background-overlay' : 'background-overlay active'}></div>
       </header>
+      {loginIsOpen && <LoginPopup hiddenOverlay={hiddenOverlay} loginIsOpen={loginIsOpen} userData={props.userData} />}
     </div>
   );
 };

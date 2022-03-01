@@ -3,12 +3,10 @@ import Particles from 'react-tsparticles';
 
 const ParticlesApp = () => {
   // const particlesInit = (main): Promise<void> => {
-  //   console.log(main);
   //   return
   // };
 
   // const particlesLoaded = (container): Promise<void> => {
-  //   console.log(container);
   //   return
   // };
 

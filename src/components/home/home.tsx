@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { FC, useRef, useState, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import './home.scss';
-import man from '../../assets/img/home/16.png';
+import man from '../../assets/img/home/16.webp';
 import Functional from './functional';
 import Team from './team';
 
-type Props = {};
-
-const Home: FC<Props> = () => {
+const Home: FC = () => {
   useEffect(() => {
     const hash = window.location.hash === '#/home/team' && window.location.hash;
     if (hash) {
@@ -30,7 +28,7 @@ const Home: FC<Props> = () => {
             </p>
           </div>
           <div className="home-aside">
-            <img src={man} alt="" height={320} width={303.6}></img>
+            <img src={man} alt="" height={300}></img>
           </div>
         </div>
         <Functional />

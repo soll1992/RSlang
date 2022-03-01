@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { FC } from 'react';
 import './home.scss';
-import kostik from '../../assets/img/home/kostik.png';
-import anton from '../../assets/img/home/anton.png';
-import darija from '../../assets/img/home/darija.png';
+import kostik from '../../assets/img/home/kostik.webp';
+import anton from '../../assets/img/home/anton.webp';
+import darija from '../../assets/img/home/darija.webp';
 
-type Props = {};
-
-const Team: FC<Props> = () => {
+const Team: FC = () => {
   return (
     <div className="app-team">
       <h2 className="app-team-title subtitle">Команда</h2>

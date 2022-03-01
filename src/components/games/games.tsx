@@ -216,7 +216,7 @@ export default function Games() {
     )
       .then((res) => generateWords(res))
       .then((result) => setWordsData(result))
-      .catch((err) => console.log(`${err}`));
+      .catch((err) => console.log(`Error getWordsData`, err));
   }
 
   // получаем список слов с сервера
@@ -322,24 +322,10 @@ export default function Games() {
       soundOn();
     }
   }
-  // включает режим полного экрана
-  function fullscreenHandler(e: React.MouseEvent<Element, MouseEvent>) {
-    if (document.fullscreenElement) {
-      e.currentTarget.classList.remove('active');
-      document.exitFullscreen();
-    } else {
-      e.currentTarget.classList.add('active');
-      document.documentElement.requestFullscreen();
-    }
-  }
 
   return (
     <div className="game-wrapper">
       <div className="settings-button-wrapper">
-        {/* <Button class="fullscreen-button" onClick={fullscreenHandler} /> */}
-        {/* {selectedGame === 'audiochallenge' &&
-          
-        } */}
         <Button refer={muteButton} class="mute-button" onClick={toggleSound} />
       </div>
       {showResult ? (

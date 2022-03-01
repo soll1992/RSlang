@@ -6,8 +6,9 @@ import TextbookPageNav from './textbook-page-nav/TextbookPageNav';
 import getUserAggregatedWords from '../../../utils/getUserAggregatedWords';
 import getWords from '../../../utils/getWords';
 import UserData from '../../../types/UserData';
-import './textbookPage.css';
+import './textbookPage.scss';
 /* eslint no-underscore-dangle: 0 */
+// От Кости
 
 type Props = {
   group: {
@@ -111,10 +112,14 @@ export default function TextbookPage({ group, page, authorization, gamesButtonsS
   return (
     <div className="textbook-page">
       {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}
-      <div className='difficult-words-wrap'>
-        {group.activeGroup === 'difficult-words' && !authorization.userData
-          ? 'Для доступа к данному разделу необходимо авторизироваться'
-          : words.map((word: Word) => {
+      <div className="difficult-words-wrap">
+        {group.activeGroup === 'difficult-words' && !authorization.userData ? (
+          <div className="difficult-words-none">
+            <div className="difficult-words-wrap-unon">Для доступа к данному разделу необходимо авторизироваться</div>
+            <div className="difficult-words-wrap-img">{/* <img src={unauthorizedImg} alt=""></img> */}</div>
+          </div>
+        ) : (
+          words.map((word: Word) => {
             return (
               <WordCard
                 info={word}
@@ -124,7 +129,8 @@ export default function TextbookPage({ group, page, authorization, gamesButtonsS
                 wordState={{ wordChanged, setWordChanged }}
               />
             );
-          })}
+          })
+        )}
       </div>
 
       {group.activeGroup === 'difficult-words' ? '' : <TextbookPageNav group={group} page={page} />}

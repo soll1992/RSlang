@@ -1,0 +1,69 @@
+.textbook-nav {
+	max-width: 1500px;
+	margin: 0 auto;
+	padding: 10px;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.textbook-nav__list {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	flex-wrap: wrap;
+	@media (max-width: 500px) {
+		gap: 5px;
+	}
+}
+
+.level-card {
+	display: block;
+}
+
+.level-card__name {
+	display: inline-block;
+	padding: 10px;
+	font-size: 0;
+	&:last-child {
+		font-size: 16px;
+	}
+
+	@media (max-width: 500px) {
+		padding: 1px;
+
+		&:last-child {
+			padding: 10px;
+		}
+	}
+}
+
+.level-card__level {
+	display: inline-block;
+	padding: 10px;
+}
+
+.level-card__level_A1 {
+	background-color: rgb(177 211 235);
+}
+
+.level-card__level_A2 {
+	background-color: rgb(196, 230, 141);
+}
+
+.level-card__level_B1 {
+	background-color: rgb(241 226 139);
+}
+
+.level-card__level_B2 {
+	background-color: rgb(253 171 117);
+}
+
+.level-card__level_C1 {
+	background-color: rgb(249 123 123);
+}
+
+.level-card__level_C2 {
+	background-color: rgb(199 150 189);
+}

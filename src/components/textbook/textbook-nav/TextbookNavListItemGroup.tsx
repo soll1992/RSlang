@@ -1,6 +1,6 @@
 import React from 'react';
 import './textbookNavListItem.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { titleChange } from '../../../redux/actions/actions';
 
 type Props = {
@@ -13,7 +13,6 @@ type Props = {
 export default function TextbookNavListItemGroup({ text, link, children, isActive }: Props) {
   const dispatch = useDispatch();
   const titleChangeClick = () => {
-    console.log(text);
     if (text === 'Сложные слова') dispatch(titleChange('Сложные слова'));
     else dispatch(titleChange('Учебник'));
   };

@@ -37,7 +37,6 @@ export default function TextbookNavListItemGame({ text, link, activeGroup, activ
   };
 
   const goToGame = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    console.log(activeGroup);
     if (disabled) e.preventDefault();
     if (!disabled) {
       titleChangeClick();

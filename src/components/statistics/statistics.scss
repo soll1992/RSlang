@@ -1,0 +1,54 @@
+.statistics {
+    height: 100%;
+    &-wrap {
+        font-size: 30px;
+        margin: 30px 0px 0px 0px;
+        @media (max-width: 500px) {
+            font-size: 22px;
+        }
+    }
+}
+.day-statistics {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.day-statistics__title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.day-statistics__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.day-statistics__title {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.games-statictics,
+.words-statictics {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.games-statictics__title,
+.words-statictics__title {
+    margin-bottom: 20px;
+}
+.test-graph {
+    width: 800px;
+    height: 400px;
+}
+.day-statictics__text-alert {
+    height: 100%;
+    text-align: center;
+    font-size: 26px;
+}

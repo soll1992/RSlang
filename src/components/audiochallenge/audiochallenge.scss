@@ -12,6 +12,9 @@
         align-items: center;
         flex: 0 1 573px;
     }
+    @media (max-width: 964px) {
+        margin: 0px 0px 10px 0px;
+    }
 }
 .word {
     display: none;
@@ -66,6 +69,12 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px 20px;
+            @media (max-width: 964px) {
+                margin: 0px 0px 10px 0px;
+            }
+            @media (max-width: 460px) {
+                gap: 10px;
+            }
         }
     }
     &-wrap {
@@ -80,18 +89,29 @@
         font-size: 40px;
         font-weight: bold;
         margin: 0px 0px 40px 0px;
+        @media (max-width: 964px) {
+            margin: 0px 0px 5px 0px;
+        }
     }
     &-description {
         &-wrap {
             padding: 15px;
             background-color: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(2px);
+
             margin: 0px 0px 25px 0px;
             border-radius: 10px;
             font-size: 20px;
+            @media (max-width: 400px) {
+                font-size: 18px;
+            }
             & h3 {
                 padding: 20px 20px;
                 font-size: 26px;
                 font-weight: bold;
+                @media (max-width: 400px) {
+                    font-size: 22px;
+                }
             }
             font-size: 22px;
             & ul {
@@ -99,6 +119,10 @@
                 text-align: left;
                 & li {
                     list-style-type: disc;
+                    margin: 0px 10px;
+                }
+                @media (max-width: 400px) {
+                    font-size: 18px;
                 }
             }
             display: flex;
@@ -115,8 +139,11 @@
         width: 100%;
         text-align: center;
         height: 30px;
+        @media (max-width: 500px) {
+            margin: 0px 0px 20px 0px;
+        }
         & .translate {
-            color: #bb9357;
+            color: #ebdd22;
         }
     }
     &__bubles {
@@ -141,6 +168,9 @@
     font-size: 20px;
     @media (max-width: 600px) {
         font-size: 16px;
+    }
+    &:last-child {
+        grid-column-start: span 2;
     }
 }
 .btn-start {
