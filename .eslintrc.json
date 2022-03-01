@@ -59,6 +59,7 @@
     "@typescript-eslint/no-floating-promises": "off",
     "no-alert": "off",
     "@typescript-eslint/default-param-last": "off",
+    "@no-param-reassign": "off",
     "import/extensions": [
       "error",
       "ignorePackages",

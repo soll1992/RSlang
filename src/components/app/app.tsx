@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import Main from './main';
 import Header from '../header/header';
 import Footer from '../footer/footer';
@@ -12,14 +12,9 @@ type UserData = {
 const App = () => {
   const [userData, setUserData] = useState<UserData>(() => {
     const saved = localStorage.getItem('userData');
-    const initialValue = JSON.parse(saved);
+    const initialValue = JSON.parse(saved) as { token: string; id: string } | undefined;
     return initialValue || { token: '', id: '' };
   });
-  // const [headerTitle, setHeaderTitle] = useState<string>(() => {
-  //   const saved = localStorage.getItem('headerTitle');
-  //   const initialValue = window.location.hash && saved !== 'undefined' ? saved : undefined;
-  //   return initialValue || 'Главная';
-  // });
 
   return (
     <Fragment>

@@ -4,7 +4,7 @@ import UserData from 'src/types/UserData';
 import { isUserData } from '../../utils/typeGuards';
 import TextbookNav from './textbook-nav/TextbookNav';
 import TextbookPage from './textbook-page/TextbookPage';
-import './textbook.css';
+import './textbook.scss';
 
 export default function Textbook() {
   const [activeGroup, setActiveGroup] = useState('');

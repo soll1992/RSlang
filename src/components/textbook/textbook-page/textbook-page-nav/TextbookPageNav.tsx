@@ -55,11 +55,12 @@ export default function TextbookPageNav({ group, page }: Props) {
             role="button"
           ></a>
         </li>
-        {navItems.map((navItemPage, index) => {
+        {navItems.map((navItemPage: string, index) => {
           return typeof navItemPage === 'string' ? (
             <li
-              className={`textbook-page-nav__list-item ${page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
-                }`}
+              className={`textbook-page-nav__list-item ${
+                page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
+              }`}
               key={`textbook-page_${index}`}
             >
               {' '}
@@ -67,13 +68,14 @@ export default function TextbookPageNav({ group, page }: Props) {
             </li>
           ) : (
             <li
-              className={`textbook-page-nav__list-item textbook-page-nav__list-item_page-number ${page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
-                }`}
+              className={`textbook-page-nav__list-item textbook-page-nav__list-item_page-number ${
+                page.activePage === +navItemPage ? `textbook-page-nav__list-item_active-${group.activeGroup}` : ''
+              }`}
               key={`textbook-page_${index}`}
             >
               <a
                 className="textbook-page-nav__link"
-                href={`#/textbook/${group.activeGroup}/${navItemPage}`}
+                href={`#/textbook/${group.activeGroup}/${navItemPage}`} // eslint-disable-line
                 role="button"
               >
                 {navItemPage}

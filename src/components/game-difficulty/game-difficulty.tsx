@@ -12,8 +12,8 @@ import {
   selectAudiochallenge,
 } from '../../redux/actions/actions';
 // От Кости
-import audiocall from '../../assets/img/home/12.png';
-import sprint from '../../assets/img/home/15.png';
+import audiocall from '../../assets/img/home/12.webp';
+import sprint from '../../assets/img/home/15.webp';
 
 interface RootState {
   gameDifficulty: {

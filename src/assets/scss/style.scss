@@ -176,11 +176,12 @@ body {
 	left: 0;
 	position: fixed;
 	background-color: rgba(0, 0, 0, 0.4);
-	height: 100%;
-	width: 100%;
+	backdrop-filter: blur(1px);
+	height: 100vh;
+	width: 100vw;
 	opacity: 0;
 	visibility: hidden;
-	z-index: 2;
+	z-index: 7;
 	transition: opacity 0.6s, visibility 0.6s;
 	&.active {
 		opacity: 1;
@@ -196,6 +197,12 @@ body {
 	padding: 0px 20px;
 	&.container {
 		padding: 0;
+	}
+	@media (max-width: 700px) {
+		padding: 0px 10px;
+	}
+	@media (max-width: 400px) {
+		padding: 0px 5px;
 	}
 }
 
@@ -312,6 +319,12 @@ body {
 				transform: translateX(59%);
 			}
 		}
+		&.login-btn {
+			width: 100px;
+			@media (max-width: 470px) {
+				width: 70px;
+			}
+		}
 	}
 
 	&.select {
@@ -340,6 +353,26 @@ body {
 		&:hover {
 			color: #fff;
 		}
+		&:active {
+			&-wrap {
+				transition: background-color 0.3s;
+				background-color: #55f0c4;
+			}
+			transition: border 0.3s;
+			border: 1px solid #55f0c4;
+			&:before {
+				transition: all 0.3s;
+				border-bottom: 80px solid #55f0c4;
+			}
+
+			&:after {
+				transition: all 0.3s;
+				border-top: 80px solid #55f0c4;
+			}
+			&:hover {
+				color: #fff;
+			}
+		}
 	}
 	&.signup {
 		color: #000;
@@ -356,6 +389,26 @@ body {
 		}
 		&:hover {
 			color: #fff;
+		}
+		&:active {
+			&-wrap {
+				transition: background-color 0.3s;
+				background-color: #55f0c4;
+			}
+			transition: border 0.3s;
+			border: 1px solid #55f0c4;
+			&:before {
+				transition: all 0.3s;
+				border-bottom: 80px solid #55f0c4;
+			}
+
+			&:after {
+				transition: all 0.3s;
+				border-top: 80px solid #55f0c4;
+			}
+			&:hover {
+				color: #fff;
+			}
 		}
 	}
 	&.textbook {
@@ -391,6 +444,9 @@ body {
 		font-size: 22px;
 		font-weight: bold;
 		text-shadow: 1px 1px 1px #000;
+		@media (max-width: 964px) {
+			height: 35px;
+		}
 		&:before {
 			border-bottom: 80px solid #4c77d5;
 		}

@@ -12,7 +12,7 @@ function getWords(params?: Params) {
       params,
     })
     .then((response) => response.data)
-    .catch((err) => console.log(err));
+    .catch((err) => console.log('Error getWords', err));
 }
 
 export default getWords;

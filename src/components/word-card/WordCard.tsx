@@ -1,9 +1,12 @@
+/* eslint-disable */
 import React, { useEffect, useRef, useState } from 'react';
 import Word from 'src/types/Word';
 import UserData from 'src/types/UserData';
 import createUserWord from '../../utils/createUserWord';
 import updateUserWord from '../../utils/updateUserWord';
 import './wordCard.scss';
+import falseAnswerImg from '../../assets/svg/false.svg';
+import trueAnswerImg from '../../assets/svg/true.svg';
 /* eslint no-underscore-dangle: 0 */
 
 type Props = {
@@ -140,7 +143,6 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
       if (info.userWord) {
         info.userWord.difficulty = 'easy';
         delete info.userWord.optional.learned;
-        console.log(info);
         await updateUserWord(
           info.id || info._id,
           authorization.userData.id,
@@ -163,9 +165,9 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
 
   return (
     <div className="word-card">
-      <div className='word-card__picture-wrap'>
+      <div className="word-card__picture-wrap">
         <img
-          className="word-card__picture"
+          className={`word-card__picture word-card__word_${info.group}`}
           src={`https://rs-lang-server.herokuapp.com/${info.image}`}
           alt={`${info.word}_picture`}
         />
@@ -187,10 +189,10 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
           ref={audioExample}
           onEnded={audioExampleEnded}
         ></audio>
-        <div className={`word-card__word word-card__word_${info.group}`}>
-          <p className="word-card__word-en">
+        <div className={`word-card__word `}>
+          <p className={`word-card__word-en word-card-chapter_${info.group}`}>
             {info.word}
-            <span className="word-card__word-transcription">{info.transcription}</span>
+            <span className={'word-card__word-transcription'}>{info.transcription}</span>
           </p>
           <p className="word-card__word-translation">{info.wordTranslate}</p>
         </div>
@@ -204,48 +206,52 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
         </div>
 
         {authorization.userData ? (
-          <div className="word-card__additionally">
-            <div className="word-card__answers">
-              <span className="word-card__right-answers">
-                Правильные ответы: {info.userWord?.optional?.rightAnswers || 0}
-              </span>
-              <span className="word-card__wrong-answers">
-                Неправильные ответы: {info.userWord?.optional?.wrongAnswers || 0}
-              </span>
-            </div>
+          <div className="word-card__additionally-wrap">
+            <div className="word-card__additionally">
+              <div className="word-card__answers">
+                <img title="Сколько раз отвечено правильно" src={trueAnswerImg} alt="" width={30} height={30}></img>
+                <span title="Сколько раз отвечено правильно" className="word-card__right-answers">
+                  {info.userWord?.optional?.rightAnswers || 0}
+                </span>
+                <img title="Сколько раз отвечено неправильно" src={falseAnswerImg} alt="" width={25} height={25}></img>
+                <span title="Сколько раз отвечено неправильно" className="word-card__wrong-answers">
+                  {info.userWord?.optional?.wrongAnswers || 0}
+                </span>
+              </div>
 
-            <div className="word-card__marks">
-              <label
-                className={`word-card-mark ${isWordDifficult ? 'word-card-mark_difficult' : ''}`}
-                htmlFor={`difficult_word_${info.id || info._id}`}
-              >
-                <input
-                  className="word-card-mark__checkbox"
-                  id={`difficult_word_${info.id || info._id}`}
-                  value="hard"
-                  type="checkbox"
-                  onChange={changeWordDifficulty}
-                  checked={isWordDifficult}
-                />
-                <span className="word-card-mark__mark"></span>
-                <span className="word-card-mark__name">Сложное слово</span>
-              </label>
+              <div className="word-card__marks">
+                <label
+                  className={`word-card-mark ${isWordDifficult ? 'word-card-mark_difficult' : ''}`}
+                  htmlFor={`difficult_word_${info.id || info._id}`}
+                >
+                  <input
+                    className="word-card-mark__checkbox"
+                    id={`difficult_word_${info.id || info._id}`}
+                    value="hard"
+                    type="checkbox"
+                    onChange={changeWordDifficulty}
+                    checked={isWordDifficult}
+                  />
+                  <span className="word-card-mark__mark"></span>
+                  <span className="word-card-mark__name">Сложное</span>
+                </label>
 
-              <label
-                className={`word-card-mark ${isWordLearned ? 'word-card-mark_learned' : ''}`}
-                htmlFor={`learned_word_${info.id || info._id}`}
-              >
-                <input
-                  className="word-card-mark__checkbox"
-                  id={`learned_word_${info.id || info._id}`}
-                  value="learned"
-                  type="checkbox"
-                  onChange={changeLearnedWords}
-                  checked={isWordLearned}
-                />
-                <span className="word-card-mark__mark"></span>
-                <span className="word-card-mark__name">Изученное слово</span>
-              </label>
+                <label
+                  className={`word-card-mark ${isWordLearned ? 'word-card-mark_learned' : ''}`}
+                  htmlFor={`learned_word_${info.id || info._id}`}
+                >
+                  <input
+                    className="word-card-mark__checkbox"
+                    id={`learned_word_${info.id || info._id}`}
+                    value="learned"
+                    type="checkbox"
+                    onChange={changeLearnedWords}
+                    checked={isWordLearned}
+                  />
+                  <span className="word-card-mark__mark"></span>
+                  <span className="word-card-mark__name">Изученное</span>
+                </label>
+              </div>
             </div>
           </div>
         ) : (

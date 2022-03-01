@@ -1,16 +1,25 @@
 import * as React from 'react';
-import { FC, useRef, useState, useEffect } from 'react';
+import { FC, useRef } from 'react';
 
 type Props = {
   setIsSignUp: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const SugnUp: FC<Props> = (props: Props) => {
-  const nameInput = useRef(null);
-  const emailInput = useRef(null);
-  const passwordInput = useRef(null);
+  const nameInput = useRef<HTMLInputElement | null>(null);
+  const emailInput = useRef<HTMLInputElement | null>(null);
+  const passwordInput = useRef<HTMLInputElement | null>(null);
+
+  const userCreatedError = (rawResponse: Response, status: number) => {
+    if (status === 417) window.alert('Такой пользователь уже существует');
+    if (status === 422) window.alert('Непредвиденная ошибка, пожалуйста повторите попытку');
+    return rawResponse;
+  };
 
   const createUser = (user: { email: string; password: string }) => {
+    const name = nameInput.current;
+    const email = emailInput.current;
+    const password = passwordInput.current;
     return fetch('https://react-rslang-group.herokuapp.com/users', {
       method: 'POST',
       headers: {
@@ -19,8 +28,17 @@ const SugnUp: FC<Props> = (props: Props) => {
       },
       body: JSON.stringify(user),
     })
+      .then((rawResponse) => userCreatedError(rawResponse, rawResponse.status))
       .then((rawResponse) => rawResponse.json())
       .then(() => props.setIsSignUp(false))
+      .then(() => {
+        name.value = '';
+        email.value = '';
+        password.value = '';
+        name.disabled = false;
+        email.disabled = false;
+        password.disabled = false;
+      })
       .catch((err) => console.log('Error createUser', err));
   };
 
@@ -32,11 +50,14 @@ const SugnUp: FC<Props> = (props: Props) => {
     email.classList.remove('error');
     password.classList.remove('error');
     if (name.value && email.value && password.value.length >= 8) {
+      name.disabled = true;
+      email.disabled = true;
+      password.disabled = true;
       createUser({ email: email.value, password: password.value })
         .then(() => {
-          name.value = '';
-          email.value = '';
-          password.value = '';
+          name.disabled = false;
+          email.disabled = false;
+          password.disabled = false;
         })
         .catch((err) => console.log('Error createUser', err));
     } else {

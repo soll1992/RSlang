@@ -1,7 +1,7 @@
 import React from 'react';
 import TextbookNavListItemGame from './TextbookNavListItemGame';
 import TextbookNavListItemGroup from './TextbookNavListItemGroup';
-import './textbookNav.css';
+import './textbookNav.scss';
 
 type Props = {
   group: {

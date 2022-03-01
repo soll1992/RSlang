@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ResponsiveLine } from '@nivo/line';
 import React from 'react';
-import './test-graph.scss'
+import './test-graph.scss';
 
 export const MyResponsiveLine = ({ data }) => (
   <ResponsiveLine

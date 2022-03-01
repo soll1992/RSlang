@@ -1,5 +1,5 @@
 import React from 'react';
-import './wordStatisticsCard.css';
+import './wordStatisticsCard.scss';
 
 type Props = {
   data: string | number;

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Word from 'src/types/Word';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import Button from '../button/button';
 import { changeSeria } from '../../redux/actions/actions';
 import './sprint.scss';
-// От Кости
-import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 interface Props {
   timer: number;
@@ -67,12 +66,14 @@ export default function Sprint(props: Props) {
             </p>
             <h3>Правила</h3>
             <p>
-              Серии правильных ответов повышают комбо-множитель, который умножает количество получаемых бал за следующий
-              ответ, если ответ будет неверным, комбо-множитель сбросится до начальных значений
+              Серии правильных ответов повышают комбо-множитель, который умножает количество получаемых баллов за
+              следующий ответ, если ответ будет неверным, комбо-множитель сбросится до начальных значений
             </p>
             <h3>Управление</h3>
             <ul>
-              <li>Мышь, для выбора ответа</li>
+              <li>
+                <b>Мышь</b>, для выбора ответа
+              </li>
               <li>
                 Клавиши <b>стрелка влево</b> или <b>стрелка вправо</b> для выбора ответа
               </li>

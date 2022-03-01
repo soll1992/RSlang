@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { FC } from 'react';
+import { useDispatch } from 'react-redux';
 import './home.scss';
-import img1 from '../../assets/img/home/5.png';
-import img2 from '../../assets/img/home/18.png';
-import img3 from '../../assets/img/home/11.png';
-import { useDispatch, useSelector } from 'react-redux';
 import { titleChange } from '../../redux/actions/actions';
+import img1 from '../../assets/img/home/5.webp';
+import img2 from '../../assets/img/home/18.webp';
+import img3 from '../../assets/img/home/11.webp';
 
-type Props = {};
-
-const Functional: FC<Props> = () => {
+const Functional: FC = () => {
   const dispatch = useDispatch();
   const titleChangeClick = (text: string) => {
     dispatch(titleChange(text));

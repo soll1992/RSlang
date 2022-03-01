@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useRef, useState, useEffect } from 'react';
+import { FC, useRef } from 'react';
 
 type Props = {
   userData: {
@@ -19,23 +19,13 @@ type Props = {
 };
 
 const Login: FC<Props> = (props) => {
-  const emailInput = useRef(null);
-  const passwordInput = useRef(null);
+  const emailInput = useRef<HTMLInputElement | null>(null);
+  const passwordInput = useRef<HTMLInputElement | null>(null);
 
-  const loginUser = (user: { email: string; password: string }) => {
-    return fetch('https://react-rslang-group.herokuapp.com/signin', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    })
-      .then((rawResponse) => rawResponse.json())
-      .then((content) => addDataUsers(content))
-      .then(() => props.setIsSignUp(true))
-      .then(() => props.setIsSignUp(false))
-      .catch((err) => console.log('Error loginUser', err));
+  const userUndefined = (rawResponse: Response, status: number) => {
+    if (status === 403) window.alert('Не правильный пароль');
+    if (status === 404) window.alert('Такого пользователя не существует');
+    return rawResponse;
   };
 
   const addDataUsers = (content: { token: string; userId: string }) => {
@@ -48,6 +38,23 @@ const Login: FC<Props> = (props) => {
     props.hiddenOverlay();
   };
 
+  const loginUser = (user: { email: string; password: string }) => {
+    return fetch('https://react-rslang-group.herokuapp.com/signin', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    })
+      .then((rawResponse) => userUndefined(rawResponse, rawResponse.status))
+      .then((rawResponse) => rawResponse.json())
+      .then((content) => addDataUsers(content))
+      .then(() => props.setIsSignUp(true))
+      .then(() => props.setIsSignUp(false))
+      .catch((err) => console.log('Error loginUser', err));
+  };
+
   const createDataUsers = () => {
     const email = emailInput.current;
     const password = passwordInput.current;
@@ -56,13 +63,11 @@ const Login: FC<Props> = (props) => {
     }
   };
 
-
   function keysHandler(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.code === 'Enter') {
       createDataUsers();
-
     }
-  };
+  }
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.value) {
@@ -84,14 +89,10 @@ const Login: FC<Props> = (props) => {
           className="login-email input"
           onChange={(e) => handleChangeInput(e)}
           type="text"
-          name="login-login"
+          name="login-email"
           id="login-login"
         />
-        <label
-          className="login-email label"
-          htmlFor="login-login"
-        // className={emailInput.current.value ? "login-email input active" : "login-email input"}
-        >
+        <label className="login-email label" htmlFor="login-login">
           Почта
         </label>
       </div>
