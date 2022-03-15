@@ -1,0 +1,111 @@
+.footer {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: 50px;
+	margin: 0 auto;
+	padding: 0px 20px;
+	background: rgba(0, 0, 0, 0.55);
+	display: flex;
+	align-items: center;
+	color: #fff;
+	box-shadow: 0px -1px 4px 2px rgba(0, 0, 0, 0.2), 0px 0px 5px 4px rgba(0, 0, 0, 0.14),
+		0px 0px 10px 1px rgba(0, 0, 0, 0.12);
+	@media (max-width: 568px) {
+		padding: 0px 5px;
+	}
+	&__column {
+		display: flex;
+		@media (max-width: 505px) {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			& a:last-child {
+				grid-column-start: span 2;
+			}
+		}
+	}
+	&-container {
+		padding: 0px 20px;
+		height: 100%;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		@media (max-width: 568px) {
+			padding: 0px 5px;
+		}
+	}
+	&__copyright {
+		font-family: "Playfair Display", serif;
+		font-size: 16px;
+		font-weight: 400;
+		line-height: 14px;
+		letter-spacing: 0em;
+		width: 100%;
+		max-width: 370px;
+		text-align: right;
+		margin: 0px 5px 0px 0px;
+		white-space: nowrap;
+		@media (max-width: 568px) {
+			font-size: 12px;
+			order: -1;
+		}
+		@media (max-width: 984px) {
+			width: max-content;
+		}
+	}
+	&__github {
+		&-wrap {
+			font-size: 18px;
+			color: #fff;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			width: 100%;
+			max-width: 200px;
+			opacity: 0.8;
+			transition: opacity 0.3s, transform 0.3s;
+			transform: scale(1);
+			&:hover {
+				transform: scale(1.1);
+
+				opacity: 1;
+			}
+			@media (max-width: 405px) {
+				font-size: 14px;
+			}
+		}
+		margin: 0px 15px 0px 5px;
+		width: 25px;
+		height: 25px;
+		background: url("../../assets/svg/github-white.svg") no-repeat;
+		background-size: contain;
+		&.black {
+			background: url("../../assets/svg/github-white.svg") no-repeat;
+			background-size: contain;
+		}
+		@media (max-width: 405px) {
+			margin: 0px 10px 0px 5px;
+		}
+	}
+	&__rss {
+		display: block;
+		width: 83px;
+		height: 30px;
+		background: url("../../assets/svg/rs-logo-white.svg") no-repeat;
+		background-size: contain;
+		opacity: 0.8;
+		transition: opacity 0.3s, transform 0.3s;
+		transform: scale(1);
+		&:hover {
+			transform: scale(1.05);
+
+			opacity: 1;
+		}
+		@media (max-width: 615px) {
+			display: none;
+		}
+	}
+}

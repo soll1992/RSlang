@@ -1,0 +1,66 @@
+.word-conteiner {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.sound-button {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    overflow: hidden;
+    background: url("../../assets/svg/volume.svg") no-repeat;
+    background-position: center center;
+    background-size: 50px 50px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    &.result {
+        width: 30px;
+        height: 30px;
+        min-height: 30px;
+        min-width: 30px;
+        background-size: 25px 25px;
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0px;
+        height: 0px;
+        border-radius: 50%;
+        z-index: -1;
+        // background-color: rgb(255, 255, 255);
+    }
+    &:hover {
+        opacity: 1;
+    }
+    &:active {
+    }
+    &.active {
+        &::after {
+            animation: damping 1s;
+        }
+    }
+}
+@keyframes damping {
+    0% {
+        opacity: 1;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background-color: rgb(255, 255, 255);
+    }
+    100% {
+        opacity: 1;
+        top: calc(50% - 50px);
+        left: calc(50% - 50px);
+        width: 100px;
+        height: 100px;
+        background-color: rgba(255, 255, 255, 0);
+    }
+}

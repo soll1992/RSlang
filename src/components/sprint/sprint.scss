@@ -1,0 +1,224 @@
+.sprint {
+  &-container {
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &-wrapper {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      width: 100%;
+      max-width: 400px;
+      min-height: 290px;
+      padding: 15px;
+      background-color: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(2px);
+      border-radius: 15px;
+      overflow: hidden;
+    }
+  }
+  &-description {
+    font-size: 22px;
+    &-wrap {
+      padding: 15px;
+      background-color: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(2px);
+
+      margin: 0px 0px 25px 0px;
+      border-radius: 10px;
+      font-size: 20px;
+      @media (max-width: 400px) {
+        font-size: 18px;
+      }
+      & h3 {
+        padding: 20px 20px;
+        font-size: 26px;
+        font-weight: bold;
+        @media (max-width: 400px) {
+          font-size: 22px;
+        }
+      }
+      font-size: 22px;
+      & ul {
+        max-width: 600px;
+        text-align: left;
+        & li {
+          list-style-type: disc;
+          margin: 0px 10px;
+        }
+        @media (max-width: 400px) {
+          font-size: 18px;
+        }
+      }
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  &-score {
+    text-align: right;
+    color: #55f07c;
+    font-weight: bold;
+  }
+  &-answered {
+    text-align: right;
+  }
+  &-combo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    height: 40px;
+    grid-row-start: 3;
+    grid-column: 1 / span 2;
+    &.active {
+      animation: combo-boom 1s;
+    }
+    &-item {
+      height: 30px;
+      width: 30px;
+      margin: 0;
+      border-radius: 50%;
+      border: none;
+      &.first {
+      }
+      &.second {
+      }
+      &.third {
+      }
+    }
+    &-container {
+      display: grid;
+      gap: 15px;
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-start: span 2;
+      margin-bottom: 20px;
+    }
+  }
+  &-panel {
+    &-score {
+    }
+  }
+  &-answers {
+    &-wrap {
+      width: 100%;
+      margin: 0px 0px 30px 0px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px 20px;
+    }
+    &__btn {
+      &-container {
+        display: flex;
+        justify-content: space-around;
+        grid-column-start: span 2;
+        margin: 20px 0px 0px 0px;
+      }
+    }
+  }
+
+  &-correct {
+    &-word {
+      color: #55f07c;
+      font-weight: bold;
+      &-wrap {
+        font-size: 24px;
+        grid-column-start: span 2;
+        height: 50px;
+      }
+      &__separator {
+        font-size: 16px;
+      }
+    }
+  }
+  &-wrap {
+    width: 100%;
+    height: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  &-title {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 0px 0px 40px 0px;
+  }
+  &-description {
+    &-wrap {
+      padding: 15px;
+      background-color: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(2px);
+      margin: 0px 0px 25px 0px;
+      border-radius: 10px;
+    }
+  }
+}
+.button.btn-3.btn-2.lvl {
+  font-size: 20px;
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
+}
+.btn-start {
+  width: 100%;
+  max-width: 170px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 10px;
+  transition: background 0.3s, color 0.3s;
+  position: relative;
+  color: #fff;
+  overflow: hidden;
+  border: 3px #55f07c solid;
+  font-size: 20px;
+  font-weight: bold;
+  &:hover {
+    background-color: #55f07c;
+    color: #000;
+  }
+  &.active {
+  }
+  &.false {
+    max-width: 150px;
+    background-color: transparent;
+    border: 3px #ca3434 solid;
+    &:hover {
+      background-color: #ca3434;
+      color: #fff;
+    }
+  }
+  &.true {
+    max-width: 150px;
+    background-color: transparent;
+    border: 3px #55f07c solid;
+    &:hover {
+      background-color: #55f07c;
+      color: #000;
+    }
+  }
+  &:disabled {
+    background-color: #9b9b9ba4;
+    color: #686868;
+    border: 3px #9b9b9ba4 solid;
+  }
+}
+@keyframes combo-boom {
+  0% {
+    font-size: 40px;
+    color: #55f0c4;
+  }
+  80% {
+    color: #55f0c4;
+    font-size: 40px;
+  }
+  100% {
+    font-size: 20px;
+    color: #fff;
+  }
+}

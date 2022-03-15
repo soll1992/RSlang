@@ -1,0 +1,655 @@
+//<МИКСИНЫ>===============================================================================================
+// @import "mixins";
+
+//</МИКСИНЫ>===============================================================================================
+
+//<ШРИФТЫ>===============================================================================================
+
+//<Подключаем шрифты>=======================================================================================
+//&display=swap&subset=cyrillic-ext
+// @import "fonts";
+
+//</Подключаем шрифты>=======================================================================================
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Regular.eot");
+	src: local("Gilroy Regular"), local("../fonts/Gilroy-Regular"),
+		url("../fonts/Gilroy-Regular.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Regular.woff2") format("woff2"), url("../fonts/Gilroy-Regular.woff") format("woff"),
+		url("../fonts/Gilroy-Regular.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Bold.eot");
+	src: local("Gilroy Bold"), local("../fonts/Gilroy-Bold"),
+		url("../fonts/Gilroy-Bold.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Bold.woff2") format("woff2"), url("../fonts/Gilroy-Bold.woff") format("woff"),
+		url("../fonts/Gilroy-Bold.ttf") format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Light.eot");
+	src: local("Gilroy Light"), local("../fonts/Gilroy-Light"),
+		url("../fonts/Gilroy-Light.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Light.woff2") format("woff2"), url("../fonts/Gilroy-Light.woff") format("woff"),
+		url("../fonts/Gilroy-Light.ttf") format("truetype");
+	font-weight: 300;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Medium.eot");
+	src: local("Gilroy Medium"), local("../fonts/Gilroy-Medium"),
+		url("../fonts/Gilroy-Medium.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Medium.woff2") format("woff2"), url("../fonts/Gilroy-Medium.woff") format("woff"),
+		url("../fonts/Gilroy-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Gilroy";
+	src: url("../fonts/Gilroy-Heavy.eot");
+	src: local("Gilroy Heavy"), local("../fonts/Gilroy-Heavy"),
+		url("../fonts/Gilroy-Heavy.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/Gilroy-Heavy.woff2") format("woff2"), url("../fonts/Gilroy-Heavy.woff") format("woff"),
+		url("../fonts/Gilroy-Heavy.ttf") format("truetype");
+	font-weight: 900;
+	font-style: normal;
+}
+//<Иконочные шрифты>==========================================================================================
+// @import "icons";
+//</Иконочные шрифты>==========================================================================================
+
+//<Шрифт по умолчанию>==========================================================================================
+$fontFamily: "Gilroy";
+// font-family: 'Playfair Display', serif;
+
+//</Шрифт по умолчанию>==========================================================================================
+
+//</ШРИФТЫ>=======================================================================================================
+
+//<ПЕРЕМЕННЫЕ>===========================================================================================================
+$minWidth: 320px;
+$maxWidth: 1920;
+$maxWidthContainer: 1440;
+$md1a: $maxWidthContainer + 12;
+$md1: 1440;
+$md2: 615;
+
+//</ПЕРЕМЕННЫЕ>===========================================================================================================
+
+//<ОБНУЛЕНИЕ, ОБЩИЕ ПАРАМЕТРЫ>===============================================================================================
+@import "null";
+html {
+	scroll-behavior: smooth;
+}
+body {
+	min-width: 320px;
+	font-size: 16px;
+	color: #fff;
+	text-align: center;
+	// background: linear-gradient(-135deg, #4c77d5 25%, #ded8e9 100%);
+	background: linear-gradient(-135deg, #4c77d5 25%, #55f07c 100%);
+	// background: linear-gradient(-135deg, #af8854 25%, #a86e5c 100%);
+	// background: linear-gradient(135deg, #010004 5%, #6f93de 100%);
+	// background: url("../img/home/spotlight.webp") center/ cover;
+
+	color: #fff;
+	height: 100%;
+
+	&._lock {
+		overflow: hidden;
+	}
+	a {
+		color: #000;
+	}
+}
+//</ОБНУЛЕНИЕ, ОБЩИЕ ПАРАМЕТРЫ>===============================================================================================
+
+//<ОБОЛОЧКА>===========================================================================================================
+.wrapper {
+	width: 100%;
+	min-height: 100vh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	&._loaded {
+	}
+}
+//</ОБОЛОЧКА>===========================================================================================================
+
+//<ОСНОВНАЯ СЕТКА>===========================================================================================================
+
+//</ОСНОВНАЯ СЕТКА>===========================================================================================================
+
+//<ПОДКЛЮЧЕНИЕ ФАЙЛОВ UI СТИЛЕЙ, ФОРМ И ГОТОВЫХ КЛАССОВ>====================================================================================================
+// @import "forms";
+// @import "ui";
+//</ПОДКЛЮЧЕНИЕ ФАЙЛОВ UI СТИЛЕЙ, ФОРМ И ГОТОВЫХ КЛАССОВ>====================================================================================================
+
+//<ПОДКЛЮЧЕНИЕ ФАЙЛОВ СТИЛЕЙ СТРАНИЦ И ЭЛЕМЕНТОВ>====================================================================================================
+//@import "datepicker";
+//@import "lightgallery";
+//@import "pagging";
+// @import "popup";
+// @import "header";
+// @import "footer";
+// @import "home";
+//</ПОДКЛЮЧЕНИЕ ФАЙЛОВ СТИЛЕЙ СТРАНИЦ И ЭЛЕМЕНТОВ>====================================================================================================
+//<ОСНОВНОЙ БЛОК>====================================================================================================
+.page {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background: url("") no-repeat fixed;
+	@media (min-width: 2000px) {
+		background-size: cover;
+	}
+}
+// *::-webkit-scrollbar {
+// 	width: 15px; /* ширина scrollbar */
+// }
+// *::-webkit-scrollbar-track {
+// 	background: #00000055; /* цвет дорожки */
+// }
+// *::-webkit-scrollbar-thumb {
+// 	background-color: #4c77d5; /* цвет плашки */
+// 	border-radius: 10px; /* закругления плашки */
+// 	border: 5px solid #4c77d5; /* padding вокруг плашки */
+// }
+// * {
+// 	scrollbar-width: auto; /* "auto" или "thin"  */
+// 	scrollbar-color: #4c77d5 #192f2d44; /* плашка скролла и дорожка */
+// }
+.subtitle {
+	font-family: "Playfair Display", serif;
+	margin: 0px 0px 30px 0px;
+}
+.background-overlay {
+	top: 0;
+	left: 0;
+	position: fixed;
+	background-color: rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(1px);
+	height: 100vh;
+	width: 100vw;
+	opacity: 0;
+	visibility: hidden;
+	z-index: 7;
+	transition: opacity 0.6s, visibility 0.6s;
+	&.active {
+		opacity: 1;
+		visibility: visible;
+	}
+}
+.main {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	width: 100%;
+	height: 100%;
+	padding: 0px 20px;
+	&.container {
+		padding: 0;
+	}
+	@media (max-width: 700px) {
+		padding: 0px 10px;
+	}
+	@media (max-width: 400px) {
+		padding: 0px 5px;
+	}
+}
+
+.btn-2 {
+	&-wrap {
+		background-color: #55f07c;
+	}
+	color: #fff;
+	transition: color 0.5s ease-in-out;
+	position: relative;
+	display: block;
+	overflow: hidden;
+	width: 100%;
+	height: 50px;
+	max-width: 170px;
+	text-transform: uppercase;
+	border: 1px solid #55f0c4;
+	background-color: transparent;
+	border-radius: 5px;
+	font-size: 14px;
+	z-index: 1;
+	&.textbook {
+		height: 35px;
+		& .level-card__level {
+			color: #000;
+		}
+		.textbook-nav__list-item_active & {
+			&:before {
+				right: -50px;
+				border-right: 50px solid transparent;
+				border-bottom: 80px solid #55f0c4;
+				transform: translateX(-100%);
+			}
+
+			&:after {
+				left: -50px;
+				border-left: 50px solid transparent;
+				border-top: 80px solid #55f0c4;
+				transform: translateX(100%);
+			}
+		}
+	}
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		transition: 0.5s ease-in-out;
+		z-index: -1;
+	}
+
+	&:before {
+		right: -50px;
+		border-right: 50px solid transparent;
+		border-bottom: 80px solid #55f0c4;
+		transform: translateX(-100%);
+	}
+
+	&:after {
+		left: -50px;
+		border-left: 50px solid transparent;
+		border-top: 80px solid #55f0c4;
+		transform: translateX(100%);
+	}
+
+	&:hover {
+		color: #000;
+
+		&:before {
+			transform: translateX(-49%);
+		}
+		&:after {
+			transform: translateX(49%);
+		}
+	}
+	&.small {
+		height: 30px;
+		max-width: 100px;
+		&:before {
+			right: -50px;
+			border-right: 50px solid transparent;
+			border-bottom: 80px solid #55f0c4;
+			transform: translateX(-100%);
+		}
+
+		&:after {
+			left: -50px;
+			border-left: 50px solid transparent;
+			border-top: 80px solid #55f0c4;
+			transform: translateX(100%);
+		}
+		&:hover {
+			color: #000;
+
+			&:before {
+				transform: translateX(-39%);
+			}
+			&:after {
+				transform: translateX(59%);
+			}
+		}
+		&.active {
+			color: #000;
+
+			&:before {
+				transform: translateX(-39%);
+			}
+			&:after {
+				transform: translateX(59%);
+			}
+		}
+		&.login-btn {
+			width: 100px;
+			@media (max-width: 470px) {
+				width: 70px;
+			}
+		}
+	}
+
+	&.select {
+		color: #000;
+		width: 100%;
+		&:before {
+			transform: translateX(-39%);
+		}
+		&:after {
+			transform: translateX(59%);
+		}
+	}
+	&.login {
+		color: #000;
+		&-wrap {
+			background-color: #2a2ab9;
+		}
+		border: 1px solid #2a2ab9;
+		&:before {
+			border-bottom: 80px solid #2a2ab9;
+		}
+
+		&:after {
+			border-top: 80px solid #2a2ab9;
+		}
+		&:hover {
+			color: #fff;
+		}
+		&:active {
+			&-wrap {
+				transition: background-color 0.3s;
+				background-color: #55f0c4;
+			}
+			transition: border 0.3s;
+			border: 1px solid #55f0c4;
+			&:before {
+				transition: all 0.3s;
+				border-bottom: 80px solid #55f0c4;
+			}
+
+			&:after {
+				transition: all 0.3s;
+				border-top: 80px solid #55f0c4;
+			}
+			&:hover {
+				color: #fff;
+			}
+		}
+	}
+	&.signup {
+		color: #000;
+		&-wrap {
+			background-color: #2a2ab9;
+		}
+		border: 1px solid #2a2ab9;
+		&:before {
+			border-bottom: 80px solid #2a2ab9;
+		}
+
+		&:after {
+			border-top: 80px solid #2a2ab9;
+		}
+		&:hover {
+			color: #fff;
+		}
+		&:active {
+			&-wrap {
+				transition: background-color 0.3s;
+				background-color: #55f0c4;
+			}
+			transition: border 0.3s;
+			border: 1px solid #55f0c4;
+			&:before {
+				transition: all 0.3s;
+				border-bottom: 80px solid #55f0c4;
+			}
+
+			&:after {
+				transition: all 0.3s;
+				border-top: 80px solid #55f0c4;
+			}
+			&:hover {
+				color: #fff;
+			}
+		}
+	}
+	&.textbook {
+		.textbook-nav__list-item_active & {
+			color: #000;
+			&:before {
+				right: -50px;
+				border-right: 50px solid transparent;
+				border-bottom: 80px solid #55f0c4;
+				transform: translateX(-100%);
+			}
+
+			&:after {
+				left: -50px;
+				border-left: 50px solid transparent;
+				border-top: 80px solid #55f0c4;
+				transform: translateX(100%);
+			}
+			&:before {
+				transform: translateX(-49%);
+			}
+			&:after {
+				transform: translateX(49%);
+			}
+		}
+	}
+	&.lvl {
+		white-space: nowrap;
+		width: 100%;
+		max-width: 100%;
+		// background-color: #4c77d5;
+		border: #55f0c479 0.5px solid;
+		font-size: 22px;
+		font-weight: bold;
+		text-shadow: 1px 1px 1px #000;
+		@media (max-width: 964px) {
+			height: 35px;
+		}
+		&:before {
+			border-bottom: 80px solid #4c77d5;
+		}
+		&:after {
+			border-top: 80px solid #4c77d5;
+		}
+		&:hover {
+			color: #fff;
+		}
+		&.select {
+			color: #fff;
+			&:before {
+				border-bottom: 80px solid #4c77d5;
+			}
+			&:after {
+				border-top: 80px solid #4c77d5;
+			}
+		}
+		&.false-answer {
+			color: #fff;
+			&:before {
+				border-bottom: 80px solid rgb(150, 31, 10);
+				transform: translateX(-39%);
+			}
+			&:after {
+				border-top: 80px solid rgb(150, 31, 10);
+				transform: translateX(59%);
+			}
+		}
+		&.true-answer {
+			color: #fff;
+			&:before {
+				border-bottom: 80px solid rgb(0, 167, 56);
+				transform: translateX(-39%);
+			}
+			&:after {
+				border-top: 80px solid rgb(0, 167, 56);
+				transform: translateX(59%);
+			}
+		}
+		&.dif-link1 {
+			border: 1px solid rgb(177 211 235);
+			&:before {
+				border-bottom: 80px solid rgb(177 211 235);
+			}
+			&:after {
+				border-top: 80px solid rgb(177 211 235);
+			}
+			&:hover {
+				color: #fff;
+			}
+			&.select {
+				color: #fff;
+				&:before {
+					border-bottom: 80px solid rgb(177 211 235);
+				}
+				&:after {
+					border-top: 80px solid rgb(177 211 235);
+				}
+			}
+		}
+		&.dif-link2 {
+			border: 1px solid rgb(196, 230, 141);
+			&:before {
+				border-bottom: 80px solid rgb(196, 230, 141);
+			}
+			&:after {
+				border-top: 80px solid rgb(196, 230, 141);
+			}
+			&.select {
+				color: #fff;
+				&:before {
+					border-bottom: 80px solid rgb(196, 230, 141);
+				}
+				&:after {
+					border-top: 80px solid rgb(196, 230, 141);
+				}
+			}
+		}
+		&.dif-link3 {
+			border: 1px solid rgb(241 226 139);
+			&:before {
+				border-bottom: 80px solid rgb(241 226 139);
+			}
+			&:after {
+				border-top: 80px solid rgb(241 226 139);
+			}
+			&.select {
+				color: #fff;
+				&:before {
+					border-bottom: 80px solid rgb(241 226 139);
+				}
+				&:after {
+					border-top: 80px solid rgb(241 226 139);
+				}
+			}
+		}
+		&.dif-link4 {
+			border: 1px solid rgb(253 171 117);
+			&:before {
+				border-bottom: 80px solid rgb(253 171 117);
+			}
+			&:after {
+				border-top: 80px solid rgb(253 171 117);
+			}
+			&.select {
+				color: #fff;
+				&:before {
+					border-bottom: 80px solid rgb(253 171 117);
+				}
+				&:after {
+					border-top: 80px solid rgb(253 171 117);
+				}
+			}
+		}
+		&.dif-link5 {
+			border: 1px solid rgb(249 123 123);
+			&:before {
+				border-bottom: 80px solid rgb(249 123 123);
+			}
+			&:after {
+				border-top: 80px solid rgb(249 123 123);
+			}
+			&.select {
+				color: #fff;
+				&:before {
+					border-bottom: 80px solid rgb(249 123 123);
+				}
+				&:after {
+					border-top: 80px solid rgb(249 123 123);
+				}
+			}
+		}
+		&.dif-link6 {
+			border: 1px solid rgb(199 150 189);
+			&:before {
+				border-bottom: 80px solid rgb(199 150 189);
+			}
+			&:after {
+				border-top: 80px solid rgb(199 150 189);
+			}
+			&.select {
+				color: #fff;
+				&:before {
+					border-bottom: 80px solid rgb(199 150 189);
+				}
+				&:after {
+					border-top: 80px solid rgb(199 150 189);
+				}
+			}
+		}
+	}
+}
+.textbook-nav__list-item_disabled {
+	& .btn-2 {
+		background-color: #9b9b9ba4;
+		color: #686868;
+		border: 1px #9b9b9ba4 solid;
+		&:before {
+			right: -50px;
+			border-right: 0px solid transparent;
+			border-bottom: 0px solid #9b9b9b;
+			transform: translateX(0);
+		}
+
+		&:after {
+			left: 0px;
+			border-left: 0px solid transparent;
+			border-top: 0px solid #9b9b9b;
+			transform: translateX(0);
+		}
+		&:before {
+			transform: translateX(0);
+		}
+		&:after {
+			transform: translateX(0);
+		}
+	}
+}
+@keyframes criss-cross-left {
+	0% {
+		left: -20px;
+	}
+	50% {
+		left: 50%;
+		width: 20px;
+	}
+	100% {
+		left: 50%;
+		width: 200px;
+	}
+}
+
+@keyframes criss-cross-right {
+	0% {
+		right: -20px;
+	}
+	50% {
+		right: 50%;
+		width: 20px;
+	}
+	100% {
+		right: 50%;
+		width: 200px;
+	}
+}

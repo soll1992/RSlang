@@ -1,0 +1,17 @@
+.textbook-nav__list-item {
+}
+
+.textbook-nav__list-item_disabled:hover {
+	box-shadow: none;
+}
+
+.textbook-nav__link {
+}
+
+.textbook-nav__link_disabled {
+	cursor: default;
+}
+
+.textbook-nav__link-text {
+	padding: 10px;
+}

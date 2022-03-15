@@ -1,0 +1,553 @@
+.header {
+  position: fixed;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  margin: 0 auto;
+  padding: 0px 20px;
+  display: flex;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2px);
+
+  color: #fff;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  &-btn-wrap {
+    display: flex;
+  }
+  &-wrap {
+    height: 50px;
+  }
+  &__title {
+    font-weight: bold;
+    font-size: 22px;
+    text-align: right;
+    margin: 0px 15px;
+  }
+  a {
+    color: #000;
+  }
+}
+.nav {
+  background: #d6d6d6;
+  color: #000;
+  font-size: 20px;
+  transition: left 1s;
+  z-index: 99;
+  position: absolute;
+  flex-direction: column;
+  display: flex;
+  top: 0;
+  left: -100%;
+  height: 100vh;
+  width: 250px;
+  box-shadow: 0px -1px 4px 2px rgba(0, 0, 0, 0.2), 0px 0px 5px 4px rgba(0, 0, 0, 0.14),
+    0px 0px 10px 1px rgba(0, 0, 0, 0.12);
+  &-title {
+    font-weight: bold;
+    &-img {
+      width: 40px;
+      animation: up-down 5s infinite;
+    }
+    &-wrap {
+      padding: 10px 0px 20px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+  &__item {
+    height: 30px;
+  }
+  &__link {
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    padding: 0 20px;
+    transition: color 0.3s, background 0.3s;
+
+    &.active {
+      color: #fff;
+      background-color: #000000a1;
+      &::after {
+        opacity: 1;
+      }
+    }
+
+    &:hover {
+      color: #fff;
+
+      background-color: #000000a1;
+    }
+  }
+  &-aside {
+    position: relative;
+    // animation: up-down-man 4s infinite;
+    text-shadow: rgba(0, 0, 0, 0.4) 2px 0 16px;
+    &-earth {
+      left: 0;
+      top: 0;
+      height: 50px;
+      width: 50px;
+      &-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 0.5px solid rgba(255, 255, 255, 0.2);
+        text-shadow: rgba(0, 0, 0, 0.4) 2px 0 16px;
+
+        // animation: up-down-man 4s infinite;
+        cursor: pointer;
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 50px;
+          width: 200px;
+          animation: move 7s infinite linear;
+          background: url("../../assets/img/home/earth.webp");
+          background-size: contain;
+        }
+      }
+    }
+  }
+}
+.burger {
+  position: absolute;
+  top: calc(50% - 1.5px);
+  left: 0;
+  width: 100%;
+  background: #e8e8e8;
+  height: 2px;
+  transition: left 0.5s;
+  &-close-top {
+    top: -40px;
+    right: 60px;
+    position: absolute;
+    width: 100%;
+    background: #e8e8e8;
+    height: 2px;
+    transition: right 1s, top 1s, transform 0.4s;
+    transform: rotate(-135deg);
+  }
+  &-close-bottom {
+    top: -40px;
+    left: 60px;
+    position: absolute;
+    width: 100%;
+    background: #e8e8e8;
+    height: 2px;
+    transition: left 1.5s, top 1.5s, transform 0.4s;
+    transform: rotate(135deg);
+  }
+  &-wrap {
+    z-index: 5;
+    overflow: hidden;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: left 0.5s;
+
+    &::after {
+      content: "";
+      bottom: 5px;
+      left: 0;
+      position: absolute;
+      width: 100%;
+      background: #e8e8e8;
+      height: 2px;
+      transition: left 0.5s;
+    }
+    &::before {
+      content: "";
+      top: 5px;
+      left: 0;
+      position: absolute;
+      width: 100%;
+      background: #e8e8e8;
+      height: 2px;
+      transition: left 0.5s;
+    }
+    &:hover {
+      &::before {
+        left: -10px;
+      }
+      &::after {
+        left: -20px;
+      }
+      .burger {
+        left: -15px;
+      }
+    }
+    &.active {
+      & ~ .nav {
+        left: 0;
+      }
+      & .burger {
+        transition: left 2.5s;
+        left: -350px;
+      }
+      &::after {
+        transition: left 2.5s;
+        left: -450px;
+      }
+      &::before {
+        transition: left 2.5s;
+        left: -250px;
+      }
+      &:hover {
+        &::before {
+          left: -250px;
+        }
+        & .burger {
+          left: -350px;
+        }
+        &::after {
+          left: -450px;
+        }
+      }
+      & .burger-close-top {
+        top: 15px;
+        right: 0;
+        position: absolute;
+        width: 100%;
+        background: #e8e8e8;
+        height: 2px;
+        transform: rotate(-135deg);
+        transition: right 1.5s, top 1.5s, transform 0.4s;
+      }
+      & .burger-close-bottom {
+        top: 15px;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        background: #e8e8e8;
+        height: 2px;
+        transition: left 1s, top 1s, transform 0.4s;
+        transform: rotate(135deg);
+      }
+      &.black {
+        & .burger-close-bottom,
+        & .burger-close-top {
+          opacity: 0.5;
+          background: #1a1919;
+          transition: opacity 0.1s;
+        }
+        &:hover .burger-close-bottom,
+        &:hover .burger-close-top {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.login {
+  &-header {
+    &-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      margin: 0px 0px 45px 0px;
+    }
+    &-button {
+      position: relative;
+      font-size: 22px;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 5px;
+      transition: background 0.5s;
+      opacity: 0.5;
+      &:first-child {
+        &::after {
+          content: "";
+          width: 100%;
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          height: 2px;
+          background-color: #000;
+          transition: width 0.5s, background 0.5s;
+        }
+      }
+      &:hover {
+        background-color: transparent;
+      }
+      &:last-child {
+        &::after {
+          content: "";
+          width: 100%;
+
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          height: 2px;
+          background-color: #000;
+          transition: width 0.5s, background 0.5s;
+        }
+      }
+      &:hover {
+        background-color: transparent;
+      }
+      &.active {
+        opacity: 1;
+        &::after {
+          content: "";
+          width: 0;
+        }
+        background-color: transparent;
+      }
+    }
+  }
+  &-popup {
+    &-wrap {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      top: calc(50% - 200px);
+      left: calc(50% - 200px);
+      // background-color: #d6d6d6;
+      background: rgb(240, 240, 240);
+      z-index: 5;
+      opacity: 0;
+      border-radius: 5px;
+      overflow: hidden;
+      visibility: hidden;
+      transition: opacity 0.5s, visibility 0.5s;
+      color: #000;
+      &.active {
+        visibility: visible;
+        opacity: 1;
+        animation: open-popup 0.5s linear;
+      }
+      @media (max-width: 500px) {
+        width: 300px;
+        height: 400px;
+        top: calc(50% - 200px);
+        left: calc(50% - 150px);
+      }
+    }
+    &-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      &-wrap {
+        width: 100%;
+        padding: 15px;
+      }
+    }
+  }
+  &-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    max-width: 180px;
+    align-items: center;
+    &.last {
+      justify-content: flex-end;
+    }
+    &__login {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    &__signup {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  &-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(39, 39, 39);
+  }
+  &-title {
+    position: relative;
+    font-size: 20px;
+    background-color: transparent;
+    color: #fff;
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 1px;
+      background-color: rgba(255, 255, 255);
+      transition: width 0.3s;
+    }
+    &:hover {
+      &::before {
+        width: 100%;
+      }
+    }
+    &.active {
+      &::before {
+        width: 100%;
+      }
+    }
+  }
+
+  &-wrap-inputs {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    height: 40px;
+    margin: 0px 0px 30px 0px;
+    width: 100%;
+    max-width: 250px;
+
+    position: relative;
+    & .login-login.label,
+    & .login-password.label,
+    & .login-email.label {
+      position: absolute;
+      background-color: rgb(240, 240, 240);
+      top: 8px;
+      left: 20px;
+      transition: top 0.3s, left 0.3s, font-size 0.3s;
+    }
+
+    & .login-login.input,
+    & .login-password.input,
+    & .login-email.input {
+      background-color: transparent;
+      border-radius: 5px;
+      border: #000 1px solid;
+      transition: 0.3s;
+      &:hover {
+        border: 1px solid #9d8665;
+      }
+      &:focus {
+        border: 1px solid rgb(42, 42, 185);
+        box-shadow: 0px 0px 10px 0.5px rgb(42, 42, 185);
+      }
+    }
+    & .login-login.label {
+    }
+    & .login-login.input {
+    }
+    & .login-password.label {
+    }
+    & .login-password.input {
+    }
+    & .login-email.label {
+    }
+    & .login-email.input {
+    }
+  }
+  &-login {
+    &-container {
+    }
+  }
+  &-password {
+    &-container {
+    }
+    & .label {
+    }
+    & .input {
+    }
+  }
+  &-wrap {
+    &-inputs {
+    }
+  }
+  &-submit {
+    font-size: 22px;
+    padding: 5px;
+  }
+}
+.input {
+  padding: 5px;
+}
+.label {
+  padding: 5px;
+}
+
+.login-login.input:focus ~ .login-login.label,
+.login-password.input:focus ~ .login-password.label,
+.login-email.input:focus ~ .login-email.label,
+.login-login.input.active ~ .login-login.label,
+.login-password.input.active ~ .login-password.label,
+.login-email.input.active ~ .login-email.label,
+.login-login.input.active.error ~ .login-login.label,
+.login-password.input.active.error ~ .login-password.label,
+.login-email.input.active.error ~ .login-email.label {
+  font-size: 12px;
+  position: absolute;
+  background-color: rgb(240, 240, 240);
+  top: -10px;
+  left: 20px;
+}
+.login-login.input:focus:invalid ~ .login-login.label,
+.login-password.input:focus:invalid ~ .login-password.label,
+.login-email.input:focus:invalid ~ .login-email.label,
+.login-login.input.active:invalid ~ .login-login.label,
+.login-password.input.active:invalid ~ .login-password.label,
+.login-email.input.active:invalid ~ .login-email.label {
+  color: rgb(202, 52, 52);
+  font-size: 12px;
+  position: absolute;
+  background-color: rgb(240, 240, 240);
+  top: -10px;
+  left: 20px;
+}
+.login-login.input.error ~ .login-login.label,
+.login-password.input.error ~ .login-password.label,
+.login-email.input.error ~ .login-email.label {
+  color: rgb(202, 52, 52);
+}
+@keyframes up-down {
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  25% {
+    -webkit-transform: translate(2px, 2px);
+    transform: translate(2px, 2px);
+  }
+  50% {
+    -webkit-transform: translate(-2px, 2px);
+    transform: translate(-2px, 2px);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes move {
+  0% {
+    left: 0px;
+  }
+  100% {
+    left: -88px;
+  }
+}
+
+@keyframes open-popup {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
