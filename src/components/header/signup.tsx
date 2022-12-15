@@ -20,7 +20,7 @@ const SugnUp: FC<Props> = (props: Props) => {
     const name = nameInput.current;
     const email = emailInput.current;
     const password = passwordInput.current;
-    return fetch('https://react-rslang-group.herokuapp.com/users', {
+    return fetch('https://rs-lang-a13h.onrender.com/users', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

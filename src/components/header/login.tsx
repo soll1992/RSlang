@@ -39,7 +39,7 @@ const Login: FC<Props> = (props) => {
   };
 
   const loginUser = (user: { email: string; password: string }) => {
-    return fetch('https://react-rslang-group.herokuapp.com/signin', {
+    return fetch('https://rs-lang-a13h.onrender.com/signin', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

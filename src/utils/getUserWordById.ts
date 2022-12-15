@@ -4,7 +4,7 @@ import removeUserDataFromStorage from './removeUserDataFromStorage';
 
 function getUserWordById(wordId: string, userId: string, token: string) {
   return axios
-    .get<UserWord>(`https://react-rslang-group.herokuapp.com/users/${userId}/words/${wordId}`, {
+    .get<UserWord>(`https://rs-lang-a13h.onrender.com/users/${userId}/words/${wordId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',

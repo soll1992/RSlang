@@ -168,24 +168,24 @@ export default function WordCard({ info, audio, authorization, wordState }: Prop
       <div className="word-card__picture-wrap">
         <img
           className={`word-card__picture word-card__word_${info.group}`}
-          src={`https://rs-lang-server.herokuapp.com/${info.image}`}
+          src={`https://rs-lang-a13h.onrender.com/${info.image}`}
           alt={`${info.word}_picture`}
         />
       </div>
       <div className="word-card__content">
         <button className="word-card__audio" onClick={playAudio}></button>
         <audio
-          src={`https://rs-lang-server.herokuapp.com/${info.audio}`}
+          src={`https://rs-lang-a13h.onrender.com/${info.audio}`}
           ref={audioWord}
           onEnded={audioWordEnded}
         ></audio>
         <audio
-          src={`https://rs-lang-server.herokuapp.com/${info.audioMeaning}`}
+          src={`https://rs-lang-a13h.onrender.com/${info.audioMeaning}`}
           ref={audioMeaning}
           onEnded={audioMeaningEnded}
         ></audio>
         <audio
-          src={`https://rs-lang-server.herokuapp.com/${info.audioExample}`}
+          src={`https://rs-lang-a13h.onrender.com/${info.audioExample}`}
           ref={audioExample}
           onEnded={audioExampleEnded}
         ></audio>

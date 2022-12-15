@@ -8,7 +8,7 @@ type Params = {
 
 function getWords(params?: Params) {
   return axios
-    .get<Word[]>('https://react-rslang-group.herokuapp.com/words', {
+    .get<Word[]>('https://rs-lang-a13h.onrender.com/words', {
       params,
     })
     .then((response) => response.data)

@@ -4,7 +4,7 @@ import removeUserDataFromStorage from './removeUserDataFromStorage';
 
 function getUserStatistics(userId: string, token: string) {
   return axios
-    .get<UserStatistics>(`https://react-rslang-group.herokuapp.com/users/${userId}/statistics`, {
+    .get<UserStatistics>(`https://rs-lang-a13h.onrender.com/users/${userId}/statistics`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',

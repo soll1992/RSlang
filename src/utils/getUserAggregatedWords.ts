@@ -11,7 +11,7 @@ type Params = {
 
 function getUserAggregatedWords(userId: string, token: string, params?: Params) {
   return axios
-    .get<AgregatedWords>(`https://react-rslang-group.herokuapp.com/users/${userId}/aggregatedWords`, {
+    .get<AgregatedWords>(`https://rs-lang-a13h.onrender.com/users/${userId}/aggregatedWords`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',

@@ -17,8 +17,8 @@ https://github.com/rolling-scopes-school/tasks/blob/master/tasks/stage-2/rs-lang
 
 ## Backend 
 - repo: https://github.com/ConstantineTU/react-rslang-be
-- deploy https://react-rslang-group.herokuapp.com/
-- swagger https://react-rslang-group.herokuapp.com/doc/
+- deploy https://rs-lang-a13h.onrender.com/
+- swagger https://rs-lang-a13h.onrender.com/doc/
 
 ## Stack:  
 1. React - https://reactjs.org/  

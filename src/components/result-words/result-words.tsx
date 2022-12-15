@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function ResultWords(props: Props) {
-  const [sound] = useSound(`https://react-rslang-group.herokuapp.com/${props.soundLink}`);
+  const [sound] = useSound(`https://rs-lang-a13h.onrender.com/${props.soundLink}`);
 
   return (
     <div className="word-conteiner">

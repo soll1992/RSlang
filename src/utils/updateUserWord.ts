@@ -11,7 +11,7 @@ type RequestBody = {
 
 function updateUserWord(wordId: string, userId: string, token: string, requestBody: RequestBody) {
   return axios
-    .put<UserWord>(`https://react-rslang-group.herokuapp.com/users/${userId}/words/${wordId}`, requestBody, {
+    .put<UserWord>(`https://rs-lang-a13h.onrender.com/users/${userId}/words/${wordId}`, requestBody, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',

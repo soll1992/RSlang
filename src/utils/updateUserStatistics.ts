@@ -11,7 +11,7 @@ type RequestBody = {
 
 function updateUserStatistics(userId: string, token: string, requestBody: RequestBody) {
   return axios
-    .put<UserStatistics>(`https://react-rslang-group.herokuapp.com/users/${userId}/statistics`, requestBody, {
+    .put<UserStatistics>(`https://rs-lang-a13h.onrender.com/users/${userId}/statistics`, requestBody, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',

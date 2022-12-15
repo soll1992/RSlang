@@ -160,9 +160,9 @@ export default function Audiochallenge(props: Props) {
   // Заменяю ссылки на аудио и картинку + автопроизношение слов
   useEffect(() => {
     if (props.soundLink !== undefined && startGame) {
-      const audio = new Audio(`https://react-rslang-group.herokuapp.com/${props.soundLink}`);
+      const audio = new Audio(`https://rs-lang-a13h.onrender.com/${props.soundLink}`);
       setWordSound(audio);
-      setImgLink(`https://react-rslang-group.herokuapp.com/${props.img}`);
+      setImgLink(`https://rs-lang-a13h.onrender.com/${props.img}`);
       audio.play();
     }
   }, [props.soundLink, startGame]);

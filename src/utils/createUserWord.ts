@@ -11,7 +11,7 @@ type RequestBody = {
 
 function createUserWord(wordId: string, userId: string, token: string, requestBody: RequestBody) {
   return axios
-    .post<UserWord>(`https://react-rslang-group.herokuapp.com/users/${userId}/words/${wordId}`, requestBody, {
+    .post<UserWord>(`https://rs-lang-a13h.onrender.com/users/${userId}/words/${wordId}`, requestBody, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
