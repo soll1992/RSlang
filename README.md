@@ -10,7 +10,7 @@ https://github.com/rolling-scopes-school/tasks/blob/master/tasks/stage-2/rs-lang
 
 ![](https://user-images.githubusercontent.com/76487981/155051095-fb637a2f-8366-4172-b7da-3d3d540d539a.png)
 ## Deploy: 
-- https://rolling-scopes-school.github.io/constantinetu-JSFE2021Q3/rslang/
+- https://soll1992-rslang.netlify.app/
 
 ## Video
 - https://youtu.be/Gj7oevU50cI 
